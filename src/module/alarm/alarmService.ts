@@ -1,15 +1,15 @@
 
-import axios from 'axios';
+//import axios from 'axios';
 
 
 export class AlarmService {
-    async sendAlarm (notificationData: NotificationData): Promise<string> {
+    async sendAlarm (notificationData: AlarmData): Promise<string> {
       try {
         // 알림 요청을 보내는 비즈니스 로직을 구현합니다.
         // 예를 들어, 카카오 알림톡 API를 호출하고 응답 결과를 처리하는 등의 작업을 수행합니다.
         
         // 카카오 알림톡 API 호출 예시
-      const response = await axios.post('https://api.kakaowork.com/v1/messages.send', notificationData);
+     // const response = await axios.post('https://api.kakaowork.com/v1/messages.send', notificationData);
   
         // 알림 요청이 성공한 경우 성공 결과를 반환합니다.
         return '알림 성공';
@@ -20,7 +20,7 @@ export class AlarmService {
     }
   }
   
-  interface NotificationData {
+  interface AlarmData {
     recipient: string;
     message: string;
   }
