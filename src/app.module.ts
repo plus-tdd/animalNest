@@ -4,10 +4,10 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { AuthGuard } from './auth/auth.guard';
 import { APP_GUARD } from '@nestjs/core';
-
+import { PaymentModule } from './module/payment/model';
 
 @Module({
-  imports: [AuthModule],
+  imports: [AuthModulem, PaymentModule],
   controllers: [AppController],
   providers: [
     AppService,
