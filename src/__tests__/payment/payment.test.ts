@@ -1,8 +1,8 @@
-import { CardCompany, PaymentCardRequestInfo } from "../../payment/model";
-import { PaymentService } from "../../payment/PaymentService";
-import { TestExternalPaymentSDK } from "../../payment/externalPaymenySDK";
-import { PaymentInfo } from "../../payment/PaymentDatabase";
-import { TestPaymentRepository } from "../../payment/paymentRepository";
+import { CardCompany, PaymentCardRequestInfo } from "../../module/payment/model";
+import { PaymentService } from "../../module/payment/PaymentService";
+import { TestExternalPaymentSDK } from "../../module/payment/externalPaymenySDK";
+import { PaymentInfo } from "../../module/payment/PaymentDatabase";
+import { TestPaymentRepository } from "../../module/payment/paymentRepository";
 
 
 // Completed request Info
