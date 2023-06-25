@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CounselingService } from '../../counseling/counseling.service';
-import { CounselingRepository } from 'src/counseling/counseling.repository';
-import { CounselingDto } from '../../counseling/counseling.dto';
+import { CounselingService } from '../../module/counseling/counseling.service';
+import { CounselingRepository } from 'src/module/counseling/counseling.repository';
+import { CounselingDto } from '../../module/counseling/counseling.dto';
 
 const validateRequest: CounselingDto = {
   userId: 123,
