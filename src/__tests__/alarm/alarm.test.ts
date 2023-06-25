@@ -32,16 +32,16 @@ describe("알림 테스트", () => {
         const sendAlarmMock = jest.spyOn(alarmService, 'sendAlarm').mockResolvedValue('알림 성공');
     
         // 알림 요청에 필요한 데이터를 설정합니다.
-        const notificationData = {
+        const alarmData = {
           recipient: '01012345678',
           message: '알림 내용',
         };
     
         // 알림 요청을 수행하고 예상된 성공 결과를 검증합니다.
-        const result = await alarmService.sendAlarm(notificationData);
+        const result = await alarmService.sendAlarm(alarmData);
         expect(result).toEqual('알림 성공');
     
         // 모의(Mock) 함수가 예상대로 호출되었는지 검증합니다.
-        expect(sendAlarmMock).toHaveBeenCalledWith(notificationData);
+        expect(sendAlarmMock).toHaveBeenCalledWith(alarmData);
       });
 });

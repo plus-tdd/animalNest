@@ -32,7 +32,7 @@ public async validatePaymentInfo(requestInfo: PaymentCardRequestInfo): Promise<b
     }
 
     // 2. 실행 함수 - 외부 SDK에 결제 요청 전달
-    public async paymentToSdk(requestInfo: PaymentCardRequestInfo): Promise<PaymentCardRequestInfo> {
+    public async paymentToSdk(requestInfo: PaymentCardRequestInfo): Promise<string> {
         const externalSDK = new TestExternalPaymentSDK(); // 인스턴스 생성
         const paymentResult = await externalSDK.makePayment(requestInfo); // 인스턴스의 메서드 호출
         return paymentResult;

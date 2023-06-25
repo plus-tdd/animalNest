@@ -100,41 +100,63 @@ describe('결제 시 필요한 카드 정보 검증 TestSuite', () => {
     })
 
 
-    describe('결제 시 외부 SDK에 정상적으로 전달되는지 확인 TestSuite', () => {
-        test('결제 요청이 외부 SDK에 정상적으로 전달되는지 확인한다.', async () => {  // 실패한다 케이스도 필요할까요?
-        
-            // 외부 SDK의 makePayment 메서드를 모의(Mock) 함수로 대체=
-            const mockSdk = jest.spyOn(externalPaymenySDK, 'makePayment').mockResolvedValue(null);
-            // mockMakePayment.mockImplementation(async () => true);
-        
-            const requestInfo: PaymentCardRequestInfo = {
-            cardNum: 1234567812345678,
-            endDate: '2412',
-            cvc: 345,
-            cardCompany: CardCompany.Kookmin
-            };
-            // makePayment 함수가 특정 인수와 함께 호출되었는지 검사한다.
-        //     expect(mockSdk).toHaveBeenCalledWith(requestInfo);
-          //  const sdkResult = await paymentService.paymentToSdk(requestInfo);
-            //expect(sdkResult).toBe(requestInfo);
-        });
-        })
-
-    describe('결제 결제 정보 저장 TestSuite', () => {
-
-      test('결제 정보를 저장한다', async () => {  // 실패한다 케이스도 필요할까요?
+describe('결제 시 외부 SDK에 정상적으로 전달되는지 확인 TestSuite', () => {
+    test('외부 SDK에 결제 요청이 성공할 경우 성공 결과를 반환한다', async () => {  // 실패한다 케이스도 필요할까요?
     
-        // 결제 정보 저장
-        const paymentInfo: PaymentInfo = {
-            id: 1,
-            cardNum: 1234567812345678,
-            endDate: '2412', // yymm
-            cvc: 345,
-            cardCompany: CardCompany.Kookmin,
-            amount: 10000 // 만원이라고 가정
-        }
-         const savePaymentInfo = await paymentService.savePaymentInfo(paymentInfo);
-         expect(savePaymentInfo).toEqual(true);
-      });
-    })
+        // 외부 SDK의 makePayment 메서드를 모의(Mock) 함수로 대체
+        const paymentSdkMock = jest.spyOn(externalPaymenySDK, 'makePayment').mockResolvedValue('결제 요청 성공');
+        // mockMakePayment.mockImplementation(async () => true);
+    
+        const requestInfo= {
+        cardNum: 1234567812345678,
+        endDate: '2412',
+        cvc: 345,
+        cardCompany: CardCompany.Kookmin
+
+        };
+        // 결제 요청을 수행하고 예상된 성공 결과를 검증합니다.
+        const sdkResult = await paymentService.paymentToSdk(requestInfo);
+        expect(sdkResult).toEqual('결제 요청 성공');
+
+        // makePayment 함수가 특정 인수와 함께 호출되었는지 검사한다.
+       //expect(paymentSdkMock).toHaveBeenCalledWith(requestInfo); //--> 왜 안되는걸까여..?
+    });
+
+    test('외부 SDK에 결제 요청이 실패할 경우 실패 결과를 반환한다', async () => {  // 실패한다 케이스도 필요할까요?
+    
+        // 외부 SDK의 makePayment 메서드를 모의(Mock) 함수로 대체한다
+        const paymentSdkMock = jest.spyOn(paymentService, 'paymentToSdk').mockRejectedValue(new Error('결제 요청 실패'));
+    
+        const requestInfo= {
+        cardNum: 1234567812345678,
+        endDate: '2412',
+        cvc: 345,
+        cardCompany: CardCompany.Kookmin
+        };
+
+        const sdkResult = await paymentService.paymentToSdk(requestInfo);
+        expect(sdkResult).rejects.toThrowError('결제 요청 실패');
+
+        //makePayment 함수가 특정 인수와 함께 호출되었는지 검사한다.
+        expect(paymentSdkMock).toHaveBeenCalledWith(requestInfo); //--> 왜 안되는걸까여..?
+    });
+})
+
+describe('결제 결제 정보 저장 TestSuite', () => {
+
+    test('결제 정보를 저장한다', async () => {  // 실패한다 케이스도 필요할까요?
+
+    // 결제 정보 저장
+    const paymentInfo: PaymentInfo = {
+        id: 1,
+        cardNum: 1234567812345678,
+        endDate: '2412', // yymm
+        cvc: 345,
+        cardCompany: CardCompany.Kookmin,
+        amount: 10000 // 만원이라고 가정
+    }
+        const savePaymentInfo = await paymentService.savePaymentInfo(paymentInfo);
+        expect(savePaymentInfo).toEqual(true);
+    });
+})
 });
