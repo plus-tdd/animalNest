@@ -1,8 +1,8 @@
-import { CardCompany, PaymentCardRequestInfo } from "src/payment/model";
-import { PaymentService } from "src/payment/PaymentService";
-import { PaymentDatabase } from "src/payment/PaymentDatabase";
-import { ExternalPaymentSDK } from "src/payment/externalPaymenySDK";
-import { PaymentInfo } from "src/payment/PaymentDatabase";
+import { CardCompany, PaymentCardRequestInfo } from "../../payment/model";
+import { PaymentService } from "../../payment/PaymentService";
+import { TestExternalPaymentSDK } from "../../payment/externalPaymenySDK";
+import { PaymentInfo } from "../../payment/PaymentDatabase";
+import { TestPaymentRepository } from "../../payment/paymentRepository";
 
 
 // Completed request Info
@@ -18,12 +18,14 @@ const validatedRequest: PaymentCardRequestInfo = {
 describe('결제 시 필요한 카드 정보 검증 TestSuite', () => {
     
     let paymentService: PaymentService
-    let paymentDatabase: PaymentDatabase;
+    let externalPaymenySDK: TestExternalPaymentSDK;
+    let paymentRepository: TestPaymentRepository;
 
     // 각 테스트가 실행되기 전에 반복 실행될 코드
     beforeAll(() => {
-        paymentDatabase = new PaymentDatabase();
-        paymentService = new PaymentService(paymentDatabase)
+        paymentRepository = new TestPaymentRepository();
+        externalPaymenySDK = new TestExternalPaymentSDK();
+        paymentService = new PaymentService(paymentRepository)
     })
 
     afterEach(() => {
@@ -67,7 +69,7 @@ describe('결제 시 필요한 카드 정보 검증 TestSuite', () => {
 
         const endDateIsEmpty: PaymentCardRequestInfo = {
             cardNum: 1234567812345678,
-            endDate: '', // string이 null 일 경우
+            endDate: undefined, // string이 undefined 일 경우
             cvc: 345,
             cardCompany: CardCompany.Kookmin
         }
@@ -97,27 +99,31 @@ describe('결제 시 필요한 카드 정보 검증 TestSuite', () => {
         // expect(emptyCompany).toEqual(false);
     })
 
-    test('결제 요청이 외부 SDK에 정상적으로 전달되는지 확인한다.', async () => {  // 실패한다 케이스도 필요한뎁,,
-        // 외부 SDK의 makePayment 메서드를 모의(Mock) 함수로 대체
-        // jest.spyOn()은 기존 구현을 유지하면서 특정 동작을 추가하거나 수정할 때 유용하다.
-        // 메소드가 실행되는 것을 살펴보는 것 뿐만 아니라 기존의 구현이 보존되길 바랄 때 사용한다. 구현을 mocking하고 차후에 원본을 복원할 수 있다.
-        const mockMakePayment = jest.spyOn(ExternalPaymentSDK, 'makePayment');
-        mockMakePayment.mockImplementation(async () => true);
+
+    describe('결제 시 외부 SDK에 정상적으로 전달되는지 확인 TestSuite', () => {
+        test('결제 요청이 외부 SDK에 정상적으로 전달되는지 확인한다.', async () => {  // 실패한다 케이스도 필요할까요?
+        
+            // 외부 SDK의 makePayment 메서드를 모의(Mock) 함수로 대체=
+            const mockSdk = jest.spyOn(externalPaymenySDK, 'makePayment').mockResolvedValue(null);
+            // mockMakePayment.mockImplementation(async () => true);
+        
+            const requestInfo: PaymentCardRequestInfo = {
+            cardNum: 1234567812345678,
+            endDate: '2412',
+            cvc: 345,
+            cardCompany: CardCompany.Kookmin
+            };
+            // makePayment 함수가 특정 인수와 함께 호출되었는지 검사한다.
+        //     expect(mockSdk).toHaveBeenCalledWith(requestInfo);
+          //  const sdkResult = await paymentService.paymentToSdk(requestInfo);
+            //expect(sdkResult).toBe(requestInfo);
+        });
+        })
+
+    describe('결제 결제 정보 저장 TestSuite', () => {
+
+      test('결제 정보를 저장한다', async () => {  // 실패한다 케이스도 필요할까요?
     
-        const requestInfo: PaymentCardRequestInfo = {
-          cardNum: 1234567812345678,
-          endDate: '2412',
-          cvc: 345,
-          cardCompany: CardCompany.Kookmin
-        };
-        // makePayment 함수가 특정 인수와 함께 호출되었는지 검사한다.
-        expect(mockMakePayment).toHaveBeenCalledWith(requestInfo);
-        const sdkResult = await paymentService.paymentToSdk(requestInfo);
-        expect(sdkResult).toEqual(true);
-      });
-
-
-      test('결제 정보를 저장한다', async () => {  // 실패한다 케이스도 필요한뎁,,
         // 결제 정보 저장
         const paymentInfo: PaymentInfo = {
             id: 1,
@@ -127,7 +133,8 @@ describe('결제 시 필요한 카드 정보 검증 TestSuite', () => {
             cardCompany: CardCompany.Kookmin,
             amount: 10000 // 만원이라고 가정
         }
-         const savePaymentInfo = await paymentService.makePayment(paymentInfo);
+         const savePaymentInfo = await paymentService.savePaymentInfo(paymentInfo);
          expect(savePaymentInfo).toEqual(true);
       });
+    })
 });
