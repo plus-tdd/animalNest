@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
-import { JwtService } from './jwt/jwt.service';
-import { PassportService } from './passport/passport.service';
-import { GuardService } from './guard/guard.service';
-import { UserService } from './user/user.service';
+import { JwtStrategy  } from './passport/auth.passport';
+import { AuthGuard } from './auth.guard';
+import { AuthService } from './auth.service';
 
 @Module({
-  providers: [JwtService, PassportService, GuardService, UserService]
+  providers: [JwtStrategy , AuthGuard, AuthService]
 })
 export class AuthModule {}
