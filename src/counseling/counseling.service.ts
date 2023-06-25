@@ -6,6 +6,10 @@ export class CounselingService {
   public async createCounseling(requestInfo: CounselingDto): Promise<boolean> {
     const { userId, counselingDateTime } = requestInfo;
 
-    return;
+    if (userId === undefined || userId < 1) {
+      return false;
+    }
+
+    return true;
   }
 }

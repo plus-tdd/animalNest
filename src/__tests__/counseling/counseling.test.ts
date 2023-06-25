@@ -32,4 +32,14 @@ describe('CounselingService', () => {
     );
     expect(undefinedUserIdResult).toEqual(false);
   });
+
+  test('userId는 양의 정수여야 함', async () => {
+    const userIdIsMinus: CounselingDto = {
+      userId: -4,
+      counselingDateTime: new Date('2023-06-25 15:30:00'),
+    };
+
+    const minusUserIdResult = await service.createCounseling(userIdIsMinus);
+    expect(minusUserIdResult).toEqual(false);
+  });
 });

@@ -1,4 +1,4 @@
 export class CounselingDto {
-  userId: Number;
+  userId: number;
   counselingDateTime: Date;
 }
