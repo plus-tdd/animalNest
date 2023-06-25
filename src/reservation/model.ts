@@ -1,42 +1,32 @@
 
 export type ReservationPetInfo ={
     petId: number;
-    petType: typeof PetType; // Dog or Cat
+    petType: PetType; // Dog or Cat
     name: string;
     birthDay: string;
     weight: number;
     breed: string;
-    gender: typeof Gender; // Male or Female
-    neuter: typeof Neuter; // 중성화 True or False 
+    gender: Gender; // Male or Female
+    neuter: Neuter; // 중성화 True or False 
     allergy: string; // 입력이 되지 않아도 문제 없도록 추후 변경
     disease: string; // 입력이 되지 않아도 문제 없도록 추후 변경
-    isAvailable: boolean;
 }
 
-const PetType = {
-    Cat: 'cat',
-    Dog: 'dog'
+export enum PetType {
+    Cat = 'cat',
+    Dog  ='dog'
 }
 
-const Gender = {
-    Male: 'm',
-    Female: 'f'
+export enum Gender {
+    Male = 'm',
+    Female = 'f'
 }
 
-const Neuter = {
-    Yes: 'y',
-    No: 'n'
+export enum Neuter {
+    Yes= 'y',
+    No= 'n'
 }
 
-function choosePet(pet) {
-    if (pet === PetType.Cat) {
-        return pet
-    } else if (pet === PetType.Dog) {
-        return pet
-    } else {
-        console.log('Invalid pet choice.');
-    }
-}
 
 export type ReservationInfo ={
     petId: number; // Dog or Cat
