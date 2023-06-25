@@ -2,8 +2,8 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CounselingModule } from './module/counseling/counseling.module';
-import { AuthModule } from './auth/auth.module';
-import { AuthGuard } from './auth/auth.guard';
+import { AuthModule } from './module/auth/auth.module';
+import { AuthGuard } from './module/auth/auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { PaymentModule } from './module/payment/payment.module';
 

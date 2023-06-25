@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuthGuard } from '../../auth/auth.guard';
-import { JwtStrategy } from '../../auth/passport/auth.passport';
+import { AuthGuard } from '../../module/auth/auth.guard';
+import { JwtStrategy } from '../../module/auth/passport/auth.passport';
 
 // /* 준비된 성공 요청값 시작 */
 // // 성공적인 최초 토큰 요청값
