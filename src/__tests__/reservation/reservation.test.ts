@@ -1,5 +1,5 @@
-import {ReservationService, } from "../../reservation/reservation.service"
-import {ReservationPetInfo, ReservationInfo, PetType, Gender, Neuter} from "../../reservation/model"
+import {ReservationService, } from "../../module/reservation/reservation.service"
+import {ReservationPetInfo, ReservationInfo, PetType, Gender, Neuter} from "../../module/reservation/model"
 
 const reservationPetInfo : ReservationPetInfo = {
     petType: PetType.Cat,// Dog or Cat
