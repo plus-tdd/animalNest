@@ -1,4 +1,4 @@
-import { PaymentInfo } from "./PaymentDatabase";
+import { PaymentInfo } from "./paymentDatabase";
 
 export interface PaymentRepository {
     savePaymentInfo(paymentInfo: PaymentInfo): Promise<void>;

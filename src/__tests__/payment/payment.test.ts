@@ -1,6 +1,6 @@
 import { CardCompany, PaymentCardRequestInfo } from "../../module/payment/model";
-import { PaymentService } from "../../module/payment/PaymentService";
-import { PaymentInfo } from "../../module/payment/PaymentDatabase";
+import { PaymentService } from "../../module/payment/paymentService";
+import { PaymentInfo } from "src/module/payment/paymentDatabase";
 import { TestPaymentRepository } from "../../module/payment/paymentRepository";
 import { TestExternalPaymentSDK } from "../../module/payment/externalPaymentSDK";
 
