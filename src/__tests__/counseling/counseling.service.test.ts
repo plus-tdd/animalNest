@@ -1,12 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CounselingService } from '../../module/counseling/counseling.service';
-import { CounselingRepository } from 'src/module/counseling/counseling.repository';
 import { CreateCounselingDto } from '../../module/counseling/dto/create-counseling.dto';
 
 describe('CounselingService', () => {
   let service: CounselingService;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [CounselingService],
     }).compile();
@@ -27,12 +26,12 @@ describe('CounselingService', () => {
   describe('getOne', () => {});
 
   describe('create', () => {
-    test('로그인한 상태여야 함', async () => {
+    it('로그인한 상태여야 함', async () => {
       const userIdIsUndefined: CreateCounselingDto = {
         userId: undefined,
         petId: 1,
         counselingDateTime: new Date('2023-06-25 15:30:00'),
-        content: 'ddd',
+        content: '알레르기',
         expense: 50000,
       };
 
@@ -40,12 +39,12 @@ describe('CounselingService', () => {
       expect(undefinedUserIdResult).toEqual(false);
     });
 
-    test('userId는 양의 정수여야 함', async () => {
+    it('userId는 양의 정수여야 함', async () => {
       const userIdIsMinus: CreateCounselingDto = {
         userId: -4,
         petId: 1,
         counselingDateTime: new Date('2023-06-25 15:30:00'),
-        content: 'ddd',
+        content: '영양실조',
         expense: 50000,
       };
 

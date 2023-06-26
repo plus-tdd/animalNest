@@ -4,6 +4,6 @@ import { CounselingService } from './counseling.service';
 
 @Module({
   controllers: [CounselingController],
-  providers: [CounselingService]
+  providers: [CounselingService],
 })
 export class CounselingModule {}

@@ -1,9 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCounselingDto } from './dto/create-counseling.dto';
 import { Counseling } from './counseling.entity';
+import { CounselingRepositoryImpl } from './counseling.repository';
 
 @Injectable()
 export class CounselingService {
+  constructor(
+    private readonly counselingRepository: CounselingRepositoryImpl,
+  ) {}
+
   async getAll(): Promise<Counseling[]> {
     return;
   }
@@ -12,8 +17,9 @@ export class CounselingService {
     return;
   }
 
-  async create(requestInfo: CreateCounselingDto): Promise<boolean> {
-    const { userId, counselingDateTime } = requestInfo;
+  async create(counselingData: CreateCounselingDto): Promise<boolean> {
+    const { userId, petId, counselingDateTime, content, expense } =
+      counselingData;
 
     if (userId === undefined || userId < 1) {
       return false;
