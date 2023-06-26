@@ -1,5 +1,5 @@
 
-import { TestExternalPaymentSDK } from "./externalPaymenySDK";
+import { TestExternalPaymentSDK } from "./externalPaymentSDK";
 import { PaymentCardRequestInfo } from "./model";
 import { PaymentInfo } from "./PaymentDatabase";
 import { TestPaymentRepository } from "./paymentRepository";

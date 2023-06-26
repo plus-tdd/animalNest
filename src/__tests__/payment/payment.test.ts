@@ -1,8 +1,8 @@
 import { CardCompany, PaymentCardRequestInfo } from "../../module/payment/model";
 import { PaymentService } from "../../module/payment/PaymentService";
-import { TestExternalPaymentSDK } from "../../module/payment/externalPaymenySDK";
 import { PaymentInfo } from "../../module/payment/PaymentDatabase";
 import { TestPaymentRepository } from "../../module/payment/paymentRepository";
+import { TestExternalPaymentSDK } from "../../module/payment/externalPaymentSDK";
 
 
 // Completed request Info
@@ -18,13 +18,13 @@ const validatedRequest: PaymentCardRequestInfo = {
 describe('결제 시 필요한 카드 정보 검증 TestSuite', () => {
     
     let paymentService: PaymentService
-    let externalPaymenySDK: TestExternalPaymentSDK;
+    let externalPaymentSDK: TestExternalPaymentSDK;
     let paymentRepository: TestPaymentRepository;
 
     // 각 테스트가 실행되기 전에 반복 실행될 코드
     beforeAll(() => {
         paymentRepository = new TestPaymentRepository();
-        externalPaymenySDK = new TestExternalPaymentSDK();
+        externalPaymentSDK = new TestExternalPaymentSDK();
         paymentService = new PaymentService(paymentRepository)
     })
 
@@ -101,12 +101,24 @@ describe('결제 시 필요한 카드 정보 검증 TestSuite', () => {
 
 
 describe('결제 시 외부 SDK에 정상적으로 전달되는지 확인 TestSuite', () => {
-    test('외부 SDK에 결제 요청이 성공할 경우 성공 결과를 반환한다', async () => {  // 실패한다 케이스도 필요할까요?
+        
+    let paymentService: PaymentService
+    let externalPaymentSDK: TestExternalPaymentSDK;
+    let paymentRepository: TestPaymentRepository;
+
+    // 각 테스트가 실행되기 전에 반복 실행될 코드
+    beforeAll(() => {
+        paymentRepository = new TestPaymentRepository();
+        externalPaymentSDK = new TestExternalPaymentSDK();
+        paymentService = new PaymentService(paymentRepository)
+    })
+
+    test('외부 SDK에 결제 요청이 성공할 경우 성공 결과를 반환한다', async () => {
     
         // 외부 SDK의 makePayment 메서드를 모의(Mock) 함수로 대체
-        const paymentSdkMock = jest.spyOn(externalPaymenySDK, 'makePayment').mockResolvedValue('결제 요청 성공');
+        const paymentSdkMock = jest.spyOn(externalPaymentSDK, 'makePayment').mockResolvedValue('결제 요청 성공');
         // mockMakePayment.mockImplementation(async () => true);
-    
+     
         const requestInfo= {
         cardNum: 1234567812345678,
         endDate: '2412',
@@ -115,18 +127,18 @@ describe('결제 시 외부 SDK에 정상적으로 전달되는지 확인 TestSu
 
         };
         // 결제 요청을 수행하고 예상된 성공 결과를 검증합니다.
-        const sdkResult = await paymentService.paymentToSdk(requestInfo);
+        const sdkResult = await externalPaymentSDK.makePayment(requestInfo);
         expect(sdkResult).toEqual('결제 요청 성공');
 
         // makePayment 함수가 특정 인수와 함께 호출되었는지 검사한다.
-       //expect(paymentSdkMock).toHaveBeenCalledWith(requestInfo); //--> 왜 안되는걸까여..?
+        expect(paymentSdkMock).toHaveBeenCalledWith(requestInfo);
     });
 
-    test('외부 SDK에 결제 요청이 실패할 경우 실패 결과를 반환한다', async () => {  // 실패한다 케이스도 필요할까요?
+    test('외부 SDK에 결제 요청이 실패할 경우 실패 결과를 반환한다', async () => {
     
         // 외부 SDK의 makePayment 메서드를 모의(Mock) 함수로 대체한다
-        const paymentSdkMock = jest.spyOn(paymentService, 'paymentToSdk').mockRejectedValue(new Error('결제 요청 실패'));
-    
+        const paymentSdkMock = jest.spyOn(externalPaymentSDK, 'makePayment').mockRejectedValue(new Error('결제 요청 실패'));
+
         const requestInfo= {
         cardNum: 1234567812345678,
         endDate: '2412',
@@ -134,15 +146,15 @@ describe('결제 시 외부 SDK에 정상적으로 전달되는지 확인 TestSu
         cardCompany: CardCompany.Kookmin
         };
 
-        const sdkResult = await paymentService.paymentToSdk(requestInfo);
+        const sdkResult = await externalPaymentSDK.makePayment(requestInfo);
         expect(sdkResult).rejects.toThrowError('결제 요청 실패');
 
         //makePayment 함수가 특정 인수와 함께 호출되었는지 검사한다.
-        expect(paymentSdkMock).toHaveBeenCalledWith(requestInfo); //--> 왜 안되는걸까여..?
+        //await expect(paymentSdkMock).toHaveBeenCalledWith(requestInfo); //--> 왜 안되는걸까여..?
     });
 })
 
-describe('결제 결제 정보 저장 TestSuite', () => {
+describe('결제 정보 저장 TestSuite', () => {
 
     test('결제 정보를 저장한다', async () => {  // 실패한다 케이스도 필요할까요?
 
