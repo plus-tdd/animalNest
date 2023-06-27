@@ -1,41 +1,36 @@
-import {ReservationService, } from "../../reservation/reservation.service"
+import {ReservationService, validateReservationPetInfoType, petInfo, verifyReservationInfo } from "../../reservation/reservation.service"
 import {ReservationPetInfo, ReservationInfo, PetType, Gender, Neuter} from "../../reservation/model"
 
-const reservationPetInfo : ReservationPetInfo = {
-    petType: PetType.Cat,// Dog or Cat
-    name: '초코',
-    birthDay: '2022.12.20',
-    weight: 10,
-    breed: '잡종',
-    gender: Gender.Male, // Male or Female
-    neuter: Neuter.No,// 중성화 yes or no 
-    allergy: '없음', // 입력이 되지 않아도 문제 없도록 추후 변경
-    disease: '무', // 입력이 되지 않아도 문제 없도록 추후 변경
+// Parse the JSON string to a JavaScript object
+const reservationRequest:ReservationInfo = {
+    "time": "13", 
+    "day": "20230820",
+    "petId": 1,
+    "userId": 10,
+    "reservationId": 1
 }
 
-const userId = 1
-
-
-// const reservationInfo: ReservationInfo ={
-//     petId: number; // Dog or Cat
-//     userId: number;
-//     day: string;
-//     time: string;
-//     isAvailable: boolean;
-// }
-
-
+const reservationPetInfo = new petInfo(1, 2, PetType.Cat, 'choco', Gender.Male, Neuter.No, 10, '20221220', '2023115', 10, '잡종')
 
 describe(' 예약등록 TestSuite', () => {
     let reservationService: ReservationService
-    let TestReservationRepository
+    let testReservationRepository
 
     // 매 테스트 시작 전에 도는 함수
-    beforeAll(() => {
-        const reservationRepository = new TestReservationRepository()
-        reservationService = new ReservationService(reservationRepository)
-    })
+    // beforeAll(() => {
+    //     const reservationRepository = new testReservationRepository()
+    //     reservationService = new ReservationService(reservationRepository)
+    // })
 
+    test('애완 동물 예약 정보 검증', () => {
+        expect(validateReservationPetInfoType(reservationPetInfo)).toBe(true);
+    });
 
+    test('애완동물 정보에 빠진 것이 있나 확인', () =>{
+        expect(reservationPetInfo.isEmpty()).toBe(false);
+    });
 
-    })
+    test ('예약 시간 및 날짜 검증', () => {
+        expect(verifyReservationInfo(reservationRequest)).toBe(true)
+    });
+})
