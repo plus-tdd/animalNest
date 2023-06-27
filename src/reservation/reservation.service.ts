@@ -166,7 +166,7 @@ export function refundReservationFee(reservationInfo:ReservationInfo){
     console.log("예약금 환불이 가능합니다.");
     return true;
   } else {
-    console.log('예약 하신 날짜에서 ${differenceInDays}전 이므로 예약금 환불 정책상 예약금 환불이 불가 합니다.');
+    console.log('예약금 환불 정책상 예약금 환불이 불가 합니다.');
     return false;
   }
 }
