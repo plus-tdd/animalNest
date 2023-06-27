@@ -10,7 +10,7 @@ import { Repository } from 'typeorm';
 // NestJS에서 TypeORM 리포지토리를 주입하기 위해 @InjectRepository() 데코레이터를 사용한다.
 // 이를 통해 PaymentService 클래스의 생성자에서 Payment 엔티티에 대한 리포지토리를 주입받을 수 있다.
 import { InjectRepository } from "@nestjs/typeorm"; // InjectRepository 추가
-
+import { PaymentRequestDto } from "./dto/payment.request.dto";
 
 @Injectable() // 비즈니스 로직으로 분리 
 export class PaymentService {
@@ -56,7 +56,7 @@ public async validatePaymentInfo(requestInfo: PaymentCardRequestInfo): Promise<b
 
 
     // 3. 실행 함수 - 결제 저장 함수
-    public async savePaymentInfo(paymentInfo: PaymentInfo): Promise<boolean> {
+    public async savePaymentInfo(paymentInfo: PaymentRequestDto): Promise<boolean> {
     
         const test = this.paymentRepository.save(paymentInfo);
         console.log(test);

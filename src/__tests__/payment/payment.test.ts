@@ -3,6 +3,7 @@ import { PaymentService } from "../../module/payment/payment.service";
 import { PaymentInfo } from "src/module/payment/paymentDatabase";
 import { TestPaymentRepository } from "../../module/payment/payment.repository";
 import { TestExternalPaymentSDK } from "../../module/payment/externalPaymentSDK";
+import { PaymentRequestDto } from "src/module/payment/dto/payment.request.dto";
 
 
 // Completed request Info
@@ -159,8 +160,8 @@ describe('결제 정보 저장 TestSuite', () => {
     test('결제 정보를 저장한다', async () => {  // 실패한다 케이스도 필요할까요?
 
     // 결제 정보 저장
-    const paymentInfo: PaymentInfo = {
-        id: 1,
+    const paymentInfo: PaymentRequestDto = {
+        userId: 1,
         cardNum: 1234567812345678,
         endDate: '2412', // yymm
         cvc: 345,
