@@ -1,13 +1,22 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity()
-export class CounselingEntity {
-  @PrimaryGeneratedColumn()
+@Entity('counseling', { schema: 'animalnest' })
+export class Counseling {
+  @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
-  @Column()
+  @Column('int', { name: 'user_id' })
   userId: number;
 
-  @Column()
+  @Column('int', { name: 'pet_id' })
+  petId: number;
+
+  @Column('datetime', { name: 'counseling_date_time' })
   counselingDateTime: Date;
+
+  @Column('text', { name: 'content', nullable: true })
+  content: string | null;
+
+  @Column('int', { name: 'expense' })
+  expense: number;
 }
