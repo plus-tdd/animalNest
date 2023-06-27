@@ -7,7 +7,7 @@ import { AuthGuard } from './module/auth/auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { PaymentModule } from './module/payment/payment.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Counseling } from './module/counseling/counseling.entity';
+import { Counseling } from './module/counseling/domain/counseling.model';
 import { JwtStrategy } from './module/auth/passport/auth.passport';
 import { Payment } from './module/payment/output/entities/Payment';
 

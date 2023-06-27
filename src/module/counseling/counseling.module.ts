@@ -1,12 +1,14 @@
 import { Module } from '@nestjs/common';
-import { CounselingController } from './counseling.controller';
-import { CounselingService } from './counseling.service';
+import { CounselingController } from './api/counseling.controller';
+import { CounselingService } from './domain/counseling.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Counseling } from './counseling.entity';
+import { Counseling } from './domain/counseling.model';
 import { CounselingMapper } from './counseling.mapper';
+import { CounselingRepositoryImpl } from './data/counseling.db';
 @Module({
   imports: [TypeOrmModule.forFeature([Counseling])],
   controllers: [CounselingController],
-  providers: [CounselingService, CounselingMapper],
+  providers: [CounselingService, CounselingRepositoryImpl],
+  exports: [CounselingController],
 })
 export class CounselingModule {}

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
-import { CreateCounselingDto } from './dto/create-counseling.dto';
-import { Counseling } from './counseling.entity';
+import { CreateCounselingDto } from './api/counseling.dto';
+import { Counseling } from './domain/counseling.model';
 
 @Injectable()
 export class CounselingMapper {

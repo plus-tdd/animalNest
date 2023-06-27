@@ -8,8 +8,8 @@ import {
   Put,
   Body,
 } from '@nestjs/common';
-import { CounselingService } from './counseling.service';
-import { CreateCounselingDto } from './dto/create-counseling.dto';
+import { CounselingService } from '../domain/counseling.service';
+import { CreateCounselingDto } from './counseling.dto';
 
 @Controller('counseling')
 export class CounselingController {
