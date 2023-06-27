@@ -1,5 +1,6 @@
 import {ReservationPetInfo, ReservationInfo, PetType, Gender, Neuter} from "./model"
 import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, createConnection, Connection } from 'typeorm';
+import * as moment from 'moment-timezone'; //npm install moment-timezone --save
 
 
 
@@ -84,38 +85,6 @@ export function validateReservationPetInfoType(reservationPetInfo: any): reserva
 }
 
 
-// 받은 애완동물 정보를 등록 -> mysql호출
-async function savePetReservationData(petReservationData: saveReservation) {
-let connection: Connection;
-
-try {
-  connection = await createConnection({
-    type: "mysql",
-    host: "localhost",
-    port: 3306,
-    username: "root",
-    password: "yourpassword",
-    database: "yourdatabase",
-    entities: [saveReservation],
-    synchronize: true,
-  });
-
-  console.log('Connected to the database.');
-
-  const petReservationRepository = connection.getRepository(saveReservation);
-
-  // Save the pet reservation data
-  await petReservationRepository.save(petReservationData);
-  console.log('Pet reservation data saved.');
-} catch (error) {
-  console.error('Unable to connect to the database or save data:', error);
-} finally {
-  if (connection) {
-    await connection.close();
-  }
-}
-}
-
 // 호출에 성공하면 데이터 등록
 @Entity()
 export class saveReservation {
@@ -140,7 +109,7 @@ export class saveReservation {
 }
 
 
-// 예약시간 (1시간 단위 24시간형식 23:00, 18:00) 및 날짜(20230626)
+// 예약시간 (1시간 단위 24시간형식 예) 23, 18, 07) 및 날짜(20230626)
 export function verifyReservationInfo(reservationInfo: Reservation): boolean {
   if (reservationInfo.day.length === 8) {
     return true;
@@ -168,10 +137,36 @@ export function callMessage(message:string): void{
 
 
 //dP
+function parseDate(dateString: string): Date {
+  const year = parseInt(dateString.slice(0, 4), 10);
+  const month = parseInt(dateString.slice(4, 6), 10) - 1;  // Months are 0-indexed in JS!
+  const day = parseInt(dateString.slice(6, 8), 10);
+
+  return new Date(Date.UTC(year, month, day));
+}
+
+
 // 당일 취소시 예약금 환불 불가 
 // 1일전 취소시 예약금 환불 
 // 취소 완료시 해당 데이터 삭제
-export function cancleReservation(reservationInfo:ReservationInfo){
-    
+export function refundReservationFee(reservationInfo:ReservationInfo){
+  const krCurrentDate = moment().tz('Asia/Seoul').format('YYYY-MM-DD');
 
+
+  const today = krCurrentDate.replace(/-/g, '');
+  const reservationDay = reservationInfo.day;
+
+  const todaydate  = parseDate(today)
+  const reservationdate  = parseDate(reservationDay)
+
+  const differenceInMilliseconds = reservationdate.getTime() - todaydate.getTime();
+  const differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24);
+
+  if (differenceInDays > 1) {
+    console.log("예약금 환불이 가능합니다.");
+    return true;
+  } else {
+    console.log('예약 하신 날짜에서 ${differenceInDays}전 이므로 예약금 환불 정책상 예약금 환불이 불가 합니다.');
+    return false;
+  }
 }
