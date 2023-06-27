@@ -4,7 +4,7 @@ import { AuthGuard } from '../auth/auth.guard';
 import { PaymentInfo } from './paymentDatabase';
 
 //@UseGuards(AuthGuard)
-@Controller('payment')
+@Controller('api/payment')
 export class PaymentController {
 
     constructor(private readonly paymentService: PaymentService) {

@@ -5,7 +5,10 @@ import { PaymentCardRequestInfo } from "./model";
 import { PaymentInfo } from "./paymentDatabase";
 import { TestPaymentRepository } from "./payment.repository";
 import { Payment } from "./output/entities/Payment";
-import { Repository } from 'typeorm';
+//TypeORM에서 제공하는 Repository 클래스를 import하여 데이터베이스 작업에 사용. 이를 통해 Entity와 상호작용할 수 있다
+import { Repository } from 'typeorm'; 
+// NestJS에서 TypeORM 리포지토리를 주입하기 위해 @InjectRepository() 데코레이터를 사용한다.
+// 이를 통해 PaymentService 클래스의 생성자에서 Payment 엔티티에 대한 리포지토리를 주입받을 수 있다.
 import { InjectRepository } from "@nestjs/typeorm"; // InjectRepository 추가
 
 
