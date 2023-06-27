@@ -2,11 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { CreateCounselingDto } from './dto/create-counseling.dto';
 import { Counseling } from './counseling.entity';
 import { CounselingRepositoryImpl } from './counseling.repository';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { CounselingMapper } from './counseling.mapper';
 
 @Injectable()
 export class CounselingService {
   constructor(
-    private readonly counselingRepository: CounselingRepositoryImpl,
+    @InjectRepository(Counseling)
+    private counselingRepository: Repository<Counseling>,
+    private readonly couselingMapper: CounselingMapper,
   ) {}
 
   async getAll(): Promise<Counseling[]> {
@@ -18,12 +23,17 @@ export class CounselingService {
   }
 
   async create(counselingData: CreateCounselingDto): Promise<boolean> {
+    const counseling: Counseling =
+      this.couselingMapper.mapToEntity(counselingData);
+
     const { userId, petId, counselingDateTime, content, expense } =
       counselingData;
 
     if (userId === undefined || userId < 1) {
       return false;
     }
+
+    const createResult = await this.counselingRepository.save(counseling);
 
     return true;
   }

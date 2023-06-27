@@ -26,7 +26,7 @@ describe('CounselingService', () => {
   describe('getOne', () => {});
 
   describe('create', () => {
-    it('로그인한 상태여야 함', async () => {
+    it('userId가 정의되지 않으면 false를 리턴해야 함', async () => {
       const userIdIsUndefined: CreateCounselingDto = {
         userId: undefined,
         petId: 1,
@@ -39,7 +39,7 @@ describe('CounselingService', () => {
       expect(undefinedUserIdResult).toEqual(false);
     });
 
-    it('userId는 양의 정수여야 함', async () => {
+    it('userId는 양수가 아니면 false를 리턴해야 함', async () => {
       const userIdIsMinus: CreateCounselingDto = {
         userId: -4,
         petId: 1,
@@ -50,6 +50,21 @@ describe('CounselingService', () => {
 
       const minusUserIdResult = await service.create(userIdIsMinus);
       expect(minusUserIdResult).toEqual(false);
+    });
+
+    it('진료 내역의 갯수가 1증가해야 함', async () => {
+      const beforeLength = (await service.getAll()).length;
+      const createData: CreateCounselingDto = {
+        userId: 4,
+        petId: 1,
+        counselingDateTime: new Date('2023-06-25 15:30:00'),
+        content: '영양실조',
+        expense: 50000,
+      };
+      const createResult = await service.create(createData);
+      const afterLength = (await service.getAll()).length;
+
+      expect(afterLength - beforeLength).toEqual(1);
     });
   });
 
