@@ -1,9 +1,9 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
-import { PaymentService } from './paymentService';
+import { PaymentService } from './payment.service';
 import { AuthGuard } from '../auth/auth.guard';
 import { PaymentInfo } from './paymentDatabase';
 
-@UseGuards(AuthGuard)
+//@UseGuards(AuthGuard)
 @Controller('payment')
 export class PaymentController {
 

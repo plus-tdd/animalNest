@@ -4,22 +4,28 @@ import { TestExternalPaymentSDK } from "./externalPaymentSDK";
 import { PaymentCardRequestInfo } from "./model";
 import { PaymentInfo } from "./paymentDatabase";
 import { TestPaymentRepository } from "./payment.repository";
+import { Payment } from "./output/entities/Payment";
+import { Repository } from 'typeorm';
+import { InjectRepository } from "@nestjs/typeorm"; // InjectRepository 추가
+
 
 @Injectable() // 비즈니스 로직으로 분리 
 export class PaymentService {
+
+   constructor (
+        @InjectRepository(Payment) // InjectRepository를 사용하여 주입
+        private paymentRepository: Repository<Payment>) {}
+
 
     async getHello() {
         return "hello~~~~~";
     }
 
 
-    // 서비스단에서 만든 결제 요청 정보 검증 함수, 실제 결제 함수를 각각 합쳐서 컨트롤러단에서 같이 사용하면 될까여?
-
-    private paymentRepository: TestPaymentRepository;
-
-    constructor(paymentRepository: TestPaymentRepository) {
-      this.paymentRepository = paymentRepository;
-    }
+    // // 서비스단에서 만든 결제 요청 정보 검증 함수, 실제 결제 함수를 각각 합쳐서 컨트롤러단에서 같이 사용하면 될까여?
+    // constructor(paymentRepository: TestPaymentRepository) {
+    //   this.paymentRepository = paymentRepository;
+    // }
 
     // 1. 실행 함수 - 결제 정보 검증 함수
 public async validatePaymentInfo(requestInfo: PaymentCardRequestInfo): Promise<boolean> {
@@ -49,7 +55,8 @@ public async validatePaymentInfo(requestInfo: PaymentCardRequestInfo): Promise<b
     // 3. 실행 함수 - 결제 저장 함수
     public async savePaymentInfo(paymentInfo: PaymentInfo): Promise<boolean> {
     
-        this.paymentRepository.savePaymentInfo(paymentInfo);
+        const test = this.paymentRepository.save(paymentInfo);
+        console.log(test);
         return true;
     }
 

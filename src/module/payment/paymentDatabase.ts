@@ -6,7 +6,7 @@ export interface PaymentInfo {
     endDate: string;
     cvc: number;
     cardCompany: CardCompany.Kookmin
-    amount: number;
+    price: number;
     // ...기타 필요한 결제 정보 컬럼들...
   }
   

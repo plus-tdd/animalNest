@@ -1,7 +1,7 @@
 import { CardCompany, PaymentCardRequestInfo } from "../../module/payment/model";
-import { PaymentService } from "../../module/payment/paymentService";
+import { PaymentService } from "../../module/payment/payment.service";
 import { PaymentInfo } from "src/module/payment/paymentDatabase";
-import { TestPaymentRepository } from "../../module/payment/paymentRepository";
+import { TestPaymentRepository } from "../../module/payment/payment.repository";
 import { TestExternalPaymentSDK } from "../../module/payment/externalPaymentSDK";
 
 
@@ -25,7 +25,7 @@ describe('결제 시 필요한 카드 정보 검증 TestSuite', () => {
     beforeAll(() => {
         paymentRepository = new TestPaymentRepository();
         externalPaymentSDK = new TestExternalPaymentSDK();
-        paymentService = new PaymentService(paymentRepository)
+        //paymentService = new PaymentService(paymentRepository)
     })
 
     afterEach(() => {
@@ -102,16 +102,16 @@ describe('결제 시 필요한 카드 정보 검증 TestSuite', () => {
 
 describe('결제 시 외부 SDK에 정상적으로 전달되는지 확인 TestSuite', () => {
         
-    let paymentService: PaymentService
-    let externalPaymentSDK: TestExternalPaymentSDK;
-    let paymentRepository: TestPaymentRepository;
+    // let paymentService: PaymentService
+    // let externalPaymentSDK: TestExternalPaymentSDK;
+    // let paymentRepository: TestPaymentRepository;
 
-    // 각 테스트가 실행되기 전에 반복 실행될 코드
-    beforeAll(() => {
-        paymentRepository = new TestPaymentRepository();
-        externalPaymentSDK = new TestExternalPaymentSDK();
-        paymentService = new PaymentService(paymentRepository)
-    })
+    // // 각 테스트가 실행되기 전에 반복 실행될 코드
+    // beforeAll(() => {
+    //     paymentRepository = new TestPaymentRepository();
+    //     externalPaymentSDK = new TestExternalPaymentSDK();
+    //     paymentService = new PaymentService(paymentRepository)
+    // })
 
     test('외부 SDK에 결제 요청이 성공할 경우 성공 결과를 반환한다', async () => {
     
@@ -165,7 +165,7 @@ describe('결제 정보 저장 TestSuite', () => {
         endDate: '2412', // yymm
         cvc: 345,
         cardCompany: CardCompany.Kookmin,
-        amount: 10000 // 만원이라고 가정
+        price: 10000 // 만원이라고 가정
     }
         const savePaymentInfo = await paymentService.savePaymentInfo(paymentInfo);
         expect(savePaymentInfo).toEqual(true);
