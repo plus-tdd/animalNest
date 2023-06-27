@@ -1,10 +1,17 @@
 
+import { Injectable } from "@nestjs/common";
 import { TestExternalPaymentSDK } from "./externalPaymentSDK";
 import { PaymentCardRequestInfo } from "./model";
 import { PaymentInfo } from "./paymentDatabase";
-import { TestPaymentRepository } from "./paymentRepository";
+import { TestPaymentRepository } from "./payment.repository";
 
+@Injectable() // 비즈니스 로직으로 분리 
 export class PaymentService {
+
+    async getHello() {
+        return "hello~~~~~";
+    }
+
 
     // 서비스단에서 만든 결제 요청 정보 검증 함수, 실제 결제 함수를 각각 합쳐서 컨트롤러단에서 같이 사용하면 될까여?
 
