@@ -11,6 +11,9 @@ import { Counseling } from './module/counseling/domain/counseling.model';
 import { JwtStrategy } from './module/auth/passport/auth.passport';
 import { Payment } from './module/payment/output/entities/Payment';
 
+import { AuthController } from './auth/auth.controller';
+import { UserService } from './module/user/user.service';
+import { UserModule } from './module/user/user.module';
 
 
 // Module 설명 : express에서는 router위주의 설계였다면, nest에서는 module위주의 설계를 한다
@@ -32,14 +35,20 @@ import { Payment } from './module/payment/output/entities/Payment';
     CounselingModule,
     AuthModule,
     PaymentModule,
+    UserModule
   ],
-  controllers: [AppController],
+  controllers: [AppController,AuthController],
   providers: [
     AppService,
     // {
     //   provide: APP_GUARD,
     //   useClass: AuthGuard, // AuthGuard 를 전역 Guard 로 선언
     // },
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard, // AuthGuard 를 전역 Guard 로 선언
+    },
+    UserService,
   ],
     // {
     //   provide: APP_GUARD,
