@@ -1,18 +1,34 @@
 
-import { TestExternalPaymentSDK } from "./externalPaymenySDK";
+import { Injectable } from "@nestjs/common";
+import { TestExternalPaymentSDK } from "./externalPaymentSDK";
 import { PaymentCardRequestInfo } from "./model";
-import { PaymentInfo } from "./PaymentDatabase";
-import { TestPaymentRepository } from "./paymentRepository";
+import { PaymentInfo } from "./paymentDatabase";
+import { TestPaymentRepository } from "./payment.repository";
+import { Payment } from "./output/entities/Payment";
+//TypeORM에서 제공하는 Repository 클래스를 import하여 데이터베이스 작업에 사용. 이를 통해 Entity와 상호작용할 수 있다
+import { Repository } from 'typeorm'; 
+// NestJS에서 TypeORM 리포지토리를 주입하기 위해 @InjectRepository() 데코레이터를 사용한다.
+// 이를 통해 PaymentService 클래스의 생성자에서 Payment 엔티티에 대한 리포지토리를 주입받을 수 있다.
+import { InjectRepository } from "@nestjs/typeorm"; // InjectRepository 추가
+import { PaymentRequestDto } from "./dto/payment.request.dto";
 
+@Injectable() // 비즈니스 로직으로 분리 
 export class PaymentService {
 
-    // 서비스단에서 만든 결제 요청 정보 검증 함수, 실제 결제 함수를 각각 합쳐서 컨트롤러단에서 같이 사용하면 될까여?
+   constructor (
+        @InjectRepository(Payment) // InjectRepository를 사용하여 주입
+        private paymentRepository: Repository<Payment>) {}
 
-    private paymentRepository: TestPaymentRepository;
 
-    constructor(paymentRepository: TestPaymentRepository) {
-      this.paymentRepository = paymentRepository;
+    async getHello() {
+        return "hello~~~~~";
     }
+
+
+    // // 서비스단에서 만든 결제 요청 정보 검증 함수, 실제 결제 함수를 각각 합쳐서 컨트롤러단에서 같이 사용하면 될까여?
+    // constructor(paymentRepository: TestPaymentRepository) {
+    //   this.paymentRepository = paymentRepository;
+    // }
 
     // 1. 실행 함수 - 결제 정보 검증 함수
 public async validatePaymentInfo(requestInfo: PaymentCardRequestInfo): Promise<boolean> {
@@ -40,9 +56,10 @@ public async validatePaymentInfo(requestInfo: PaymentCardRequestInfo): Promise<b
 
 
     // 3. 실행 함수 - 결제 저장 함수
-    public async savePaymentInfo(paymentInfo: PaymentInfo): Promise<boolean> {
+    public async savePaymentInfo(paymentInfo: PaymentRequestDto): Promise<boolean> {
     
-        this.paymentRepository.savePaymentInfo(paymentInfo);
+        const test = this.paymentRepository.save(paymentInfo);
+        console.log(test);
         return true;
     }
 
