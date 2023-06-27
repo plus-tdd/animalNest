@@ -7,36 +7,39 @@ import {
   Patch,
   Put,
   Body,
+  Query,
 } from '@nestjs/common';
 import { CounselingService } from '../domain/counseling.service';
 import { CreateCounselingDto } from './counseling.dto';
+import { CounselingInfo } from '../domain/counseling.model';
+import { start } from 'repl';
 
 @Controller('counseling')
 export class CounselingController {
   constructor(private readonly counselingService: CounselingService) {}
 
   @Get()
-  getAll() {
-    return this.counselingService.getAll();
-  }
-
-  @Get(':id')
-  getOne(@Param('id') counselingId: number) {
-    return this.counselingService.getOne(counselingId);
+  getCounselingHistories(
+    @Query('start') startDate: Date,
+    @Query('end') endDate: Date,
+  ) {
+    return this.counselingService.getCounselingHistories(startDate, endDate);
   }
 
   @Post()
-  create(@Body() counselingData: CreateCounselingDto) {
-    return this.counselingService.create(counselingData);
-  }
+  registerCounseling(@Body() counselingData: CreateCounselingDto) {
+    const { userId, petId, doctorId, counselingDateTime, content, expense } =
+      counselingData;
 
-  @Delete(':id')
-  remove(@Param('id') counselingId: number) {
-    return this.counselingService.deleteOne(counselingId);
-  }
+    const counselingInfo: CounselingInfo = {
+      doctorId: doctorId,
+      userId: userId,
+      petId: petId,
+      dateTime: counselingDateTime,
+      expense: expense,
+      content: content,
+    };
 
-  @Patch(':id')
-  patch(@Param('id') counselingId: number, @Body() updateData) {
-    return this.counselingService.update(counselingId, updateData);
+    return this.counselingService.registerCounseling(counselingInfo);
   }
 }
