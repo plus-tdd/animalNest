@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthGuard } from '../../module/auth/auth.guard';
-import { JwtStrategy } from '../../module/auth/passport/auth.passport';
+import { JwtStrategy } from '../../module/auth/passport/jwt.passport';
+import { ExecutionContext } from '@nestjs/common'
 
 // /* 준비된 성공 요청값 시작 */
 // // 성공적인 최초 토큰 요청값
@@ -37,21 +38,27 @@ const noneAccessToken : string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ.eyJ1c2VySW
 
 describe('요청시 받은 accessToken을 복호화', () => {
   let authGuard : AuthGuard;
-  let passport : JwtStrategy;
+  // let passport : JwtStrategy;
 
   // 각 테스트가 실행되기 전에 반복 실행될 코드
   beforeAll(() => {
-    passport = new JwtStrategy();
-    authGuard = new AuthGuard(passport);
+    // passport = new JwtStrategy();
+    authGuard = new AuthGuard();
   })
 
   test('accessToken 이 정상적이라면 true를 반환한다. ', async () => {
-    const requestValidAccessToken = {
+    const requestValidAccessToken : ExecutionContext = {
       headers: {
         Authorization: validAccessToken,
       },
     };
-    const validAccessTokenResult = await authGuard.testCanActivate(requestValidAccessToken);
+
+    const mockContext: ExecutionContext = {
+      switchToHttp: jest.fn().mockReturnThis(),
+      getRequest: jest.fn().mockReturnValue({ isAuthenticated: true, user: { jwtToken: validAccessToken } }),
+    };
+
+    const validAccessTokenResult = await authGuard.canActivate(mockContext);
     expect(validAccessTokenResult).toEqual(true)
   })
 
@@ -63,7 +70,7 @@ describe('요청시 받은 accessToken을 복호화', () => {
       },
     };
 
-    const decodeAccessTokenResult = await authGuard.testCanActivate(requestEmptyAccessToken);
+    const decodeAccessTokenResult = await authGuard.canActivate(requestEmptyAccessToken);
     expect(decodeAccessTokenResult).toEqual(false)
   })
 
@@ -75,7 +82,7 @@ describe('요청시 받은 accessToken을 복호화', () => {
       },
     };
 
-    const decodeAccessTokenResult = await authGuard.testCanActivate(requestEmptyAccessToken);
+    const decodeAccessTokenResult = await authGuard.canActivate(requestEmptyAccessToken);
     expect(decodeAccessTokenResult).toEqual(false)
 
 
@@ -86,7 +93,7 @@ describe('요청시 받은 accessToken을 복호화', () => {
       },
     }
 
-    const decodeInvalidSecretKeyAccessTokenResult = await authGuard.testCanActivate(requestInvalidSecretKeyAccessToken);
+    const decodeInvalidSecretKeyAccessTokenResult = await authGuard.canActivate(requestInvalidSecretKeyAccessToken);
     expect(decodeInvalidSecretKeyAccessTokenResult).toEqual(false)
 
   })
@@ -99,7 +106,7 @@ describe('요청시 받은 accessToken을 복호화', () => {
       },
     }
 
-    const decodeInvalidPayloadAccessTokenResult = await authGuard.testCanActivate(requestInvalidPayloadAccessToken);
+    const decodeInvalidPayloadAccessTokenResult = await authGuard.canActivate(requestInvalidPayloadAccessToken);
     expect(decodeInvalidPayloadAccessTokenResult).toEqual(false)
   })
 })
@@ -131,9 +138,9 @@ describe('요청시 받은 accessToken을 복호화', () => {
 //       returnMessage : 'Invalid value userId'
 //     }
 //
-//     const minusUserIdResult = authGuard.testCanActivate(requestMinusAuthInfo);
-//     const doublesUserIdResult = authGuard.testCanActivate(requestDoubleAuthInfo);
-//     const minusDoublesUserIdResult = authGuard.testCanActivate(requestMinusDoubleAuthInfo);
+//     const minusUserIdResult = authGuard.canActivate(requestMinusAuthInfo);
+//     const doublesUserIdResult = authGuard.canActivate(requestDoubleAuthInfo);
+//     const minusDoublesUserIdResult = authGuard.canActivate(requestMinusDoubleAuthInfo);
 //     expect(minusUserIdResult).toEqual(responseServiceFailValue)
 //     expect(doublesUserIdResult).toEqual(responseServiceFailValue)
 //     expect(minusDoublesUserIdResult).toEqual(responseServiceFailValue)
