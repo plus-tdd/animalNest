@@ -6,16 +6,20 @@ import { AuthModule } from './module/auth/auth.module';
 import { AuthGuard } from './module/auth/auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { PaymentModule } from './module/payment/payment.module';
+import { AuthController } from './auth/auth.controller';
+import { UserService } from './module/user/user.service';
+import { UserModule } from './module/user/user.module';
 
 @Module({
-  imports: [CounselingModule, AuthModule, PaymentModule],
-  controllers: [AppController],
+  imports: [CounselingModule, AuthModule, PaymentModule, UserModule],
+  controllers: [AppController, AuthController],
   providers: [
     AppService,
     {
       provide: APP_GUARD,
       useClass: AuthGuard, // AuthGuard 를 전역 Guard 로 선언
     },
+    UserService,
   ],
 })
 export class AppModule {}
