@@ -1,12 +1,16 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "../../../user/user.entity";
 
-@Entity("payment", { schema: "animalnest" })
+@Entity("payment", { schema: "animalNest" })
 export class Payment {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id: number;
 
-  @Column("int", { name: "user_id" })
+  @Column("int", { name: "userId" })
   userId: number;
+  @ManyToOne( () => User, (User) => User.Payment )
+  @JoinColumn([{name: 'userId', referencedColumnName: 'id'}])
+  User: User;
 
   @Column("int", { name: "card_num" })
   cardNum: number;
