@@ -18,6 +18,7 @@ import { start } from 'repl';
 export class CounselingController {
   constructor(private readonly counselingService: CounselingService) {}
 
+  //진료 내역 조회
   @Get()
   getCounselingHistories(
     @Query('start') startDate: Date,
@@ -26,6 +27,7 @@ export class CounselingController {
     return this.counselingService.getCounselingHistories(startDate, endDate);
   }
 
+  //진료 등록 (예약)
   @Post()
   registerCounseling(@Body() counselingData: CreateCounselingDto) {
     const { userId, petId, doctorId, counselingDateTime, content, expense } =
@@ -41,5 +43,17 @@ export class CounselingController {
     };
 
     return this.counselingService.registerCounseling(counselingInfo);
+  }
+
+  //진료 상세 조회
+  @Get('id')
+  getCounseling(@Param('id') counselingId: string) {
+    return this.counselingService.getCounseling(counselingId);
+  }
+
+  //진료 예약 삭제
+  @Delete(':id')
+  deleteCounseling(@Param('id') counselingId: string) {
+    return this.counselingService.deleteCounseling(counselingId);
   }
 }

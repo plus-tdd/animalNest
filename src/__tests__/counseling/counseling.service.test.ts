@@ -1,26 +1,40 @@
 import { CounselingService } from '../../module/counseling/domain/counseling.service';
 import { CounselingRepository } from 'src/module/counseling/domain/counseling.repository';
-import { Counseling, CounselingInfo } from 'src/module/counseling/domain/counseling.model';
+import {
+  Counseling,
+  CounselingInfo,
+} from 'src/module/counseling/domain/counseling.model';
 
 // 서비스 : 순수한 비즈니스 로직 덩어리 ( nest.js 랑도 상관없고 db 랑도 상관없음. )
 // -> 그래서 서비스 UnitTest 에 대해서는 nestjs/testing 의 TestingModule 을 사용하지 않는 게 더 좋은 구조라고 생각함. - by 허재
 class TestCounselingRepository implements CounselingRepository {
   async registerCounselingHistory(info: CounselingInfo): Promise<Counseling> {
-      return {
-          id: 1,
-          hospitalName: '병원',
-          doctorName: '의사',
-          userName: '박세진',
-          petName: '시고르잡종',
-          dateTime: new Date(),
-          expense: 10000,
-          content: '우아 !',
-      } 
+    return {
+      id: 1,
+      hospitalName: '병원',
+      doctorName: '의사',
+      userName: '박세진',
+      petName: '시고르잡종',
+      dateTime: new Date(),
+      expense: 10000,
+      content: '우아 !',
+    };
   }
-  async getConselingHistories(startDate: Date, endDate: Date): Promise<Counseling[]> {
-      return [
-          // 가짜 Counseling 오브젝트 리스트
-      ]
+  async getConselingHistories(
+    startDate: Date,
+    endDate: Date,
+  ): Promise<Counseling[]> {
+    return [
+      // 가짜 Counseling 오브젝트 리스트
+    ];
+  }
+
+  getOneCounseling(counselingId: string): Promise<Counseling> {
+    return;
+  }
+
+  deleteOneCounseling(counselingId: string): Promise<boolean> {
+    return;
   }
 }
 // 그러면 TestingModule 은 언제 쓰나요 ?
@@ -31,8 +45,8 @@ describe('CounselingService', () => {
   let service: CounselingService;
 
   beforeEach(async () => {
-    const repository: CounselingRepository = new TestCounselingRepository()
-    service = new CounselingService(repository)
+    const repository: CounselingRepository = new TestCounselingRepository();
+    service = new CounselingService(repository);
   });
 
   it('should be defined', () => {
@@ -44,15 +58,15 @@ describe('CounselingService', () => {
       doctorId: 0,
       userId: 0,
       petId: 0,
-      dateTime: new Date("2023-06-27"),
+      dateTime: new Date('2023-06-27'),
       expense: 10000,
-      content: "우아 !",
-    }
-    const resultCounsel = await service.registerCounseling(successfulInfo)
-    expect(resultCounsel).not.toBeNull()
-    console.log(resultCounsel)
-    expect(resultCounsel.expense).toEqual(10000)
-  })
+      content: '우아 !',
+    };
+    const resultCounsel = await service.registerCounseling(successfulInfo);
+    expect(resultCounsel).not.toBeNull();
+    console.log(resultCounsel);
+    expect(resultCounsel.expense).toEqual(10000);
+  });
 
   // describe('getAll', () => {
   //   it('배열을 반환해야함', async () => {

@@ -10,30 +10,46 @@ import { CounselingRepositoryImpl } from '../data/counseling.db';
 
 @Injectable()
 export class CounselingService {
-  constructor(
-    private readonly repository: CounselingRepository,
-  ) {}
-  
+  constructor(private readonly repository: CounselingRepository) {}
+
+  //진료 등록
   async registerCounseling(info: CounselingInfo): Promise<Counseling> {
-    this.validateRequestInfo(info)
-    const result = await this.repository.registerCounselingHistory(info)
-    return result
+    this.validateRequestInfo(info);
+    const result = await this.repository.registerCounselingHistory(info);
+    return result;
   }
 
+  //진료 내역 조회
+  async getCounselingHistories(
+    startDate: Date,
+    endDate: Date,
+  ): Promise<Counseling[]> {
+    return [];
+  }
+
+  //진료 상세 조회
+  async getCounseling(counselingId: string): Promise<Counseling> {
+    const result = await this.repository.getOneCounseling(counselingId);
+    return result;
+  }
+
+  //진료 삭제
+  async deleteCounseling(counselingId: string): Promise<boolean> {
+    const result = await this.repository.deleteOneCounseling(counselingId);
+    return result;
+  }
+
+  //진료 유효성 검증
   private validateRequestInfo(info: CounselingInfo) {
-    const { dateTime, expense, content } = info
+    const { dateTime, expense, content } = info;
     // DB를 찔러서 검증해야하는 것 : doctor, pet 의 존재여부
     // Repository ( DB 전문가 ) 한테 위임
     // 1. 등록날짜는 현재 시각보단 크면 안됨
-    if (dateTime.getTime() > Date.now()) throw new InvalidCounselingInfoError("날짜")
+    if (dateTime.getTime() > Date.now())
+      throw new InvalidCounselingInfoError('날짜');
     // 2. 컨텐츠는 1000자 이내여야 함.
-    if (content.length > 1000) throw new InvalidCounselingInfoError("상담내용")
+    if (content.length > 1000) throw new InvalidCounselingInfoError('상담내용');
     // 3. 비용은 양수여야 함.
-    if (expense <= 0) throw new InvalidCounselingInfoError("비용")
+    if (expense <= 0) throw new InvalidCounselingInfoError('비용');
   }
-
-  async getCounselingHistories(startDate: Date, endDate: Date): Promise<Counseling[]> {
-    return []
-  }
-
 }

@@ -8,7 +8,11 @@ import { Counseling, CounselingInfo } from './counseling.model';
 */
 export interface CounselingRepository {
   // 진료내역을 저장하고, 성공했는지 반환함
-  registerCounselingHistory(info: CounselingInfo): Promise<Counseling>
+  registerCounselingHistory(info: CounselingInfo): Promise<Counseling>;
   // start ~ end 사이의 히스토리를 반환함
-  getConselingHistories(startDate: Date, endDate: Date): Promise<Counseling[]>
+  getConselingHistories(startDate: Date, endDate: Date): Promise<Counseling[]>;
+
+  getOneCounseling(counselingId: string): Promise<Counseling>;
+
+  deleteOneCounseling(counselingId: string): Promise<boolean>;
 }
