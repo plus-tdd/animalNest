@@ -1,4 +1,4 @@
-import { PaymentCardRequestInfo } from "./model";
+import { PaymentCardRequestInfo } from "./payment.model";
 
 //외부 SDK를 가정한 모의 객체(Mock Object)
 export interface ExternalPaymentSDK {

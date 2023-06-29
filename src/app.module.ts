@@ -9,7 +9,7 @@ import { PaymentModule } from './module/payment/payment.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Counseling } from './module/counseling/domain/counseling.model';
 import { JwtStrategy } from './module/auth/passport/auth.passport';
-import { Payment } from './module/payment/output/entities/Payment';
+import { Payment } from './module/payment/output/entities/payment.entity';
 
 import { AuthController } from './auth/auth.controller';
 import { UserService } from './module/user/user.service';

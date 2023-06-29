@@ -1,26 +1,38 @@
-import { PaymentInfo } from "./paymentDatabase";
+import { PaymentInfo } from "./payment.model";
+import { CardCompany } from "./payment.model";
+
 
 export interface PaymentRepository {
-    savePaymentInfo(paymentInfo: PaymentInfo): Promise<void>;
+    savePayment(paymentInfo: PaymentInfo): Promise<PaymentInfo>
+    refundPayment(paymentInfo: PaymentInfo): Promise<PaymentInfo>
   }
 
 // 테스트용
 export class TestPaymentRepository implements PaymentRepository {
   private paymentInfos: PaymentInfo[] = [];
 
-  async savePaymentInfo(paymentInfo: PaymentInfo): Promise<void> {
+  async savePayment(paymentInfo: PaymentInfo): Promise<PaymentInfo> {
     this.paymentInfos.push(paymentInfo);
+
+    return {
+      userId : 1,
+      cardNum: 1234567812345678,
+      endDate: '2412',
+      cvc: 123,
+      cardCompany: CardCompany.Hyundai,
+      price : 10000
+    }
   }
 
-  getPaymentInfos(): PaymentInfo[] {
-    return this.paymentInfos;
-  }
-}
-  
- // 실제 db 연결용 
-export class MysqlPaymentRepository implements PaymentRepository {
-  async savePaymentInfo(paymentInfo: PaymentInfo): Promise<void> {
-    // 데이터베이스에 결제 정보를 저장하는 로직 구현
-    // 예: database.save(paymentInfo);
+  async refundPayment(paymentInfo: PaymentInfo): Promise<PaymentInfo> {
+
+    return {
+      userId : 1,
+      cardNum: 1234567812345678,
+      endDate: '2412',
+      cvc: 123,
+      cardCompany: CardCompany.Hyundai,
+      price : 10000
+    }
   }
 }

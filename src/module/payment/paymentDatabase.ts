@@ -1,4 +1,4 @@
-import { CardCompany } from "./model";
+import { CardCompany } from "./payment.model";
 
 export interface PaymentInfo {
     id: number;
@@ -9,6 +9,7 @@ export interface PaymentInfo {
     price: number;
     // ...기타 필요한 결제 정보 컬럼들...
   }
+
   
   export class PaymentDatabase {
     private paymentInfos: PaymentInfo[] = [];
