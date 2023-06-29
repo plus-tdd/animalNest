@@ -31,7 +31,11 @@ export class CounselingService {
     startDate: Date,
     endDate: Date,
   ): Promise<Counseling[]> {
-    return [];
+    const result = await this.repository.getConselingHistories(
+      startDate,
+      endDate,
+    );
+    return result;
   }
 
   //진료 상세 조회
