@@ -84,4 +84,15 @@ export class PaymentRepositoryImpl implements PaymentRepository {
         return refundPaymentDomain;
 
     }
+
+    async findUserPhoneNumber(userId: number): Promise<number> {
+        // user가 db에 존재하는지??
+        const user = await this.UserDB.findOne({
+            where: { id: userId },
+        });
+
+        if (user === null) throw new InvalidPaymentInfoError('유저');
+
+        return user.phoneNumber;
+    }
 }

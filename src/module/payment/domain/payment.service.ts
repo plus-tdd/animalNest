@@ -24,10 +24,12 @@ export class PaymentService {
         this.paymentToSdk(paymentInfo);
 
         // 결제 완료 알람 붙여야함
+
+        const userPhoneNumber = await this.repository.findUserPhoneNumber(paymentInfo.userId);
         let message = '결제가 완료되었습니다'
 
         const alarmData: AlarmData = {
-            recipient: paymentInfo.userId,
+            recipient: userPhoneNumber,
             message: message
         }
 
@@ -45,10 +47,12 @@ export class PaymentService {
         this.paymentToSdkForRefund(savePaymentInfo);
 
         // 결제 취소 알람 붙여야함
+        const userPhoneNumber = await this.repository.findUserPhoneNumber(refundInfo.userId);
+
         let message = '결제가 취소되었습니다'
         
         const alarmData: AlarmData = {
-            recipient: refundInfo.userId,
+            recipient: userPhoneNumber,
             message: message
         }
 

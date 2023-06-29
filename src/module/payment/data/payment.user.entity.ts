@@ -6,4 +6,6 @@ export class PaymentUserEntity {
     @PrimaryGeneratedColumn({ type: "int", name: "id" })
     id: number;
 
+    @Column("int", { name: "phone_number" })
+    phoneNumber: number;
 }

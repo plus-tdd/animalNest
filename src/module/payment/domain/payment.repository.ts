@@ -6,6 +6,7 @@ import { RefundPaymentInfo, PaymentInfoForRefund } from "./payment.model";
 export interface PaymentRepository {
     savePayment(paymentInfo: PaymentInfo): Promise<Payment>
     refundPayment(paymentInfo: RefundPaymentInfo): Promise<PaymentInfoForRefund>
+    findUserPhoneNumber(userId: number): Promise<number>
   }
 
 // 테스트용
@@ -36,5 +37,8 @@ export class TestPaymentRepository implements PaymentRepository {
       cardCompany: CardCompany.Hyundai,
       price : 10000
     }
+  }
+  async findUserPhoneNumber(userId: number): Promise<number> {
+    return 12341234;
   }
 }
