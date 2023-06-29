@@ -42,4 +42,7 @@ export class PaymentEntity {
 
   @Column("int", { name: "price" })
   price: number;
+  
+  @Column("boolean", { name: "is_refund" })
+  isRefund: boolean;
 }

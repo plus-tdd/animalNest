@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { PaymentController } from './payment.controller';
-import { TestPaymentRepository } from './payment.repository'; // PaymentRepository import 추가
+import { PaymentController } from './api/payment.controller';
+import { TestPaymentRepository } from './domain/payment.repository'; // PaymentRepository import 추가
 //import { JwtStrategy } from '../auth/passport/auth.passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { PaymentEntity } from './output/entities/payment.entity';
-import { PaymentService } from './payment.service';
+import { PaymentEntity } from './data/payment.entity';
+import { PaymentService } from './domain/payment.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([PaymentEntity])],

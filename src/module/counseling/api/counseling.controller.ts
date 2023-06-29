@@ -7,36 +7,59 @@ import {
   Patch,
   Put,
   Body,
+  Query,
 } from '@nestjs/common';
 import { CounselingService } from '../domain/counseling.service';
 import { CreateCounselingDto } from './counseling.dto';
+import { CounselingInfo } from '../domain/counseling.model';
+import { start } from 'repl';
 
 @Controller('counseling')
 export class CounselingController {
   constructor(private readonly counselingService: CounselingService) {}
 
-  @Get()
-  getAll() {
-    return this.counselingService.getAll();
+  //예약 스케쥴표 조회
+  @Get('schedule')
+  getSchedules() {
+    return this.counselingService.getSchedules();
   }
 
-  @Get(':id')
-  getOne(@Param('id') counselingId: number) {
-    return this.counselingService.getOne(counselingId);
-  }
-
+  //진료 등록 (예약)
   @Post()
-  create(@Body() counselingData: CreateCounselingDto) {
-    return this.counselingService.create(counselingData);
+  registerCounseling(@Body() counselingData: CreateCounselingDto) {
+    const { userId, petId, doctorId, counselingDateTime, content, expense } =
+      counselingData;
+
+    const counselingInfo: CounselingInfo = {
+      doctorId: doctorId,
+      userId: userId,
+      petId: petId,
+      dateTime: counselingDateTime,
+      expense: expense,
+      content: content,
+    };
+
+    return this.counselingService.registerCounseling(counselingInfo);
   }
 
+  //진료 내역 조회
+  @Get('history')
+  getCounselingHistories(
+    @Query('start') startDate: Date,
+    @Query('end') endDate: Date,
+  ) {
+    return this.counselingService.getCounselingHistories(startDate, endDate);
+  }
+
+  //진료 상세 조회
+  @Get('id')
+  getCounseling(@Param('id') counselingId: string) {
+    return this.counselingService.getCounseling(counselingId);
+  }
+
+  //진료 예약 삭제
   @Delete(':id')
-  remove(@Param('id') counselingId: number) {
-    return this.counselingService.deleteOne(counselingId);
-  }
-
-  @Patch(':id')
-  patch(@Param('id') counselingId: number, @Body() updateData) {
-    return this.counselingService.update(counselingId, updateData);
+  deleteCounseling(@Param('id') counselingId: string) {
+    return this.counselingService.deleteCounseling(counselingId);
   }
 }

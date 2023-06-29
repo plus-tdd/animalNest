@@ -1,4 +1,4 @@
-import { CardCompany } from "../payment.model";
+import { CardCompany } from "../domain/payment.model";
 import { ApiProperty} from '@nestjs/swagger'
 
 

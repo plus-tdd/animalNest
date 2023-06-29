@@ -20,8 +20,8 @@ export class AlarmService {
     }
   }
   
-  interface AlarmData {
-    recipient: string;
+  export type AlarmData = { 
+    recipient: number;
     message: string;
   }
 
