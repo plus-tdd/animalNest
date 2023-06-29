@@ -4,10 +4,29 @@ import {
   Counseling,
   CounselingInfo,
 } from 'src/module/counseling/domain/counseling.model';
+import { Schedule } from './../../module/value-data/schedule.db';
 
 // 서비스 : 순수한 비즈니스 로직 덩어리 ( nest.js 랑도 상관없고 db 랑도 상관없음. )
 // -> 그래서 서비스 UnitTest 에 대해서는 nestjs/testing 의 TestingModule 을 사용하지 않는 게 더 좋은 구조라고 생각함. - by 허재
 class TestCounselingRepository implements CounselingRepository {
+  //스케쥴을 반환
+  async getSchedules(): Promise<Schedule[]> {
+    return [
+      {
+        id: 1,
+        doctorId: 1,
+        scheduleTime: new Date('2023-06-30 10:00:00'),
+        isReserved: false,
+      },
+      {
+        id: 2,
+        doctorId: 1,
+        scheduleTime: new Date('2023-06-30 11:00:00'),
+        isReserved: false,
+      },
+    ];
+  }
+
   async registerCounselingHistory(info: CounselingInfo): Promise<Counseling> {
     return {
       id: 1,
@@ -25,16 +44,44 @@ class TestCounselingRepository implements CounselingRepository {
     endDate: Date,
   ): Promise<Counseling[]> {
     return [
-      // 가짜 Counseling 오브젝트 리스트
+      {
+        id: 1,
+        hospitalName: '세브란스동물',
+        doctorName: '허재',
+        userName: '박세진',
+        petName: '시고르잡종',
+        dateTime: new Date(),
+        expense: 10000,
+        content: '타박상',
+      },
+      {
+        id: 2,
+        hospitalName: '연세동물',
+        doctorName: '김재준',
+        userName: '박세진',
+        petName: '시고르잡종',
+        dateTime: new Date(),
+        expense: 10000,
+        content: '감기',
+      },
     ];
   }
 
-  getOneCounseling(counselingId: string): Promise<Counseling> {
-    return;
+  async getOneCounseling(counselingId: string): Promise<Counseling> {
+    return {
+      id: 2,
+      hospitalName: '연세동물',
+      doctorName: '김재준',
+      userName: '박세진',
+      petName: '시고르잡종',
+      dateTime: new Date(),
+      expense: 10000,
+      content: '감기',
+    };
   }
 
-  deleteOneCounseling(counselingId: string): Promise<boolean> {
-    return;
+  async deleteOneCounseling(counselingId: string): Promise<boolean> {
+    return true;
   }
 }
 // 그러면 TestingModule 은 언제 쓰나요 ?

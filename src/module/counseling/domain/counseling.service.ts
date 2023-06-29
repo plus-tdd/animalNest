@@ -3,6 +3,7 @@ import { Counseling, CounselingInfo } from './counseling.model';
 import { CounselingRepository } from './counseling.repository';
 import { InvalidCounselingInfoError } from '../counseling.error';
 import { CounselingRepositoryImpl } from '../data/counseling.db';
+import { Schedule, ScheduleEntity } from './../../value-data/schedule.db';
 
 // Mapper 가 위치해야하는 곳
 // Controller 에서 Service 를 호출하기 전에 DTO -> Domain / 호출 후에 Domain -> DTO ( 필요할 수도 아닐 수도 )
@@ -12,7 +13,13 @@ import { CounselingRepositoryImpl } from '../data/counseling.db';
 export class CounselingService {
   constructor(private readonly repository: CounselingRepository) {}
 
-  //진료 등록
+  //예약 스케쥴표 조회
+  async getSchedules(): Promise<Schedule[]> {
+    const result = await this.repository.getSchedules();
+    return result;
+  }
+
+  //진료 등록 (예약)
   async registerCounseling(info: CounselingInfo): Promise<Counseling> {
     this.validateRequestInfo(info);
     const result = await this.repository.registerCounselingHistory(info);

@@ -18,13 +18,10 @@ import { start } from 'repl';
 export class CounselingController {
   constructor(private readonly counselingService: CounselingService) {}
 
-  //진료 내역 조회
-  @Get()
-  getCounselingHistories(
-    @Query('start') startDate: Date,
-    @Query('end') endDate: Date,
-  ) {
-    return this.counselingService.getCounselingHistories(startDate, endDate);
+  //예약 스케쥴표 조회
+  @Get('schedule')
+  getSchedules() {
+    return this.counselingService.getSchedules();
   }
 
   //진료 등록 (예약)
@@ -43,6 +40,15 @@ export class CounselingController {
     };
 
     return this.counselingService.registerCounseling(counselingInfo);
+  }
+
+  //진료 내역 조회
+  @Get('history')
+  getCounselingHistories(
+    @Query('start') startDate: Date,
+    @Query('end') endDate: Date,
+  ) {
+    return this.counselingService.getCounselingHistories(startDate, endDate);
   }
 
   //진료 상세 조회

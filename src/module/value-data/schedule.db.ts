@@ -10,7 +10,7 @@ export type Schedule = {
 @Entity({
   name: 'Schedule',
 })
-export class DoctorEntity {
+export class ScheduleEntity {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
