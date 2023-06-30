@@ -22,20 +22,20 @@
     - service.test.ts
     - repository.test.ts
   - module
-   - moduleA
-     - api
-       - controller.ts
-       - dto.ts
-     - data
-       - db.ts
-       - entity.ts
-     - domain
-       - model.ts
-       - repository.ts
-       - service.ts
-     - error.ts
-     - mapper.ts
-     - module.ts
+    - moduleA
+      - api
+        - controller.ts
+        - dto.ts
+      - data
+        - db.ts
+        - entity.ts
+      - domain
+        - model.ts
+        - repository.ts
+        - service.ts
+      - error.ts
+      - mapper.ts
+      - module.ts
 - package.json
 - tsconfig.json
 - .gitignore
