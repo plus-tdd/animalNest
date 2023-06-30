@@ -9,7 +9,9 @@ import { PetEntity } from '../value-data/pet.db';
 import { DoctorEntity } from '../value-data/doctor.db';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([PetEntity, CounselingEntity, DoctorEntity])],
+  imports: [
+    TypeOrmModule.forFeature([PetEntity, CounselingEntity, DoctorEntity]),
+  ],
   providers: [
     {
       provide: COUNSELING_REPOSITORY,
@@ -23,6 +25,6 @@ import { DoctorEntity } from '../value-data/doctor.db';
       provide: COUNSELING_REPOSITORY,
       useClass: CounselingRepositoryImpl,
     },
-  ]
+  ],
 })
 export class CounselingModule {}
