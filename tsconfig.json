@@ -17,7 +17,8 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "moduleResolution": "node", // 새로 생김
   },
   "include": ["./src/**/*", "webpack-hmr.config.js"],
   "exclude": ["./src/__test__"]

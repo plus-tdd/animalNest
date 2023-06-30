@@ -1,14 +1,37 @@
 import { Module } from '@nestjs/common';
-import { PaymentController } from './payment.controller';
-import { TestPaymentRepository } from './payment.repository'; // PaymentRepository import 추가
+import { PaymentController } from './api/payment.controller';
+import { TestPaymentRepository } from './domain/payment.repository'; // PaymentRepository import 추가
 //import { JwtStrategy } from '../auth/passport/auth.passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Payment } from './output/entities/Payment';
-import { PaymentService } from './payment.service';
+import { PaymentEntity } from './data/payment.entity';
+import { PaymentService } from './domain/payment.service';
+import { PaymentRepositoryImpl } from './data/payment.db';
+import { AlarmService, AlarmServiceImpl } from '../alarm/alarmService';
+import { AlarmModule } from '../alarm/alarm.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Payment])],
+  imports: [TypeOrmModule.forFeature([PaymentEntity]),AlarmModule],
   controllers: [PaymentController],
-  providers: [PaymentService]
+  providers: [
+    PaymentService,
+    {
+      provide: 'PaymentService',
+      useClass: PaymentRepositoryImpl,
+    },
+    {
+      provide: 'PaymentService',
+      useClass: AlarmServiceImpl,
+    },
+  ],
+  exports: [
+    {
+      provide: 'PaymentService',
+      useClass: PaymentRepositoryImpl,
+    },
+    {
+      provide: 'PaymentService',
+      useClass: AlarmServiceImpl,
+    },
+  ],
 })
 export class PaymentModule {}
