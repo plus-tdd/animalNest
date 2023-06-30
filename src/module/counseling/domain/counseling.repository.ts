@@ -7,6 +7,8 @@ import { Schedule, ScheduleEntity } from './../../value-data/schedule.db';
   - 진료내역 저장
   - 5년 이하 것만 조회되어야 함.
 */
+export const COUNSELING_REPOSITORY = "Counseling Repository"
+
 export interface CounselingRepository {
   //스케쥴을 반환
   getSchedules(): Promise<Schedule[]>;

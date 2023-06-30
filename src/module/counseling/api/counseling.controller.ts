@@ -12,7 +12,6 @@ import {
 import { CounselingService } from '../domain/counseling.service';
 import { CreateCounselingDto } from './counseling.dto';
 import { CounselingInfo } from '../domain/counseling.model';
-import { start } from 'repl';
 
 @Controller('counseling')
 export class CounselingController {
@@ -21,7 +20,7 @@ export class CounselingController {
   //예약 스케쥴표 조회
   @Get('schedule')
   getSchedules() {
-    return this.counselingService.getSchedules();
+    
   }
 
   //진료 등록 (예약)
@@ -54,12 +53,12 @@ export class CounselingController {
   //진료 상세 조회
   @Get('id')
   getCounseling(@Param('id') counselingId: string) {
-    return this.counselingService.getCounseling(counselingId);
+    // return this.counselingService.getCounseling(counselingId);
   }
 
   //진료 예약 삭제
   @Delete(':id')
   deleteCounseling(@Param('id') counselingId: string) {
-    return this.counselingService.deleteCounseling(counselingId);
+    // return this.counselingService.deleteCounseling(counselingId);
   }
 }
