@@ -11,7 +11,10 @@ import { Schedule, ScheduleEntity } from './../../value-data/schedule.db';
 
 @Injectable()
 export class CounselingService {
-  constructor(private readonly repository: CounselingRepository) {}
+  constructor(
+    @Inject('CounselingRepository')
+    private readonly repository: CounselingRepository,
+  ) {}
 
   //예약 스케쥴표 조회
   async getSchedules(): Promise<Schedule[]> {

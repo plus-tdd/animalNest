@@ -6,6 +6,7 @@ import { CounselingRepository } from '../domain/counseling.repository';
 import { CounselingEntity } from './counseling.entity';
 import { DoctorEntity } from 'src/module/value-data/doctor.db';
 import { PetEntity } from 'src/module/value-data/pet.db';
+import { Pet } from 'src/module/pet/pet.entity';
 import { InvalidCounselingInfoError } from '../counseling.error';
 import { CounselingMapper } from '../counseling.mapper';
 import { Schedule, ScheduleEntity } from './../../value-data/schedule.db';
@@ -16,8 +17,8 @@ export class CounselingRepositoryImpl implements CounselingRepository {
   constructor(
     // DB 주입
     // User DB
-    @InjectRepository(PetEntity)
-    private PetDB: Repository<PetEntity>,
+    @InjectRepository(Pet)
+    private PetDB: Repository<Pet>,
     @InjectRepository(DoctorEntity)
     private DoctorDB: Repository<DoctorEntity>,
     @InjectRepository(CounselingEntity)
