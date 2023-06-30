@@ -4,30 +4,30 @@ import { CounselingEntity } from "../counseling/data/counseling.entity"
 import { PaymentEntity } from "../payment/data/payment.entity";
 
 @Entity({
-    name: "user",
-    schema: "animalNest",
+  name: 'user',
+  schema: 'animalNest',
 })
 export class User {
-    @PrimaryGeneratedColumn({ type: 'int' })
-    id: number;
+  @PrimaryGeneratedColumn({ type: 'int' })
+  id: number;
 
-    @Column('varchar', { length: 45 })
-    userName: string;
+  @Column('varchar', { length: 45 })
+  userName: string;
 
-    @Column('varchar', { length: 45 })
-    account: string;
+  @Column('varchar', { length: 45 })
+  account: string;
 
-    @Column('varchar', { length: 100 })
-    password: string;
+  @Column('varchar', { length: 100 })
+  password: string;
 
-    @Column('varchar', { length: 20 })
-    phoneNumber: string;
+  @Column('varchar', { length: 20 })
+  phoneNumber: string;
 
-    @Column('datetime')
-    createdAt: Date;
+  @Column('datetime')
+  createdAt: Date;
 
-    @Column('datetime')
-    updatedAt: Date;
+  @Column('datetime')
+  updatedAt: Date;
 
     // userId 로 통일
     // 유저 : 반려동물 정보  1대 다 관계 petId
