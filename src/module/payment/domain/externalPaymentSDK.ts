@@ -17,7 +17,7 @@ export interface ExternalPaymentSDK {
       } catch (error) {
         // 결제 요청이 실패한 경우 에러를 던져서 상위 코드에서 처리하도록 합니다.
        // throw new Error('결제 요청 실패');
-       return '결제 요청 실패'
+       throw new Error('결제 요청 실패');
       }
     }
   
@@ -32,7 +32,7 @@ export interface ExternalPaymentSDK {
       } catch (error) {
         // 결제 요청이 실패한 경우 에러를 던져서 상위 코드에서 처리하도록 합니다.
        // throw new Error('결제 요청 실패');
-       return '결제 취소 요청 실패'
+       throw new Error('결제 취소 요청 실패');
       }
     }
   }
@@ -46,7 +46,7 @@ export class ActualExternalPaymentSDK implements ExternalPaymentSDK {
   
       try {
         return '결제 요청 성공';
-      } catch (e) {
+      } catch (error) {
         throw new Error('결제 요청 실패');
       }
     }
@@ -60,7 +60,7 @@ export class ActualExternalPaymentSDK implements ExternalPaymentSDK {
       } catch (error) {
         // 결제 요청이 실패한 경우 에러를 던져서 상위 코드에서 처리하도록 합니다.
        // throw new Error('결제 요청 실패');
-       return '결제 취소 요청 실패'
+       throw new Error('결제 취소 요청 실패');
       }
     }
   }

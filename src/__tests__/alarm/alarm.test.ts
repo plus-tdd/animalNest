@@ -1,11 +1,11 @@
-import { AlarmService } from '../../module/alarm/alarmService';
+import { AlarmService, TestAlarmService } from '../../module/alarm/alarmService';
 
 describe("알림 테스트", () => {
     let alarmService: AlarmService;
 
     beforeEach(() => {
       // 테스트에 필요한 초기화 작업을 수행합니다.
-      alarmService = new AlarmService();
+      alarmService = new TestAlarmService();
     });
   
 
