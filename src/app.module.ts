@@ -20,7 +20,7 @@ import { CounselingEntity } from './module/counseling/data/counseling.entity';
 import { CounselingService } from './module/counseling/domain/counseling.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
-import * as process from "process";
+import * as process from 'process';
 
 // Module 설명 : express에서는 router위주의 설계였다면, nest에서는 module위주의 설계를 한다
 // 기능별로 module을 만들어서 여기에 다 넣어줄거임 - nest가 module간의 연결된걸 파악해서 한번에 실행해줌
@@ -31,10 +31,10 @@ import * as process from "process";
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
-      port: Number(process.env.PORT),
-      username: process.env.USER,
-      password: process.env.DBPW,
-      database: process.env.PW,
+      port: Number(process.env.DB_PORT),
+      username: process.env.DB_USER,
+      password: process.env.DB_PW,
+      database: process.env.DB_SCHEMA,
       synchronize: true,
       dropSchema: true,
       entities: [CounselingEntity, Pet, User, Payment],
