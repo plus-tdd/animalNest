@@ -1,7 +1,7 @@
 
 import { Injectable } from "@nestjs/common";
 import { AlarmService } from "src/module/alarm/alarmService";
-import { TestExternalPaymentSDK } from "../externalPaymentSDK";
+import { TestExternalPaymentSDK } from "./externalPaymentSDK";
 import { PaymentInfo, Payment, RefundPaymentInfo,PaymentInfoForRefund } from "./payment.model";
 import { PaymentRepository } from "./payment.repository";
 import { AlarmData } from "src/module/alarm/alarmService";

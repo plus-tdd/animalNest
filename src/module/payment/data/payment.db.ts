@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable } from '@nestjs/common';
 import { PaymentRepository } from "../domain/payment.repository";
 import { CardCompany, RefundPaymentInfo, PaymentInfoForRefund } from "../domain/payment.model";
 import { PaymentInfo, Payment } from "../domain/payment.model";
@@ -6,7 +6,7 @@ import { PaymentEntity } from "./payment.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { InvalidPaymentInfoError } from "../payment.error";
-import { PaymentUserEntity } from "./payment.user.entity";
+import { User } from 'src/module/user/user.entity';
 
 // 실제 DB
 @Injectable()
@@ -16,7 +16,7 @@ export class PaymentRepositoryImpl implements PaymentRepository {
         // DB 주입
         @InjectRepository(PaymentEntity)
         private PaymentDB: Repository<PaymentEntity>,
-        private UserDB: Repository<PaymentUserEntity>
+        private UserDB: Repository<User>
     ){}
 
     async savePayment(paymentInfo: PaymentInfo): Promise<Payment> {
@@ -30,7 +30,7 @@ export class PaymentRepositoryImpl implements PaymentRepository {
 
         // model -> entitiy
         const entity = this.PaymentDB.create({
-            userId: user.id,
+            User: user,
             cardNum: paymentInfo.cardNum,
             endDate: paymentInfo.endDate,
             cvc: paymentInfo.cvc,
@@ -44,7 +44,7 @@ export class PaymentRepositoryImpl implements PaymentRepository {
 
         return {
             paymentId: entity.id,
-            userId : entity.userId,
+            userId : entity.User.id,
             cardNum: entity.cardNum,
             endDate: entity.endDate,
             cvc: entity.cvc,
@@ -73,7 +73,7 @@ export class PaymentRepositoryImpl implements PaymentRepository {
 
         // entitiy -> domain
         const refundPaymentDomain: PaymentInfoForRefund = {
-            userId: payment.userId,
+            userId: payment.User.id,
             cardNum: payment.cardNum,
             endDate: payment.endDate,
             cvc: payment.cvc,
@@ -85,7 +85,7 @@ export class PaymentRepositoryImpl implements PaymentRepository {
 
     }
 
-    async findUserPhoneNumber(userId: number): Promise<number> {
+    async findUserPhoneNumber(userId: number): Promise<string> {
         // user가 db에 존재하는지??
         const user = await this.UserDB.findOne({
             where: { id: userId },

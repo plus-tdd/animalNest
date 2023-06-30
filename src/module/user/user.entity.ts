@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from "typeorm";
 import { Pet } from "../pet/pet.entity"
 import { CounselingEntity } from "../counseling/data/counseling.entity"
-import { Payment } from "../payment/output/entities/Payment";
+import { PaymentEntity } from "../payment/data/payment.entity";
 
 @Entity({
     name: "user",
@@ -37,6 +37,6 @@ export class User {
     @OneToMany(() => CounselingEntity, (CounselingEntity) => CounselingEntity.User)
     CounselingEntity:CounselingEntity[]
     // 유저 : 페이먼트 1대 다 관계 paymentId
-    @OneToMany(() => Payment, (Payment) => Payment.User)
-    Payment:Payment[]
+    @OneToMany(() => PaymentEntity, (PaymentEntity) => PaymentEntity.User)
+    PaymentEntity:PaymentEntity[]
 }

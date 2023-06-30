@@ -21,7 +21,7 @@ export class AlarmService {
   }
   
   export type AlarmData = { 
-    recipient: number;
+    recipient: string;
     message: string;
   }
 

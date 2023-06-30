@@ -2,7 +2,7 @@ import { CardCompany} from "../../module/payment/domain/payment.model";
 import { PaymentService } from "../../module/payment/domain/payment.service";
 import { PaymentInfo } from "../../module/payment/domain/payment.model";
 import { PaymentRepository, TestPaymentRepository } from "../../module/payment/domain/payment.repository";
-import { TestExternalPaymentSDK } from "../../module/payment/externalPaymentSDK";
+import { TestExternalPaymentSDK } from "../../module/payment/domain/externalPaymentSDK";
 import { PaymentRequestDto } from "src/module/payment/api/payment.save.request.dto";
 
 
