@@ -22,7 +22,7 @@ src
 ├─ __tests__                               
 │  ├─ controller.test.ts                                      
 │  ├─ service.test.ts                                              
-│  ├─ repository.test.ts                                   
+│  └─ repository.test.ts                                   
 ├─ module                                  
 │  └─ moduleA                                                      
 │     ├─ api                               
