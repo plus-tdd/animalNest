@@ -29,6 +29,7 @@ export type AlarmData = {
   message: string;
 };
 
+@Injectable()
 export class AlarmServiceImpl implements AlarmService {
   async sendAlarm(alarmData: AlarmData): Promise<string> {
     try {

@@ -6,10 +6,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PaymentEntity } from './data/payment.entity';
 import { PaymentService } from './domain/payment.service';
 import { PaymentRepositoryImpl } from './data/payment.db';
-import { AlarmService } from '../alarm/alarmService';
+import { AlarmService, AlarmServiceImpl } from '../alarm/alarmService';
+import { AlarmModule } from '../alarm/alarm.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([PaymentEntity])],
+  imports: [TypeOrmModule.forFeature([PaymentEntity]),AlarmModule],
   controllers: [PaymentController],
   providers: [
     PaymentService,
@@ -17,11 +18,19 @@ import { AlarmService } from '../alarm/alarmService';
       provide: 'PaymentService',
       useClass: PaymentRepositoryImpl,
     },
+    {
+      provide: 'PaymentService',
+      useClass: AlarmServiceImpl,
+    },
   ],
   exports: [
     {
       provide: 'PaymentService',
       useClass: PaymentRepositoryImpl,
+    },
+    {
+      provide: 'PaymentService',
+      useClass: AlarmServiceImpl,
     },
   ],
 })

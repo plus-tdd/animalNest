@@ -15,7 +15,7 @@ export class PaymentService {
   constructor(
     @Inject('PaymentService')
     private readonly repository: PaymentRepository,
-    @Inject()
+    @Inject('PaymentService')
     private readonly alarmService: AlarmService,
   ) {}
 
