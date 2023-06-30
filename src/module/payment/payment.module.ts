@@ -5,10 +5,24 @@ import { TestPaymentRepository } from './domain/payment.repository'; // PaymentR
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PaymentEntity } from './data/payment.entity';
 import { PaymentService } from './domain/payment.service';
+import { PaymentRepositoryImpl } from './data/payment.db';
+import { AlarmService } from '../alarm/alarmService';
 
 @Module({
   imports: [TypeOrmModule.forFeature([PaymentEntity])],
   controllers: [PaymentController],
-  providers: [PaymentService]
+  providers: [
+    PaymentService,
+    {
+      provide: 'PaymentService',
+      useClass: PaymentRepositoryImpl,
+    },
+  ],
+  exports: [
+    {
+      provide: 'PaymentService',
+      useClass: PaymentRepositoryImpl,
+    },
+  ],
 })
 export class PaymentModule {}

@@ -1,7 +1,9 @@
 import { CounselingService } from '../../module/counseling/domain/counseling.service';
 import { CounselingRepository } from 'src/module/counseling/domain/counseling.repository';
-import { Counseling, CounselingInfo } from 'src/module/counseling/domain/counseling.model';
-import { Schedule } from 'src/module/value-data/schedule.db';
+import {
+  Counseling,
+  CounselingInfo,
+} from 'src/module/counseling/domain/counseling.model';
 
 // 서비스 : 순수한 비즈니스 로직 덩어리 ( nest.js 랑도 상관없고 db 랑도 상관없음. )
 // 소프트웨어 개발 => Front/ Back => 5년이 채 안됨
@@ -9,31 +11,37 @@ import { Schedule } from 'src/module/value-data/schedule.db';
 // Controller ( Api Route ) 에서 서비스를 호출한다 = Backend
 // -> 그래서 서비스 UnitTest 에 대해서는 nestjs/testing 의 TestingModule 을 사용하지 않는 게 더 좋은 구조라고 생각함. - by 허재
 class TestCounselingRepository implements CounselingRepository {
-  getSchedules(): Promise<Schedule[]> {
-    throw new Error('Method not implemented.');
+  async registerCounselingHistory(info: CounselingInfo): Promise<Counseling> {
+    return {
+      id: 1,
+      hospitalName: '어쩌라고',
+      doctorName: '의사',
+      userName: '박세진',
+      petName: '시고르잡종',
+      dateTime: new Date(),
+      expense: 10000,
+      content: '우아 !',
+    };
   }
+  async getConselingHistories(
+    startDate: Date,
+    endDate: Date,
+  ): Promise<Counseling[]> {
+    return [
+      // 가짜 Counseling 오브젝트 리스트
+    ];
+  }
+
   getOneCounseling(counselingId: string): Promise<Counseling> {
     throw new Error('Method not implemented.');
   }
-  deleteOneCounseling(counselingId: string): Promise<boolean> {
+
+  updateCounselingStatus(counselingId: string): Promise<Counseling> {
     throw new Error('Method not implemented.');
   }
-  async registerCounselingHistory(info: CounselingInfo): Promise<Counseling> {
-      return {
-          id: 1,
-          hospitalName: '어쩌라고',
-          doctorName: '의사',
-          userName: '박세진',
-          petName: '시고르잡종',
-          dateTime: new Date(),
-          expense: 10000,
-          content: '우아 !',
-      } 
-  }
-  async getConselingHistories(startDate: Date, endDate: Date): Promise<Counseling[]> {
-      return [
-          // 가짜 Counseling 오브젝트 리스트
-      ]
+
+  deleteOneCounseling(counselingId: string): Promise<boolean> {
+    throw new Error('Method not implemented.');
   }
 }
 /*
@@ -47,7 +55,6 @@ class TestCounselingRepository implements CounselingRepository {
   => 햄버거를 먹는다 ( 햄버거를 가져온다 ) 
   => 손쉽게 우리는 버거킹이 아닌 맥도날드 치즈버거를 먹는다. 달성 !
 */
-
 
 // 그러면 TestingModule 은 언제 쓰나요 ?
 // 통합테스트 ( 컨트롤러 테스트 할 떄 ) - 아래처럼 실제와 동일하게 주입하는 구조로 의존성 주입할 때 쓰는게 제일 낫다고 생각합니다!
@@ -64,10 +71,10 @@ class TestCounselingRepository implements CounselingRepository {
 // 의존성이 분리 안된 상태 x => service 에서 의존 : TypeOrm.Repository<Entity> => MySql 에서 PostGreSql 로 바꾸랬는데, PostGre 에서는 지원안하는 칼럼이 있음
 // 그럼 어떻게 해야함 ? 서비스도, Entity 도 다바꿔야됨
 
-// Service = Domain 모델, Repository 인터페이스를 이용 => Repository 가 분리되어있음 ? 
+// Service = Domain 모델, Repository 인터페이스를 이용 => Repository 가 분리되어있음 ?
 // React 가 필요함. 별도 모듈로 따서 이 서비스 이용하면 됨
-// 
-// 클린코드 / 아키텍쳐 : 개발자로서 우리가 영원히 살아남으려면 이런 구조화를 잘해야된다. 
+//
+// 클린코드 / 아키텍쳐 : 개발자로서 우리가 영원히 살아남으려면 이런 구조화를 잘해야된다.
 //
 // PostGreRepository implements Repository {
 // }
@@ -76,8 +83,8 @@ describe('CounselingService', () => {
   let service: CounselingService;
 
   beforeEach(async () => {
-    const repository: CounselingRepository = new TestCounselingRepository()
-    service = new CounselingService(repository)
+    const repository: CounselingRepository = new TestCounselingRepository();
+    service = new CounselingService(repository);
   });
 
   it('should be defined', () => {
@@ -89,15 +96,15 @@ describe('CounselingService', () => {
       doctorId: 0,
       userId: 0,
       petId: 0,
-      dateTime: new Date("2023-06-27"),
+      dateTime: new Date('2023-06-27'),
       expense: 10000,
-      content: "우아 !",
-    }
-    const resultCounsel = await service.registerCounseling(successfulInfo)
-    expect(resultCounsel).not.toBeNull()
-    console.log(resultCounsel)
-    expect(resultCounsel.expense).toEqual(10000)
-  })
+      content: '우아 !',
+    };
+    const resultCounsel = await service.registerCounseling(successfulInfo);
+    expect(resultCounsel).not.toBeNull();
+    console.log(resultCounsel);
+    expect(resultCounsel.expense).toEqual(10000);
+  });
 
   // describe('getAll', () => {
   //   it('배열을 반환해야함', async () => {

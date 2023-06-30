@@ -17,12 +17,6 @@ import { CounselingInfo } from '../domain/counseling.model';
 export class CounselingController {
   constructor(private readonly counselingService: CounselingService) {}
 
-  //예약 스케쥴표 조회
-  @Get('schedule')
-  getSchedules() {
-    
-  }
-
   //진료 등록 (예약)
   @Post()
   registerCounseling(@Body() counselingData: CreateCounselingDto) {
@@ -42,7 +36,7 @@ export class CounselingController {
   }
 
   //진료 내역 조회
-  @Get('history')
+  @Get('')
   getCounselingHistories(
     @Query('start') startDate: Date,
     @Query('end') endDate: Date,
@@ -53,12 +47,18 @@ export class CounselingController {
   //진료 상세 조회
   @Get('id')
   getCounseling(@Param('id') counselingId: string) {
-    // return this.counselingService.getCounseling(counselingId);
+    return this.counselingService.getCounseling(counselingId);
   }
 
-  //진료 예약 삭제
+  //진료 상태 변경 (예약->진료)
+  @Post('id')
+  updateCounselingStatus(@Param('id') counselingId: string) {
+    return this.counselingService.updateCounselingStatus(counselingId);
+  }
+
+  //예약 삭제
   @Delete(':id')
   deleteCounseling(@Param('id') counselingId: string) {
-    // return this.counselingService.deleteCounseling(counselingId);
+    return this.counselingService.deleteCounseling(counselingId);
   }
 }
