@@ -20,6 +20,7 @@ export class CounselingEntity {
 
   @Column('int', { name: 'user_id' })
   userId: number;
+  
   @ManyToOne(() => User, (User) => User.CounselingEntity)
   @JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])
   User: User;

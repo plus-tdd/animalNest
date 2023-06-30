@@ -2,17 +2,27 @@ import { Module } from '@nestjs/common';
 import { CounselingController } from './api/counseling.controller';
 import { CounselingService } from './domain/counseling.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CounselingEntity } from './data/counseling.entity';
-import { CounselingMapper } from './counseling.mapper';
 import { CounselingRepositoryImpl } from './data/counseling.db';
-import { CounselingRepository } from './domain/counseling.repository';
-import { PetModule } from '../pet/pet.module';
+import { CounselingEntity } from './data/counseling.entity';
+import { COUNSELING_REPOSITORY } from './domain/counseling.repository';
+import { PetEntity } from '../value-data/pet.db';
+import { DoctorEntity } from '../value-data/doctor.db';
+
 @Module({
-  imports: [TypeOrmModule.forFeature([CounselingEntity]), PetModule],
-  controllers: [CounselingController],
+  imports: [TypeOrmModule.forFeature([PetEntity, CounselingEntity, DoctorEntity])],
   providers: [
+    {
+      provide: COUNSELING_REPOSITORY,
+      useClass: CounselingRepositoryImpl,
+    },
     CounselingService,
-    { provide: 'CounselingRepository', useClass: CounselingRepositoryImpl },
   ],
+  controllers: [CounselingController],
+  exports: [
+    {
+      provide: COUNSELING_REPOSITORY,
+      useClass: CounselingRepositoryImpl,
+    },
+  ]
 })
 export class CounselingModule {}

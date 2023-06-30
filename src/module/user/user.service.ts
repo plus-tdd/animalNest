@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { InvalidUserInfoError } from './user.error';
@@ -9,14 +9,15 @@ import {
   UserAccountDto,
 } from './user.dto';
 import { LoginOutputDto, UserOutPutDto } from './user.output.dto';
-import { UserRepositoryImpl } from './user.db';
+import { USER_REPOSITORY, UserRepository } from './user.repository';
 // 예제에서는 하드 코딩 되었지만
 // 이 부분은 반드시 user entity를 표현하는 class/interface여야 한다.
 
 @Injectable()
 export class UserService {
   constructor(
-    private readonly userRepository: UserRepositoryImpl,
+    @Inject(USER_REPOSITORY)
+    private readonly userRepository: UserRepository,
     private readonly jwtService: JwtService,
   ) {}
 

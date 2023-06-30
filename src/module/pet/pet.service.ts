@@ -1,14 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InvalidPetInfoError } from './pet.error';
-import { PetRepositoryImpl } from './pet.db';
-import { PetRepository } from './pet.repository';
+import { PET_REPOSITORY, PetRepository } from './pet.repository';
 import { CreatePetDto } from './pet.dto';
 import { PetOutPutDto } from './pet.output.dto';
 
 @Injectable()
 export class PetService {
   constructor(
-    @Inject('PetRepository') private readonly petRepository: PetRepository,
+    @Inject(PET_REPOSITORY)
+    private readonly petRepository: PetRepository,
   ) {}
 
   async findPetByPetId(petId: number): Promise<PetOutPutDto> {

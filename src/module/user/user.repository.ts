@@ -1,6 +1,8 @@
 import { UserIdDto, SignUpDto,UserAccountDto } from "./user.dto";
 import {UserOutPutDto} from "./user.output.dto"
 
+export const USER_REPOSITORY = "User Repository"
+
 export interface UserRepository {
     findOneByUserId(userIdDto : UserIdDto)
     findUserByAccount(userAccountDto : UserAccountDto)
