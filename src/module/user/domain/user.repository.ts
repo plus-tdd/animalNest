@@ -1,11 +1,11 @@
-import { UserIdDto, SignUpDto,UserAccountDto } from "../api/user.dto";
+import { SignUpDto} from "../api/user.dto";
 import {UserOutPutDto} from "./user.output.dto"
 
 export const USER_REPOSITORY = "User Repository"
 
 export interface UserRepository {
-    findOneByUserId(userIdDto : UserIdDto)
-    findUserByAccount(userAccountDto : UserAccountDto)
+    findOneByUserId(userId : number)
+    findUserByAccount(account : string)
     signUp(signUpDto: SignUpDto)
 }
 
@@ -27,13 +27,11 @@ export class TestUserRepositoryImpl implements UserRepository {
         },
     ];
 
-    async findOneByUserId(userIdDto : UserIdDto) : Promise<UserOutPutDto> {
-        const { userId } = userIdDto;
+    async findOneByUserId(userId : number) : Promise<UserOutPutDto> {
         return this.users.find(user => user.id === userId);
     }
 
-    async findUserByAccount(userAccountDto : UserAccountDto) : Promise<UserOutPutDto> {
-        const { account } = userAccountDto;
+    async findUserByAccount(account) : Promise<UserOutPutDto> {
         return this.users.find(user => user.account === account);
     }
 

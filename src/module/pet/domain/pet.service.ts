@@ -41,7 +41,7 @@ export class PetService {
       disease,
     } = createPetDto;
     // 음수
-    if (userId < 0) throw new InvalidPetInfoError('userid');
+    if (userId < 0) throw new InvalidPetInfoError('userId');
     if (weight < 0) throw new InvalidPetInfoError('weight');
     if (petType === '') throw new InvalidPetInfoError('petType');
     if (breed === '') throw new InvalidPetInfoError('breed');
@@ -49,8 +49,8 @@ export class PetService {
     if (bDay === '') throw new InvalidPetInfoError('bDay');
     if (adoptionDay === '') throw new InvalidPetInfoError('adoptionDay');
     if (gender === '') throw new InvalidPetInfoError('gender');
-    if (neuter === '') throw new InvalidPetInfoError('neuter');
-    // if (allergy === "") throw new InvalidPetInfoError("allergy") // 알러지와 질병은 옵셔널하다.
-    // if (disease === "") throw new InvalidPetInfoError("disease") // 알러지와 질병은 옵셔널하다.
+    // if (neuter === '') throw new InvalidPetInfoError('neuter'); // 중성화 여부는 옵셔널하다.
+    // if (allergy === "") throw new InvalidPetInfoError("allergy") // 알러지와 옵셔널하다.
+    // if (disease === "") throw new InvalidPetInfoError("disease") // 질병은 옵셔널하다.
   }
 }

@@ -1,7 +1,4 @@
-export class LoginuserIdDto {
-    readonly account : string
-    readonly password : string
-}
+
 export class SignUpDto {
     readonly account : string
     readonly password : string

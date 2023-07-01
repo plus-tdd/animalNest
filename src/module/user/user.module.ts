@@ -18,6 +18,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   ],
   controllers: [UserController],
   exports: [
+    UserService,
     {
       provide: USER_REPOSITORY,
       useClass: UserRepositoryImpl,

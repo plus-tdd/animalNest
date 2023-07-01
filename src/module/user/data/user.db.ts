@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from './user.entity';
 import { UserRepository } from '../domain/user.repository';
-import { UserIdDto, UserAccountDto, SignUpDto } from '../api/user.dto';
+import { SignUpDto } from '../api/user.dto';
 import { UserOutPutDto } from '../domain/user.output.dto';
 import { UserMapper } from '../user.mapper';
 
@@ -21,16 +21,14 @@ export class UserRepositoryImpl implements UserRepository {
 
   private mapper: UserMapper;
 
-  async findOneByUserId(userIdDto: UserIdDto): Promise<UserOutPutDto> {
-    const { userId } = userIdDto;
+  async findOneByUserId(userId : number): Promise<UserOutPutDto> {
     const result = await this.UserDB.findOne({ where: { id: userId } });
     return this.mapper.mapToDto(result);
   }
 
   async findUserByAccount(
-    userAccountDto: UserAccountDto,
+    account
   ): Promise<UserOutPutDto> {
-    const { account } = userAccountDto;
     const result = await this.UserDB.findOne({ where: { account: account } });
     return this.mapper.mapToDto(result);
   }

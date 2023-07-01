@@ -15,3 +15,9 @@ export type ResponseServiceValue = {
     returnStatus : number
     returnMessage : string
 }
+
+export class LoginDto {
+    readonly account : string
+    readonly password : string
+}
+

@@ -1,7 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany, CreateDateColumn, UpdateDateColumn } from "typeorm";
 import { PetEntity } from "../../pet/data/pet.entity"
 import { CounselingEntity } from "../../counseling/data/counseling.entity"
 import { PaymentEntity } from "../../payment/data/payment.entity";
+import now = jest.now;
 
 @Entity({
   name: 'user',
@@ -23,10 +24,10 @@ export class UserEntity {
   @Column('varchar', { length: 20 })
   phoneNumber: string;
 
-  @Column('datetime')
+  @CreateDateColumn({ type: "timestamp" })
   createdAt: Date;
 
-  @Column('datetime')
+  @UpdateDateColumn({ type: "timestamp" })
   updatedAt: Date;
 
     // userId 로 통일

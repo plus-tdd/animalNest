@@ -3,9 +3,10 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   ManyToOne,
-  JoinColumn,
-} from 'typeorm';
+  JoinColumn, CreateDateColumn, UpdateDateColumn
+} from "typeorm";
 import { UserEntity } from '../../user/data/user.entity';
+import { timestamp } from "rxjs";
 
 @Entity({
   name: 'pet',
@@ -18,7 +19,7 @@ export class PetEntity {
   @Column('int')
   userId: number;
   @ManyToOne(() => UserEntity, (User) => User.Pet)
-  @JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])
+  @JoinColumn([{ name: 'userId', referencedColumnName: 'id' }])
   User: UserEntity;
 
   @Column('varchar', { name: 'pet_type', length: 45 })
@@ -42,8 +43,8 @@ export class PetEntity {
   @Column('varchar', { name: 'gender', length: 45 })
   gender: string;
 
-  @Column('varchar', { name: 'neuter', length: 45 })
-  neuter: string;
+  @CreateDateColumn({ type: 'timestamp', name: 'neuter',  nullable: true })
+  neuter: Date;
 
   @Column('varchar', { name: 'allergy', length: 45 })
   allergy: string;
@@ -51,9 +52,9 @@ export class PetEntity {
   @Column('varchar', { name: 'disease', length: 45 })
   disease: string;
 
-  @Column('datetime', { name: 'created_at' })
+  @CreateDateColumn({ type: 'timestamp'})
   createdAt: Date;
 
-  @Column('datetime', { name: 'updated_at' })
+  @UpdateDateColumn({ type: 'timestamp'})
   updatedAt: Date;
 }
