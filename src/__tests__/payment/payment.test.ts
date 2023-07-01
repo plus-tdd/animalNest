@@ -2,9 +2,9 @@ import { CardCompany} from "../../module/payment/domain/payment.model";
 import { PaymentService } from "../../module/payment/domain/payment.service";
 import { PaymentInfo } from "../../module/payment/domain/payment.model";
 import { PaymentRepository, TestPaymentRepository } from "../../module/payment/domain/payment.repository";
-import { TestExternalPaymentSDK } from "../../module/payment/domain/externalPaymentSDK";
+import { TestExternalPaymentSDK } from "../../module/payment/domain/payment.external.sdk";
 import { PaymentRequestDto } from "src/module/payment/api/payment.save.request.dto";
-import { AlarmService } from "src/module/alarm/alarmService";
+import { AlarmService } from "src/module/alarm/alarm.service";
 
 // Completed request Info
 // const validatedRequest: PaymentCardRequestInfo = {
@@ -162,8 +162,8 @@ describe('결제 시 외부 SDK에 정상적으로 전달되는지 확인 TestSu
             price : 10000
             };
 
-        const sdkResult = await externalPaymentSDK.makePayment(requestInfo);
-        expect(sdkResult).rejects.toThrowError('결제 요청 실패');
+      //  const sdkResult = await externalPaymentSDK.makePayment(requestInfo);
+        await expect(externalPaymentSDK.makePayment(requestInfo)).rejects.toThrowError('결제 요청 실패');
 
         //makePayment 함수가 특정 인수와 함께 호출되었는지 검사한다.
         await expect(paymentSdkMock).toHaveBeenCalledWith(requestInfo); //--> 왜 안되는걸까여..!?!!!!?!?!!!!!!!!!!
