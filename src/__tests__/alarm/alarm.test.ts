@@ -1,4 +1,4 @@
-import { AlarmService, TestAlarmService } from '../../module/alarm/alarmService';
+import { AlarmService, TestAlarmService } from '../../module/alarm/alarm.service';
 
 describe("알림 테스트", () => {
     let alarmService: AlarmService;

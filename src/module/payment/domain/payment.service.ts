@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { AlarmService } from 'src/module/alarm/alarmService';
-import { TestExternalPaymentSDK } from './externalPaymentSDK';
+import { AlarmService } from 'src/module/alarm/alarm.service';
+import { TestExternalPaymentSDK } from './payment.external.sdk';
 import {
   PaymentInfo,
   Payment,
@@ -8,7 +8,7 @@ import {
   PaymentInfoForRefund,
 } from './payment.model';
 import { PaymentRepository } from './payment.repository';
-import { AlarmData } from 'src/module/alarm/alarmService';
+import { AlarmData } from 'src/module/alarm/alarm.service';
 
 @Injectable() // 비즈니스 로직으로 분리
 export class PaymentService {
