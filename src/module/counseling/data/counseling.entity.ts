@@ -5,7 +5,7 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
 } from 'typeorm';
-import { User } from '../../user/data/user.entity';
+import { UserEntity } from '../../user/data/user.entity';
 
 @Entity({
   name: 'Counseling',
@@ -21,9 +21,9 @@ export class CounselingEntity {
   @Column('int', { name: 'user_id' })
   userId: number;
   
-  @ManyToOne(() => User, (User) => User.CounselingEntity)
+  @ManyToOne(() => UserEntity, (User) => User.CounselingEntity)
   @JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])
-  User: User;
+  User: UserEntity;
 
   @Column('int', { name: 'pet_id' })
   petId: number;

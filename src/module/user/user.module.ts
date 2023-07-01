@@ -4,11 +4,11 @@ import { UserController } from './api/user.controller';
 import { UserRepositoryImpl } from './data/user.db';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { USER_REPOSITORY } from './domain/user.repository';
-import { User } from './data/user.entity';
+import { UserEntity } from './data/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User]), JwtModule],
+  imports: [TypeOrmModule.forFeature([UserEntity]), JwtModule],
   providers: [
     {
       provide: USER_REPOSITORY,

@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from "typeorm";
-import { Pet } from "../../pet/data/pet.entity"
+import { PetEntity } from "../../pet/data/pet.entity"
 import { CounselingEntity } from "../../counseling/data/counseling.entity"
 import { PaymentEntity } from "../../payment/data/payment.entity";
 
@@ -7,7 +7,7 @@ import { PaymentEntity } from "../../payment/data/payment.entity";
   name: 'user',
   schema: 'animalNest',
 })
-export class User {
+export class UserEntity {
   @PrimaryGeneratedColumn({ type: 'int' })
   id: number;
 
@@ -31,8 +31,8 @@ export class User {
 
     // userId 로 통일
     // 유저 : 반려동물 정보  1대 다 관계 petId
-    @OneToMany(() => Pet, (Pet) => Pet.User)
-    Pet:Pet[]
+    @OneToMany(() => PetEntity, (Pet) => Pet.User)
+    Pet:PetEntity[]
     // 유저 : 진료정보 1대 다 관계 reservationId
     @OneToMany(() => CounselingEntity, (CounselingEntity) => CounselingEntity.User)
     CounselingEntity:CounselingEntity[]

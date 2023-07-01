@@ -3,11 +3,11 @@ import { PetService } from './domain/pet.service';
 import { PetRepositoryImpl } from './data/pet.db';
 import { PetController } from './api/pet.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Pet } from './data/pet.entity';
+import { PetEntity } from './data/pet.entity';
 import { PET_REPOSITORY } from './domain/pet.repository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Pet])],
+  imports: [TypeOrmModule.forFeature([PetEntity])],
   providers: [
     { 
       provide: PET_REPOSITORY, 

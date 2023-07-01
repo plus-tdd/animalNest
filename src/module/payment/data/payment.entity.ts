@@ -1,15 +1,15 @@
 import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from "typeorm";
-import { User } from "src/module/user/data/user.entity";
+import { UserEntity } from "src/module/user/data/user.entity";
 
 @Entity("payment", { schema: "animalnest" })
 export class PaymentEntity {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id: number;
 
-  @ManyToOne( () => User, (User) => User.PaymentEntity )
+  @ManyToOne( () => UserEntity, (User) => User.PaymentEntity )
   @JoinColumn([{name: 'userId', referencedColumnName: 'id'}])
 
-  User: User;
+  User: UserEntity;
   //@JoinColumn([{ name: 'userId', referencedColumnName: 'id' }])
 
   @Column('int', { name: 'card_num' })

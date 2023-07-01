@@ -5,21 +5,21 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { User } from '../../user/data/user.entity';
+import { UserEntity } from '../../user/data/user.entity';
 
 @Entity({
   name: 'pet',
   schema: 'animalNest',
 })
-export class Pet {
+export class PetEntity {
   @PrimaryGeneratedColumn({ type: 'int' })
   id: number;
 
   @Column('int')
   userId: number;
-  @ManyToOne(() => User, (User) => User.Pet)
+  @ManyToOne(() => UserEntity, (User) => User.Pet)
   @JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])
-  User: User;
+  User: UserEntity;
 
   @Column('varchar', { name: 'pet_type', length: 45 })
   petType: string;

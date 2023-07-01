@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from './user.entity';
+import { UserEntity } from './user.entity';
 import { UserRepository } from '../domain/user.repository';
 import { UserIdDto, UserAccountDto, SignUpDto } from '../api/user.dto';
 import { UserOutPutDto } from '../domain/user.output.dto';
@@ -13,8 +13,8 @@ export class UserRepositoryImpl implements UserRepository {
   constructor(
     // DB 주입
     // User DB
-    @InjectRepository(User)
-    private UserDB: Repository<User>,
+    @InjectRepository(UserEntity)
+    private UserDB: Repository<UserEntity>,
   ) {
     this.mapper = new UserMapper();
   }

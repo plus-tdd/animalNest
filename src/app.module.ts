@@ -12,8 +12,8 @@ import { UserService } from './module/user/domain/user.service';
 import { UserModule } from './module/user/user.module';
 import { PetModule } from './module/pet/pet.module';
 import { PetService } from './module/pet/domain/pet.service';
-import { Pet } from './module/pet/data/pet.entity';
-import { User } from './module/user/data/user.entity';
+import { PetEntity } from './module/pet/data/pet.entity';
+import { UserEntity } from './module/user/data/user.entity';
 import { CounselingEntity } from './module/counseling/data/counseling.entity';
 import { CounselingService } from './module/counseling/domain/counseling.service';
 import { JwtModule } from '@nestjs/jwt';
@@ -39,7 +39,7 @@ import { AlarmServiceImpl } from './module/alarm/alarm.service';
       database: process.env.DB_SCHEMA,
       synchronize: true,
       dropSchema: true,
-      entities: [CounselingEntity, Pet, User, PaymentEntity],
+      entities: [CounselingEntity, PetEntity, UserEntity, PaymentEntity],
     }),
     TypeOrmModule.forFeature([CounselingEntity]),
     CounselingModule,
