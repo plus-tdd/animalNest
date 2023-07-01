@@ -6,7 +6,7 @@ import { PaymentEntity } from "./payment.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { InvalidPaymentInfoError } from "../payment.error";
-import { User } from 'src/module/user/user.entity';
+import { User } from 'src/module/user/data/user.entity';
 
 // 실제 DB
 @Injectable()

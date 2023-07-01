@@ -1,13 +1,13 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { InvalidUserInfoError } from './user.error';
+import { InvalidUserInfoError } from '../user.error';
 import {
   LoginuserIdDto,
   UserIdDto,
   SignUpDto,
   UserAccountDto,
-} from './user.dto';
+} from '../api/user.dto';
 import { LoginOutputDto, UserOutPutDto } from './user.output.dto';
 import { USER_REPOSITORY, UserRepository } from './user.repository';
 // 예제에서는 하드 코딩 되었지만

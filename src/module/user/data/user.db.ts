@@ -2,10 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
-import { UserRepository } from './user.repository';
-import { UserIdDto, UserAccountDto, SignUpDto } from './user.dto';
-import { UserOutPutDto } from './user.output.dto';
-import { UserMapper } from './user.mapper';
+import { UserRepository } from '../domain/user.repository';
+import { UserIdDto, UserAccountDto, SignUpDto } from '../api/user.dto';
+import { UserOutPutDto } from '../domain/user.output.dto';
+import { UserMapper } from '../user.mapper';
 
 //Injectable이 이걸 다른곳에 주입할수있단거 같음.
 @Injectable()

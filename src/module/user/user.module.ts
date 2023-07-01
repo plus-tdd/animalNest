@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { UserService } from './user.service';
-import { UserController } from './user.controller';
-import { UserRepositoryImpl } from './user.db';
+import { UserService } from './domain/user.service';
+import { UserController } from './api/user.controller';
+import { UserRepositoryImpl } from './data/user.db';
 import { JwtModule, JwtService } from '@nestjs/jwt';
-import { USER_REPOSITORY } from './user.repository';
-import { User } from './user.entity';
+import { USER_REPOSITORY } from './domain/user.repository';
+import { User } from './data/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({

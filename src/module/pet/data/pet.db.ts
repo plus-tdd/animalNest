@@ -2,10 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Pet } from './pet.entity';
-import { PetRepository } from './pet.repository';
-import { CreatePetDto } from './pet.dto';
-import { PetOutPutDto } from './pet.output.dto';
-import { PetMapper } from './pet.mapper';
+import { PetRepository } from '../domain/pet.repository';
+import { CreatePetDto } from '../api/pet.dto';
+import { PetOutPutDto } from '../domain/pet.output.dto';
+import { PetMapper } from '../pet.mapper';
 
 //Injectable이 이걸 다른곳에 주입할수있단거 같음.
 @Injectable()

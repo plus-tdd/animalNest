@@ -1,4 +1,4 @@
-import { UserIdDto, SignUpDto,UserAccountDto } from "./user.dto";
+import { UserIdDto, SignUpDto,UserAccountDto } from "../api/user.dto";
 import {UserOutPutDto} from "./user.output.dto"
 
 export const USER_REPOSITORY = "User Repository"

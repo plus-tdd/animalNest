@@ -1,4 +1,4 @@
-import { CreatePetDto } from "./pet.dto"
+import { CreatePetDto } from "../api/pet.dto"
 import { PetOutPutDto } from "./pet.output.dto"
 
 export const PET_REPOSITORY = 'Pet Repository'

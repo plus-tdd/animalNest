@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
-import { UserOutPutDto } from "./user.output.dto";
-import { User } from "./user.entity";
+import { UserOutPutDto } from "./domain/user.output.dto";
+import { User } from "./data/user.entity";
 
 
 @Injectable()

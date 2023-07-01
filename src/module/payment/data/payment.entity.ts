@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from "typeorm";
-import { User } from "src/module/user/user.entity";
+import { User } from "src/module/user/data/user.entity";
 
 @Entity("payment", { schema: "animalnest" })
 export class PaymentEntity {

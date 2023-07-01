@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from "typeorm";
-import { Pet } from "../pet/pet.entity"
-import { CounselingEntity } from "../counseling/data/counseling.entity"
-import { PaymentEntity } from "../payment/data/payment.entity";
+import { Pet } from "../../pet/data/pet.entity"
+import { CounselingEntity } from "../../counseling/data/counseling.entity"
+import { PaymentEntity } from "../../payment/data/payment.entity";
 
 @Entity({
   name: 'user',

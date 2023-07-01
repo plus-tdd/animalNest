@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { InvalidPetInfoError } from './pet.error';
+import { InvalidPetInfoError } from '../pet.error';
 import { PET_REPOSITORY, PetRepository } from './pet.repository';
-import { CreatePetDto } from './pet.dto';
+import { CreatePetDto } from '../api/pet.dto';
 import { PetOutPutDto } from './pet.output.dto';
 
 @Injectable()
