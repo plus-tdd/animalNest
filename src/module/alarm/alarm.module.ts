@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { AlarmService } from './alarmService';
-import { AlarmServiceImpl } from './alarmService';
+import { AlarmService } from './alarm.service';
+import { AlarmServiceImpl } from './alarm.service';
 
 @Module({})
 export class AlarmModule {
