@@ -42,7 +42,6 @@ npm run start:dev
 src                                        
 ├─ __tests__ //유닛테스트 디렉토리
 │  └─ moduleA    
-│     ├─ controller.test.ts //모듈A의 콘트롤러 테스트코드
 │     ├─ service.test.ts //모듈A의 서비스 테스트코드
 │     └─ repository.test.ts //모듈A의 레포지토리 테스트코드
 ├─ module                                  
