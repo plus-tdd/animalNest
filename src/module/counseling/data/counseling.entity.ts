@@ -6,6 +6,7 @@ import {
   ManyToOne,
 } from 'typeorm';
 import { User } from '../../user/user.entity';
+import { CounselingStatus } from '../domain/counseling.model';
 
 @Entity({
   name: 'Counseling',
@@ -20,10 +21,6 @@ export class CounselingEntity {
 
   @Column('int', { name: 'user_id' })
   userId: number;
-  
-  @ManyToOne(() => User, (User) => User.CounselingEntity)
-  @JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])
-  User: User;
 
   @Column('int', { name: 'pet_id' })
   petId: number;
@@ -31,9 +28,16 @@ export class CounselingEntity {
   @Column('datetime', { name: 'counseling_date_time' })
   counselingDateTime: Date;
 
+  @Column({ type: 'enum', name: 'counseling_status', enum: CounselingStatus })
+  counselingStatus: CounselingStatus;
+
   @Column('text', { name: 'content', nullable: true })
   content: string | null;
 
   @Column('int', { name: 'expense' })
   expense: number;
+
+  @ManyToOne(() => User, (User) => User.CounselingEntity)
+  @JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])
+  User: User;
 }
