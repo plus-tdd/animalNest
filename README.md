@@ -36,29 +36,34 @@ npm run start:dev
 이러한 브랜치 전략을 통해 우리는 개발 과정을 체계적으로 관리하고, 기능별로 병렬적인 작업을 진행할 수 있습니다. 코드 변경은 각자의 기능 브랜치에서 이루어지며, 최종적인 안정 버전은 main 브랜치에 반영됩니다.
 
 
-# 폴더 구조
+# 디렉토리 구조
 
 ```
 src                                        
-├─ __tests__                               
-│  ├─ controller.test.ts                                      
-│  ├─ service.test.ts                                              
-│  └─ repository.test.ts                                   
+├─ __tests__ //유닛테스트 디렉토리
+│  └─ moduleA    
+│     ├─ controller.test.ts //모듈A의 콘트롤러 테스트코드
+│     ├─ service.test.ts //모듈A의 서비스 테스트코드
+│     └─ repository.test.ts //모듈A의 레포지토리 테스트코드
 ├─ module                                  
 │  └─ moduleA                                                      
-│     ├─ api                               
-│     │  ├─ controller.ts
-│     │  └─ dto.ts  
-│     ├─ data
-│     │  ├─ db.ts 
-│     │  └─ entity.ts                                                                    
-│     ├─ domain                            
-│     │  ├─ model.ts
-│     │  ├─ repository.ts
-│     │  └─ service.ts                                           
-│     ├─ error.ts                             
-│     ├─ mapper.ts                                    
-│     └─ module.ts                                                              
+│  │  ├─ api                               
+│  │  │  ├─ controller.ts
+│  │  │  └─ dto.ts  
+│  │  ├─ data
+│  │  │  ├─ db.ts //실제 레포지토리
+│  │  │  └─ entity.ts                                                                    
+│  │  ├─ domain                            
+│  │  │  ├─ model.ts
+│  │  │  ├─ repository.ts //인터페스로 구현된 레포지토리
+│  │  │  └─ service.ts                                           
+│  │  ├─ error.ts                             
+│  │  ├─ mapper.ts                                    
+│  │  └─ module.ts
+│  ├─ app.controller.ts
+│  ├─ app.module.ts
+│  ├─ app.service.ts
+│  └─ main.ts
 ├─ package.json                    
 ├─ tsconfig.json                 
 ├─ .gitignore              
