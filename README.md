@@ -1,10 +1,9 @@
 # 주제 : 동물병원 예약 시스템 ( DEVELOP 브랜치를 봐주십쇼!! )
-## [노션](https://reinvented-bamboo-5d0.notion.site/2-c3a16f18d54141bb9fb72e2d0c1cd8e9?pvs=4)
 동물 병원 예약 시스템은 반려동물 소유자들이 편리하게 병원 예약을 할 수 있는 웹 애플리케이션입니다. 
 이 시스템을 통해 사용자들은 온라인으로 병원 예약을 신속하게 처리할 수 있고, 예약 확인, 변경 및 취소 등의 기능을 손쉽게 이용할 수 있습니다. 
 프로젝트는 Nest.js와 TypeORM을 사용하여 백엔드를 구축하였으며, MySQL 데이터베이스와의 연동을 통해 예약 정보를 안전하게 관리합니다.
 
-# 팀원 및 제공 기능
+# 팀원 및 제공 기능 ([팀 노션](https://reinvented-bamboo-5d0.notion.site/2-c3a16f18d54141bb9fb72e2d0c1cd8e9?pvs=4))
 - 팀장 김재준 @KJJDSA
   - 회원가입, 로그인, 인증
 - 박세진 @codesejin
