@@ -6,6 +6,7 @@ import {
   ManyToOne,
 } from 'typeorm';
 import { UserEntity } from '../../user/data/user.entity';
+import { CounselingStatus } from '../domain/counseling.model';
 
 @Entity({
   name: 'Counseling',
@@ -30,6 +31,9 @@ export class CounselingEntity {
 
   @Column('datetime', { name: 'counseling_date_time' })
   counselingDateTime: Date;
+
+  @Column({ type: 'enum', name: 'counseling_status', enum: CounselingStatus })
+  counselingStatus: CounselingStatus;
 
   @Column('text', { name: 'content', nullable: true })
   content: string | null;
