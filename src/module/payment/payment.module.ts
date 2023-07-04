@@ -10,7 +10,7 @@ import { AlarmService, AlarmServiceImpl } from '../alarm/alarm.service';
 import { AlarmModule } from '../alarm/alarm.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([PaymentEntity]),AlarmModule],
+  imports: [TypeOrmModule.forFeature([PaymentEntity]), AlarmModule],
   controllers: [PaymentController],
   providers: [
     PaymentService,
