@@ -15,7 +15,7 @@ export class UserService {
   constructor(
     @Inject(USER_REPOSITORY)
     private readonly userRepository: UserRepository,
-    private readonly jwtService: JwtService,
+    // private readonly jwtService: JwtService,
   ) {}
 
   async findOneByUserId(userId: number): Promise<UserOutPutDto> {

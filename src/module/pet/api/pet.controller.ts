@@ -6,6 +6,8 @@ import { JwtAuthGuard } from "../../auth/auth.jwtAuthGuard";
 @Controller('pet')
 export class PetController {
     constructor(private readonly petService : PetService) {}
+
+    @UseGuards(JwtAuthGuard)
     @Post('create')
     create(@Body() createPetDto : CreatePetDto) {
         return this.petService.create(createPetDto);

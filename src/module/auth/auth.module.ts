@@ -1,26 +1,34 @@
 import { Module } from '@nestjs/common';
-// import { JwtStrategy  } from './passport/jwt.passport';
-// import { JwtAuthGuard } from './auth.guard';
 import { AuthService } from './domain/auth.service';
-import { jwtConstants } from './constants';
-import { PassportModule } from '@nestjs/passport';
 import { JwtModule, JwtService } from "@nestjs/jwt";
 import { AuthController } from './api/auth.controller';
-import { UserService } from "../user/domain/user.service";
-import { UserModule } from "../user/user.module";
 import { JwtAuthGuard } from "./auth.jwtAuthGuard";
+import { AUTH_REPOSITORY } from "./domain/auth.repository";
+import { AuthRepositoryImpl } from "./data/auth.db";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { UserEntity } from "../user/data/user.entity";
 
 @Module({
   imports: [
-    UserModule,
-    PassportModule,
-    JwtModule.register({
-      secret: jwtConstants.secret,
-      signOptions: { expiresIn: '60s' },
-    }),
+    TypeOrmModule.forFeature([UserEntity])
   ],
-  providers: [AuthService, JwtAuthGuard, JwtService /*???? 왜 JwtService랑 UserService 를 여기에 또 export 해야하는건데*/],
+  providers: [
+    AuthService,
+    {
+      provide: AUTH_REPOSITORY,
+      useClass: AuthRepositoryImpl,
+    },
+    JwtAuthGuard,
+    JwtService,
+  ],
   controllers: [AuthController],
-  exports: [AuthService, JwtAuthGuard, JwtService]
+  exports: [
+    AuthService,
+    {
+      provide: AUTH_REPOSITORY,
+      useClass: AuthRepositoryImpl,
+    },
+    JwtAuthGuard,
+    JwtService]
 })
 export class AuthModule {}
