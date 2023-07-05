@@ -7,6 +7,8 @@ export interface UserRepository {
     findOneByUserId(userId : number)
     findUserByAccount(account : string)
     signUp(signUpDto: SignUpDto)
+    createMany(users)
+    deleteAll()
 }
 
 export class TestUserRepositoryImpl implements UserRepository {
@@ -38,6 +40,14 @@ export class TestUserRepositoryImpl implements UserRepository {
     async signUp(signUpDto: SignUpDto) : Promise<boolean> {
         const { account, userName, password, phoneNumber } = signUpDto;
         return true;
+    }
+
+
+    async createMany(doctor) {
+        return true
+    }
+    async deleteAll() {
+        return true
     }
 
 }

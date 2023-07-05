@@ -7,4 +7,6 @@ export interface PetRepository {
     createNewPet(createPetDto: CreatePetDto) : Promise<boolean>
     findPetByPetId(petId : number) : Promise<PetOutPutDto>
     findAllPetByUserId(userId : number) : Promise<PetOutPutDto[]>
+    createMany(pets)
+    deleteAll()
 }

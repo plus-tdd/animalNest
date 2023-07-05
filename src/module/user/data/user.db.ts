@@ -50,4 +50,11 @@ export class UserRepositoryImpl implements UserRepository {
       return false;
     }
   }
+
+  async createMany(user) {
+    return await this.UserDB.insert(user);
+  }
+  async deleteAll() {
+    return await this.UserDB.clear();
+  }
 }

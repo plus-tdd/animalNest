@@ -67,4 +67,11 @@ export class PetRepositoryImpl implements PetRepository {
       return false;
     }
   }
+
+  async createMany(pets) {
+    return await this.PetDB.insert(pets);
+  }
+  async deleteAll() {
+    return await this.PetDB.clear();
+  }
 }

@@ -23,11 +23,13 @@ import { PaymentEntity } from './module/payment/data/payment.entity';
 import { PaymentService } from './module/payment/domain/payment.service';
 import { AlarmModule } from './module/alarm/alarm.module';
 import { AlarmServiceImpl } from './module/alarm/alarm.service';
-import { JwtAuthGuard } from "./module/auth/auth.jwtAuthGuard";
+import { DoctorModule } from './module/doctor/doctor.module';
+import { DoctorEntity } from "./module/doctor/doctor.entity";
 
 // Module 설명 : express에서는 router위주의 설계였다면, nest에서는 module위주의 설계를 한다
 // 기능별로 module을 만들어서 여기에 다 넣어줄거임 - nest가 module간의 연결된걸 파악해서 한번에 실행해줌
 // app.module.ts가 중심이 되는 모듈이기 때문에, 다른 기능별 모듈을 연결시켜야 함
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, envFilePath: './.env' }),
@@ -40,9 +42,9 @@ import { JwtAuthGuard } from "./module/auth/auth.jwtAuthGuard";
       database: process.env.DB_SCHEMA,
       synchronize: true,
       dropSchema: true,
-      entities: [CounselingEntity, PetEntity, UserEntity, PaymentEntity],
+      entities: [CounselingEntity, PetEntity, UserEntity, PaymentEntity, DoctorEntity],
     }),
-    TypeOrmModule.forFeature([CounselingEntity]),
+    TypeOrmModule.forFeature([CounselingEntity,DoctorEntity,UserEntity]),
     CounselingModule,
     AuthModule,
     PaymentModule,
@@ -50,6 +52,7 @@ import { JwtAuthGuard } from "./module/auth/auth.jwtAuthGuard";
     PetModule,
     JwtModule,
     AlarmModule,
+    DoctorModule,
   ],
   controllers: [AppController],
   providers: [
