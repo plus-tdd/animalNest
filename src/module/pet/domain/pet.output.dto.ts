@@ -8,7 +8,7 @@ export class PetOutPutDto {
     bDay : string
     adoptionDay : string
     gender : string
-    neuter : string
+    neuter ?: string
     allergy ?: string
     disease ?: string
 }

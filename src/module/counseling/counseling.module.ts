@@ -5,12 +5,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CounselingRepositoryImpl } from './data/counseling.db';
 import { CounselingEntity } from './data/counseling.entity';
 import { COUNSELING_REPOSITORY } from './domain/counseling.repository';
-import { PetEntity } from '../value-data/pet.db';
-import { DoctorEntity } from '../value-data/doctor.db';
+import { AuthModule } from "../auth/auth.module";
+import { DoctorEntity } from "../doctor/doctor.entity";
+import { PetEntity } from "../pet/data/pet.entity";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([PetEntity, CounselingEntity, DoctorEntity]),
+    AuthModule,
+    TypeOrmModule.forFeature([PetEntity, CounselingEntity, DoctorEntity, DoctorEntity]),
   ],
   providers: [
     {

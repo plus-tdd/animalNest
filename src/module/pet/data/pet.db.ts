@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Pet } from './pet.entity';
-import { PetRepository } from './pet.repository';
-import { CreatePetDto } from './pet.dto';
-import { PetOutPutDto } from './pet.output.dto';
-import { PetMapper } from './pet.mapper';
+import { PetEntity } from './pet.entity';
+import { PetRepository } from '../domain/pet.repository';
+import { CreatePetDto } from '../api/pet.dto';
+import { PetOutPutDto } from '../domain/pet.output.dto';
+import { PetMapper } from '../pet.mapper';
 
 //Injectable이 이걸 다른곳에 주입할수있단거 같음.
 @Injectable()
@@ -13,8 +13,8 @@ export class PetRepositoryImpl implements PetRepository {
   constructor(
     // DB 주입
     // Pet DB
-    @InjectRepository(Pet)
-    private PetDB: Repository<Pet>,
+    @InjectRepository(PetEntity)
+    private PetDB: Repository<PetEntity>,
   ) {
     this.mapper = new PetMapper();
   }
@@ -27,7 +27,7 @@ export class PetRepositoryImpl implements PetRepository {
   }
 
   async findAllPetByUserId(userId: number): Promise<PetOutPutDto[]> {
-    const result: Pet[] = await this.PetDB.find({ where: { userId: userId } });
+    const result: PetEntity[] = await this.PetDB.find({ where: { userId: userId } });
     return result.map((x) => this.mapper.mapToDto(x));
   }
 
@@ -66,5 +66,12 @@ export class PetRepositoryImpl implements PetRepository {
     } else {
       return false;
     }
+  }
+
+  async createMany(pets) {
+    return await this.PetDB.insert(pets);
+  }
+  async deleteAll() {
+    return await this.PetDB.clear();
   }
 }

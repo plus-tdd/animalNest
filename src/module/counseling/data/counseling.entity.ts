@@ -5,7 +5,7 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
 } from 'typeorm';
-import { User } from '../../user/user.entity';
+import { UserEntity } from '../../user/data/user.entity';
 import { CounselingStatus } from '../domain/counseling.model';
 
 @Entity({
@@ -21,6 +21,10 @@ export class CounselingEntity {
 
   @Column('int', { name: 'user_id' })
   userId: number;
+  
+  @ManyToOne(() => UserEntity, (User) => User.CounselingEntity)
+  @JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])
+  User: UserEntity;
 
   @Column('int', { name: 'pet_id' })
   petId: number;
@@ -36,8 +40,4 @@ export class CounselingEntity {
 
   @Column('int', { name: 'expense' })
   expense: number;
-
-  @ManyToOne(() => User, (User) => User.CounselingEntity)
-  @JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])
-  User: User;
 }

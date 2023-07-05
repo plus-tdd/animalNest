@@ -8,9 +8,10 @@ import { PaymentService } from './domain/payment.service';
 import { PaymentRepositoryImpl } from './data/payment.db';
 import { AlarmService, AlarmServiceImpl } from '../alarm/alarm.service';
 import { AlarmModule } from '../alarm/alarm.module';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([PaymentEntity]), AlarmModule],
+  imports: [AuthModule, TypeOrmModule.forFeature([PaymentEntity]), AlarmModule],
   controllers: [PaymentController],
   providers: [
     PaymentService,
