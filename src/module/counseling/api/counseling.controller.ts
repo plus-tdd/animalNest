@@ -52,8 +52,11 @@ export class CounselingController {
 
   //진료 상태 변경 (예약->진료)
   @Post('id')
-  updateCounselingStatus(@Param('id') counselingId: string) {
-    return this.counselingService.updateCounselingStatus(counselingId);
+  updateCounselingStatus(
+    @Param('id') counselingId: string,
+    @Body('content') content: string,
+  ) {
+    return this.counselingService.updateCounselingStatus(counselingId, content);
   }
 
   //예약 삭제
