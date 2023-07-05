@@ -29,7 +29,7 @@ export class JwtAuthGuard implements CanActivate {
             );
             // 💡 We're assigning the payload to the request object here
             // so that we can access it in our route handlers
-            const result = this.authService.validateUser(payload.userId)
+            const result = await this.authService.validateUser(payload.userId)
             if (!result) return false;
         } catch {
             throw new UnauthorizedException();

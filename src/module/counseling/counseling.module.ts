@@ -7,9 +7,11 @@ import { CounselingEntity } from './data/counseling.entity';
 import { COUNSELING_REPOSITORY } from './domain/counseling.repository';
 import { PetEntity } from '../value-data/pet.db';
 import { DoctorEntity } from '../value-data/doctor.db';
+import { AuthModule } from "../auth/auth.module";
 
 @Module({
   imports: [
+    AuthModule,
     TypeOrmModule.forFeature([PetEntity, CounselingEntity, DoctorEntity]),
   ],
   providers: [
