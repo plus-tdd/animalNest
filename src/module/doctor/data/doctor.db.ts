@@ -2,11 +2,11 @@ import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Injectable } from "@nestjs/common";
 import { plainToClass } from "class-transformer";
-import { DoctorMapper } from "./doctor.mapper";
-import { DoctorRepository } from "./docter.repository";
+import { DoctorMapper } from "../doctor.mapper";
+import { DoctorRepository } from "../domain/docter.repository";
 import { DoctorEntity } from "./doctor.entity";
-import { DoctorOutPutDto } from "./doctor.output.dto";
-import { Doctor } from "./doctor.model";
+import { DoctorOutPutDto } from "../domain/doctor.output.dto";
+import { Doctor } from "../domain/doctor.model";
 import { FactoryValue } from "nestjs-seeder";
 
 @Injectable()

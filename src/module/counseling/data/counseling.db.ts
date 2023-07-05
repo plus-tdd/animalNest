@@ -6,7 +6,7 @@ import { CounselingRepository } from '../domain/counseling.repository';
 import { CounselingEntity } from './counseling.entity';
 import { InvalidCounselingInfoError } from '../counseling.error';
 import { CounselingMapper } from '../counseling.mapper';
-import { DoctorEntity } from "../../doctor/doctor.entity";
+import { DoctorEntity } from "../../doctor/data/doctor.entity";
 import { PetEntity } from "../../value-data/pet.db";
 
 //Injectable이 이걸 다른곳에 주입할수있단거 같음.

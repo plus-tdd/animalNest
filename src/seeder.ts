@@ -1,6 +1,6 @@
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { seeder } from "nestjs-seeder";
-import { DoctorEntity } from "./module/doctor/doctor.entity";
+import { DoctorEntity } from "./module/doctor/data/doctor.entity";
 import { DoctorModule } from "./module/doctor/doctor.module";
 import { DoctorSeeder } from "./module/doctor/doctor.seeder";
 import { ConfigModule, ConfigService } from "@nestjs/config";

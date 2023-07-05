@@ -24,7 +24,7 @@ import { PaymentService } from './module/payment/domain/payment.service';
 import { AlarmModule } from './module/alarm/alarm.module';
 import { AlarmServiceImpl } from './module/alarm/alarm.service';
 import { DoctorModule } from './module/doctor/doctor.module';
-import { DoctorEntity } from "./module/doctor/doctor.entity";
+import { DoctorEntity } from "./module/doctor/data/doctor.entity";
 
 // Module 설명 : express에서는 router위주의 설계였다면, nest에서는 module위주의 설계를 한다
 // 기능별로 module을 만들어서 여기에 다 넣어줄거임 - nest가 module간의 연결된걸 파악해서 한번에 실행해줌
