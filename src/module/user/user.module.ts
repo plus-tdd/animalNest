@@ -1,14 +1,18 @@
 import { Module } from '@nestjs/common';
-import { UserService } from './user.service';
-import { UserController } from './user.controller';
-import { UserRepositoryImpl } from './user.db';
+import { UserService } from './domain/user.service';
+import { UserController } from './api/user.controller';
+import { UserRepositoryImpl } from './data/user.db';
 import { JwtModule, JwtService } from '@nestjs/jwt';
-import { USER_REPOSITORY } from './user.repository';
-import { User } from './user.entity';
+import { USER_REPOSITORY } from './domain/user.repository';
+import { UserEntity } from './data/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from "../auth/auth.module";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User]), JwtModule],
+  imports: [
+    TypeOrmModule.forFeature([UserEntity]),
+    AuthModule
+  ],
   providers: [
     {
       provide: USER_REPOSITORY,
@@ -18,6 +22,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   ],
   controllers: [UserController],
   exports: [
+    UserService,
     {
       provide: USER_REPOSITORY,
       useClass: UserRepositoryImpl,

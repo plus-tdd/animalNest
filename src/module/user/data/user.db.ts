@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from './user.entity';
-import { UserRepository } from './user.repository';
-import { UserIdDto, UserAccountDto, SignUpDto } from './user.dto';
-import { UserOutPutDto } from './user.output.dto';
-import { UserMapper } from './user.mapper';
+import { UserEntity } from './user.entity';
+import { UserRepository } from '../domain/user.repository';
+import { SignUpDto } from '../api/user.dto';
+import { UserOutPutDto } from '../domain/user.output.dto';
+import { UserMapper } from '../user.mapper';
 
 //Injectable이 이걸 다른곳에 주입할수있단거 같음.
 @Injectable()
@@ -13,24 +13,22 @@ export class UserRepositoryImpl implements UserRepository {
   constructor(
     // DB 주입
     // User DB
-    @InjectRepository(User)
-    private UserDB: Repository<User>,
+    @InjectRepository(UserEntity)
+    private UserDB: Repository<UserEntity>,
   ) {
     this.mapper = new UserMapper();
   }
 
   private mapper: UserMapper;
 
-  async findOneByUserId(userIdDto: UserIdDto): Promise<UserOutPutDto> {
-    const { userId } = userIdDto;
+  async findOneByUserId(userId : number): Promise<UserOutPutDto> {
     const result = await this.UserDB.findOne({ where: { id: userId } });
     return this.mapper.mapToDto(result);
   }
 
   async findUserByAccount(
-    userAccountDto: UserAccountDto,
+    account
   ): Promise<UserOutPutDto> {
-    const { account } = userAccountDto;
     const result = await this.UserDB.findOne({ where: { account: account } });
     return this.mapper.mapToDto(result);
   }
@@ -51,5 +49,12 @@ export class UserRepositoryImpl implements UserRepository {
     } else {
       return false;
     }
+  }
+
+  async createMany(user) {
+    return await this.UserDB.insert(user);
+  }
+  async deleteAll() {
+    return await this.UserDB.clear();
   }
 }

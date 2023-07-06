@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
-import { PetOutPutDto } from './pet.output.dto';
-import { Pet } from './pet.entity';
+import { PetOutPutDto } from './domain/pet.output.dto';
+import { PetEntity } from './data/pet.entity';
 
 @Injectable()
 export class PetMapper {
-  mapToEntity(dto: PetOutPutDto): Pet {
-    return plainToClass(Pet, dto);
+  mapToEntity(dto: PetOutPutDto): PetEntity {
+    return plainToClass(PetEntity, dto);
   }
 
-  mapToDto(entity: Pet): PetOutPutDto {
+  mapToDto(entity: PetEntity): PetOutPutDto {
     return plainToClass(PetOutPutDto, entity);
   }
 }
