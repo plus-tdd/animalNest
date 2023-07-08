@@ -79,7 +79,10 @@ export class CounselingRepositoryImpl implements CounselingRepository {
     throw new Error('Method not implemented.');
   }
 
-  updateCounselingStatus(counselingId: string): Promise<Counseling> {
+  updateCounselingStatus(
+    counselingId: string,
+    content: string,
+  ): Promise<Counseling> {
     throw new Error('Method not implemented.');
   }
 

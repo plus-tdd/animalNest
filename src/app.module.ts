@@ -16,7 +16,7 @@ import { PetEntity } from './module/pet/data/pet.entity';
 import { UserEntity } from './module/user/data/user.entity';
 import { CounselingEntity } from './module/counseling/data/counseling.entity';
 import { CounselingService } from './module/counseling/domain/counseling.service';
-import { JwtModule, JwtService } from "@nestjs/jwt";
+import { JwtModule, JwtService } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import * as process from 'process';
 import { PaymentEntity } from './module/payment/data/payment.entity';
@@ -44,7 +44,7 @@ import { DoctorEntity } from "./module/doctor/data/doctor.entity";
       dropSchema: false,
       entities: [CounselingEntity, PetEntity, UserEntity, PaymentEntity, DoctorEntity],
     }),
-    TypeOrmModule.forFeature([CounselingEntity,DoctorEntity,UserEntity]),
+    TypeOrmModule.forFeature([CounselingEntity, DoctorEntity, UserEntity]),
     CounselingModule,
     AuthModule,
     PaymentModule,
@@ -61,7 +61,7 @@ import { DoctorEntity } from "./module/doctor/data/doctor.entity";
     PetService,
     CounselingService,
     PaymentService,
-    AlarmServiceImpl
+    AlarmServiceImpl,
   ],
 })
 export class AppModule {}

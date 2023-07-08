@@ -43,7 +43,10 @@ export class CounselingService {
   }
 
   //진료 상태 변경 (예약->진료)
-  async updateCounselingStatus(counselingId: string): Promise<Counseling[]> {
+  async updateCounselingStatus(
+    counselingId: string,
+    content: string,
+  ): Promise<Counseling[]> {
     return [];
   }
 
