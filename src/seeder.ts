@@ -24,7 +24,7 @@ seeder({
             useFactory: async (configService: ConfigService) => {
                 return {
                     type: 'mysql',
-                    host: 'localhost',
+                    host: configService.get('DB_HOST'),
                     port: Number(configService.get('DB_PORT')),
                     username: configService.get('DB_USER'),
                     password: configService.get('DB_PW'),

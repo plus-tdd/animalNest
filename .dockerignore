@@ -1,0 +1,12 @@
+#lib
+node_modules
+package-lock.json
+#dist
+dist
+
+#git에 올라갈 때 쯤에는 이 환경변수들을 사용할 수 없어요!
+##env
+#.env
+##secret
+#src/module/auth/constants.ts
+
