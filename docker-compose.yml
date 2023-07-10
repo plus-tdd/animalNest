@@ -1,0 +1,26 @@
+version: '3'
+services:
+#  컨테이너
+  nest:
+#    컨테이너의 호칭
+    container_name: v0.2
+#    빌드에 사용하는 이미지 혹은 도커파일(저희의 경우 도커파일.)
+    build:
+      context: .
+      dockerfile: Dockerfile
+#      외부 포트 : 내부 포트
+    ports:
+      - '3000:3000'
+#    이 컨테이너에서 사용할 다른 컨테이너(docker compose 의 특장점?)
+    depends_on:
+      - mysql
+  mysql:
+    image: mysql:latest
+#    비밀번호 값을 해시해서 보관하는 옵션을 준대요
+    command: --default-authentication-plugin=mysql_native_password
+#    환경변수 설정
+    environment:
+      MYSQL_ROOT_PASSWORD: 1080
+      MYSQL_DATABASE: animalnest
+    ports:
+      - '3306:3306'

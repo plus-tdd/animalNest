@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { DOCTOR_REPOSITORY } from "./docter.repository";
-import { DoctorRepositoryImpl } from "./doctor.db";
+import { DOCTOR_REPOSITORY } from "./domain/docter.repository";
+import { DoctorRepositoryImpl } from "./data/doctor.db";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { DoctorEntity } from "./doctor.entity";
-import { DoctorService } from './doctor.service';
+import { DoctorEntity } from "./data/doctor.entity";
+import { DoctorService } from './domain/doctor.service';
 
 @Module({
     imports: [

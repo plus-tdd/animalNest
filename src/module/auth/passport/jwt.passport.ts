@@ -1,14 +1,13 @@
 // import { Injectable } from '@nestjs/common';
 // import { PassportStrategy } from '@nestjs/passport';
 // import { ExtractJwt, Strategy } from 'passport-jwt';
-// import { jwtConstants } from '../constants';
 //
 // @Injectable()
 // export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
 //   constructor() {
 //     super({
 //       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), // header의 Bearer 이름 가진 토큰을 알아서 추출해옴
-//       secretOrKey: jwtConstants.secret,
+//       secretOrKey: process.env.JWT_SECRET_KEY,
 //       passReqToCallback: true,
 //     });
 //   }

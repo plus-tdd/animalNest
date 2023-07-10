@@ -10,8 +10,8 @@ import { CounselingRepository } from '../domain/counseling.repository';
 import { CounselingEntity } from './counseling.entity';
 import { InvalidCounselingInfoError } from '../counseling.error';
 import { CounselingMapper } from '../counseling.mapper';
-import { DoctorEntity } from '../../doctor/doctor.entity';
-import { PetEntity } from '../../value-data/pet.db';
+import { DoctorEntity } from '../../doctor/data/doctor.entity';
+import { PetEntity } from '../../pet/data/pet.entity';
 
 //Injectable이 이걸 다른곳에 주입할수있단거 같음.
 // Repository !== TypeOrm.Repsository => 완전한 Decoupling 을 달성할 수 있음 ! = > 이게 개발적으로 제가 생각하는 최적의 구조다. by 허재

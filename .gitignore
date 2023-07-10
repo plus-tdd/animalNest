@@ -39,7 +39,4 @@ lerna-debug.log*
 #.env
 .env
 
-# constants
-/src/module/auth/constants.ts
-
 ./src/__tests__/reservation/*

@@ -33,11 +33,14 @@ export class PetEntity {
   @Column('varchar', { name: 'pet_type', length: 45 })
   petType: string;
 
-  @Factory((faker) =>
-    faker.helpers.arrayElement(['cat', 'dog']) === 'cat'
-      ? faker.animal.cat()
-      : faker.animal.dog(),
-  )
+  @Factory((faker, context: { petType: string }) => {
+    const petType = context.petType;
+    if (petType === 'dog') {
+      return faker.animal.dog();
+    } else if (petType === 'cat') {
+      return faker.animal.cat();
+    }
+  })
   @Column('varchar', { name: 'breed', length: 45 })
   breed: string;
 

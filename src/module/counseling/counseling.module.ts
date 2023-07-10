@@ -6,7 +6,7 @@ import { CounselingRepositoryImpl } from './data/counseling.db';
 import { CounselingEntity } from './data/counseling.entity';
 import { COUNSELING_REPOSITORY } from './domain/counseling.repository';
 import { AuthModule } from "../auth/auth.module";
-import { DoctorEntity } from "../doctor/doctor.entity";
+import { DoctorEntity } from "../doctor/data/doctor.entity";
 import { PetEntity } from "../pet/data/pet.entity";
 
 @Module({

@@ -3,7 +3,6 @@ import { JwtService } from '@nestjs/jwt';
 import { LoginOutputDto } from "../../user/domain/user.output.dto";
 import { LoginDto } from "../api/auth.dto";
 import * as bcrypt from 'bcrypt';
-import { jwtConstants } from "../constants";
 import { AUTH_REPOSITORY, AuthRepository } from "./auth.repository";
 
 @Injectable()
@@ -27,7 +26,7 @@ export class AuthService {
             throw new UnauthorizedException('로그인에 실패하였습니다.');
         }
         const payload = { userId: user.id };
-        const accessToken = this.jwtService.sign({ payload },{ secret: jwtConstants.secret, expiresIn: '600s' });
+        const accessToken = this.jwtService.sign({ payload },{ secret: process.env.JWT_SECRET_KEY, expiresIn: '600s' });
         return {
             accessToken,
         };
