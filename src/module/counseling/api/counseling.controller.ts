@@ -45,13 +45,13 @@ export class CounselingController {
   }
 
   //진료 상세 조회
-  @Get('id')
+  @Get(':id')
   getCounseling(@Param('id') counselingId: string) {
     return this.counselingService.getCounseling(counselingId);
   }
 
   //진료 상태 변경 (예약->진료)
-  @Post('id')
+  @Post(':id')
   updateCounselingStatus(@Param('id') counselingId: string) {
     return this.counselingService.updateCounselingStatus(counselingId);
   }
