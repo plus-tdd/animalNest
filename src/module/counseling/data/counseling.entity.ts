@@ -8,7 +8,7 @@ import {
 import { UserEntity } from '../../user/data/user.entity';
 import { CounselingStatus } from '../domain/counseling.model';
 import { PetEntity } from '../../pet/data/pet.entity';
-import { DoctorEntity } from './../../doctor/doctor.entity';
+import { DoctorEntity } from '../../doctor/data/doctor.entity';
 
 @Entity({
   name: 'Counseling',

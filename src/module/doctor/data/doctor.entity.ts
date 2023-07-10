@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { Factory } from 'nestjs-seeder';
-import { CounselingEntity } from '../counseling/data/counseling.entity';
+import { CounselingEntity } from '../../counseling/data/counseling.entity';
 
 @Entity({
   name: 'Doctor',
