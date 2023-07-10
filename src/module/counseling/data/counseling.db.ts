@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Counseling, CounselingInfo } from '../domain/counseling.model';
+import { Repository, Between } from 'typeorm';
+import { Counseling, CounselingInfo, CounselingStatus } from '../domain/counseling.model';
 import { CounselingRepository } from '../domain/counseling.repository';
 import { CounselingEntity } from './counseling.entity';
 import { InvalidCounselingInfoError } from '../counseling.error';
@@ -72,21 +72,45 @@ export class CounselingRepositoryImpl implements CounselingRepository {
     startDate: Date,
     endDate: Date,
   ): Promise<Counseling[]> {
-    throw new Error('Method not implemented.');
+
+    const result : CounselingEntity[] = await this.CounselingDB.find( {where : {
+      counselingDateTime : Between(startDate, endDate)
+    }
+  })
+
+  return result.map( v => this.mapper.mapEntityToDomain(v));
+
   }
 
-  getOneCounseling(counselingId: string): Promise<Counseling> {
-    throw new Error('Method not implemented.');
+  async getOneCounseling(counselingId: string): Promise<Counseling> {
+    const result = await this.CounselingDB.findOne( { where : { id : +counselingId}})
+    
+    return this.mapper.mapEntityToDomain(result);
   }
 
-  updateCounselingStatus(
+  async updateCounselingStatusDone(
     counselingId: string,
     content: string,
-  ): Promise<Counseling> {
-    throw new Error('Method not implemented.');
+    expense : number,
+  ): Promise<boolean> {
+
+    const result = await this.CounselingDB.update( { id : + counselingId}, { content : content, counselingStatus : CounselingStatus.Complete, expense : expense })
+    
+    if (result.affected !== 1){
+      throw new Error('updateCounselingStatusDone failed');
+    } else {
+      return true;
+    }
+    
   }
 
-  deleteOneCounseling(counselingId: string): Promise<boolean> {
-    throw new Error('Method not implemented.');
+  async deleteOneCounseling(counselingId: string): Promise<boolean> {
+    const result = await this.CounselingDB.delete(counselingId)
+
+    if (result.affected !== 1){
+      throw new Error('deleteOneCounseling failed');
+    } else {
+      return true;
+    }
   }
 }

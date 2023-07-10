@@ -2,8 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
 import { CreateCounselingDto } from './api/counseling.dto';
 import { CounselingEntity } from './data/counseling.entity';
-<<<<<<< HEAD
-import { Counseling } from './domain/counseling.model'
+import { Counseling, CounselingInfo } from './domain/counseling.model'
 
 @Injectable()
 export class CounselingMapper {
@@ -19,19 +18,14 @@ export class CounselingMapper {
     return plainToClass(CreateCounselingDto, counseling);
   }
 
-  mapDtoToDomain(createCounselingDto : CreateCounselingDto) : Counseling{
-    return 
-=======
-import { Counseling } from './domain/counseling.model';
-
-@Injectable()
-export class CounselingMapper {
-  mapToEntity(counseling: Counseling): CounselingEntity {
-    return plainToClass(CounselingEntity, counseling);
-  }
-
-  mapToDto(counseling: Counseling): CreateCounselingDto {
-    return plainToClass(CreateCounselingDto, counseling);
->>>>>>> 13dd456298f7e2e18680b24efce33f3b958e7a5e
+  mapDtoToDomain(createCounselingDto : CreateCounselingDto) : CounselingInfo{
+    return {
+      userId: createCounselingDto.userId,
+      petId: createCounselingDto.petId,
+      doctorId: createCounselingDto.doctorId, 
+      dateTime: createCounselingDto.counselingDateTime,
+      expense: createCounselingDto.expense,
+      content: createCounselingDto.content    
+}
   }
 }

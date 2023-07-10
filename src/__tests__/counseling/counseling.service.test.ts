@@ -36,7 +36,7 @@ class TestCounselingRepository implements CounselingRepository {
     throw new Error('Method not implemented.');
   }
 
-  updateCounselingStatus(counselingId: string): Promise<Counseling> {
+  updateCounselingStatusDone(counselingId: string, content : string, expense : number): Promise<boolean> {
     throw new Error('Method not implemented.');
   }
 

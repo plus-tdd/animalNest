@@ -20,7 +20,11 @@ export class CounselingService {
 
   //예약 등록
   async registerCounseling(info: CounselingInfo): Promise<Counseling> {
-    this.validateRequestInfo(info);
+    //this.validateRequestInfo(info);
+    // 1. 등록날짜는 현재 시각보단 크면 안됨
+    if (info.dateTime.getTime() > Date.now())
+      throw new InvalidCounselingInfoError('날짜');
+
     const result = await this.repository.registerCounselingHistory(info);
     // 서비스에서 nest.js 에 의존성을 물고 있는 오류가 있을까 ?
     // 유저 검증이라던가 ( Guards {} => Jwt.=> UserEntity )
@@ -34,25 +38,30 @@ export class CounselingService {
     startDate: Date,
     endDate: Date,
   ): Promise<Counseling[]> {
-    return [];
+    return this.repository.getConselingHistories(startDate, endDate);
   }
 
   //진료 상세 조회
-  async getCounseling(counselingId: string): Promise<Counseling[]> {
-    return [];
+  async getCounseling(counselingId: string): Promise<Counseling> {
+    return this.repository.getOneCounseling(counselingId);
   }
 
   //진료 상태 변경 (예약->진료)
-  async updateCounselingStatus(
+  async updateCounselingStatusDone(
     counselingId: string,
     content: string,
-  ): Promise<Counseling[]> {
-    return [];
+    expense : number
+  ): Promise<boolean> {
+    // 2. 컨텐츠는 1000자 이내여야 함.
+    if (content.length > 1000) throw new InvalidCounselingInfoError('상담내용');
+    // 3. 비용은 양수여야 함.
+    if (expense <= 0) throw new InvalidCounselingInfoError('비용');
+    return await this.repository.updateCounselingStatusDone(counselingId, content, expense)
   }
 
   //예약 삭제
-  async deleteCounseling(counselingId: string): Promise<Counseling[]> {
-    return [];
+  async deleteCounseling(counselingId: string): Promise<boolean> {
+    return await this.repository.deleteOneCounseling(counselingId);
   }
 
   private validateRequestInfo(info: CounselingInfo) {
