@@ -1,5 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Counseling, CounselingInfo } from './counseling.model';
+import {
+  Counseling,
+  CounselingInfo,
+  CounselingStatus,
+} from './counseling.model';
 import {
   COUNSELING_REPOSITORY,
   CounselingRepository,
@@ -20,10 +24,15 @@ export class CounselingService {
 
   //예약 등록
   async registerCounseling(info: CounselingInfo): Promise<Counseling> {
+    info.status = CounselingStatus.Reserved;
+    info.content = '';
+    info.expense = 0;
+
     //this.validateRequestInfo(info);
-    // 1. 등록날짜는 현재 시각보단 크면 안됨
-    if (info.dateTime.getTime() > Date.now())
+    // 1. 등록날짜는 현재 시각보단 작으면 안됨
+    if (new Date(info.dateTime).getTime() <= Date.now()) {
       throw new InvalidCounselingInfoError('날짜');
+    }
 
     const result = await this.repository.registerCounselingHistory(info);
     // 서비스에서 nest.js 에 의존성을 물고 있는 오류가 있을까 ?
@@ -38,25 +47,31 @@ export class CounselingService {
     startDate: Date,
     endDate: Date,
   ): Promise<Counseling[]> {
-    return this.repository.getConselingHistories(startDate, endDate);
+    return this.repository.getCounselingHistories(startDate, endDate);
   }
 
   //진료 상세 조회
   async getCounseling(counselingId: string): Promise<Counseling> {
-    return this.repository.getOneCounseling(counselingId);
+    const result = await this.repository.getOneCounseling(counselingId);
+
+    return result;
   }
 
   //진료 상태 변경 (예약->진료)
   async updateCounselingStatusDone(
     counselingId: string,
     content: string,
-    expense : number
+    expense: number,
   ): Promise<boolean> {
     // 2. 컨텐츠는 1000자 이내여야 함.
     if (content.length > 1000) throw new InvalidCounselingInfoError('상담내용');
     // 3. 비용은 양수여야 함.
     if (expense <= 0) throw new InvalidCounselingInfoError('비용');
-    return await this.repository.updateCounselingStatusDone(counselingId, content, expense)
+    return await this.repository.updateCounselingStatusDone(
+      counselingId,
+      content,
+      expense,
+    );
   }
 
   //예약 삭제
