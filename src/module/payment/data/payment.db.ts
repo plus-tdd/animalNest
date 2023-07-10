@@ -6,7 +6,7 @@ import { PaymentEntity } from "./payment.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { InvalidPaymentInfoError } from "../payment.error";
-import { User } from 'src/module/user/user.entity';
+import { UserEntity } from 'src/module/user/data/user.entity';
 
 // 실제 DB
 @Injectable()
@@ -16,7 +16,7 @@ export class PaymentRepositoryImpl implements PaymentRepository {
         // DB 주입
         @InjectRepository(PaymentEntity)
         private PaymentDB: Repository<PaymentEntity>,
-        private UserDB: Repository<User>
+        private UserDB: Repository<UserEntity>
     ){}
 
     async savePayment(paymentInfo: PaymentInfo): Promise<Payment> {

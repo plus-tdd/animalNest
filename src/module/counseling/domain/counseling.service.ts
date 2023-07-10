@@ -43,7 +43,10 @@ export class CounselingService {
   }
 
   //진료 상태 변경 (예약->진료)
-  async updateCounselingStatus(counselingId: string): Promise<Counseling[]> {
+  async updateCounselingStatus(
+    counselingId: string,
+    content: string,
+  ): Promise<Counseling[]> {
     return [];
   }
 
@@ -56,6 +59,7 @@ export class CounselingService {
     const { dateTime, expense, content } = info;
     // DB를 찔러서 검증해야하는 것 : doctor, pet 의 존재여부
     // Repository ( DB 전문가 ) 한테 위임
+    console.log(Date.now());
     // 1. 등록날짜는 현재 시각보단 크면 안됨
     if (dateTime.getTime() > Date.now())
       throw new InvalidCounselingInfoError('날짜');

@@ -16,7 +16,10 @@ export interface CounselingRepository {
   //예약이나 진료 하나를 반환함
   getOneCounseling(counselingId: string): Promise<Counseling>;
   //예약이 진료로 상태 변경되고 변경된 후를 반환함
-  updateCounselingStatus(counselingId: string): Promise<Counseling>;
+  updateCounselingStatus(
+    counselingId: string,
+    content: string,
+  ): Promise<Counseling>;
   //예약이 삭제되고 성공여부를 반환함
   deleteOneCounseling(counselingId: string): Promise<boolean>;
 }

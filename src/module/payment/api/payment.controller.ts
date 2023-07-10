@@ -6,6 +6,7 @@ import { PaymentRequestDto } from './payment.save.request.dto';
 import { RefundPaymentRequestDto } from './payment.refund.request.dto';
 import { Payment } from '../domain/payment.model';
 import { RefundPaymentInfo } from '../domain/payment.model';
+import { JwtAuthGuard } from "../../auth/auth.jwtAuthGuard";
 
 //@UseGuards(AuthGuard)
 @Controller('api/payment')
@@ -15,6 +16,7 @@ export class PaymentController {
 
     }
 
+    @UseGuards(JwtAuthGuard)
     @ApiOperation({summary : '결제하기'})
     @Post()
     makePayment(@Body() paymentData: PaymentRequestDto): Promise<Payment> {
@@ -33,6 +35,7 @@ export class PaymentController {
         return this.paymentService.makePayment(paymentInfo)
     }
 
+    @UseGuards(JwtAuthGuard)
     @ApiOperation({summary : '결제 취소하기'})
     @Post('/refund')
     refundPayment(@Body() refundData: RefundPaymentRequestDto): Promise<PaymentInfoForRefund> {

@@ -1,16 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
-import { UserOutPutDto } from "./user.output.dto";
-import { User } from "./user.entity";
+import { UserOutPutDto } from "./domain/user.output.dto";
+import { UserEntity } from "./data/user.entity";
 
 
 @Injectable()
 export class UserMapper {
-    mapToEntity(dto: UserOutPutDto): User {
-        return plainToClass(User, dto);
+    mapToEntity(dto: UserOutPutDto): UserEntity {
+        return plainToClass(UserEntity, dto);
     }
 
-    mapToDto(entity: User): UserOutPutDto {
+    mapToDto(entity: UserEntity): UserOutPutDto {
         return plainToClass(UserOutPutDto, entity);
     }
 }
+
+

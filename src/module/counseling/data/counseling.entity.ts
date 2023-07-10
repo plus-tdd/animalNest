@@ -5,7 +5,8 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
 } from 'typeorm';
-import { User } from '../../user/user.entity';
+import { UserEntity } from '../../user/data/user.entity';
+import { CounselingStatus } from '../domain/counseling.model';
 
 @Entity({
   name: 'Counseling',
@@ -21,15 +22,18 @@ export class CounselingEntity {
   @Column('int', { name: 'user_id' })
   userId: number;
   
-  @ManyToOne(() => User, (User) => User.CounselingEntity)
+  @ManyToOne(() => UserEntity, (User) => User.CounselingEntity)
   @JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])
-  User: User;
+  User: UserEntity;
 
   @Column('int', { name: 'pet_id' })
   petId: number;
 
   @Column('datetime', { name: 'counseling_date_time' })
   counselingDateTime: Date;
+
+  @Column({ type: 'enum', name: 'counseling_status', enum: CounselingStatus })
+  counselingStatus: CounselingStatus;
 
   @Column('text', { name: 'content', nullable: true })
   content: string | null;
