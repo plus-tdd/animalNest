@@ -11,8 +11,11 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { CounselingService } from '../domain/counseling.service';
-import { CreateCounselingDto } from './counseling.dto';
-import { CounselingInfo } from '../domain/counseling.model';
+import { CreateCounselingDto, UpdateCounselingDto } from './counseling.dto';
+import {
+  CounselingCreateInfo,
+  CounselingUpdateInfo,
+} from '../domain/counseling.model';
 import { JwtAuthGuard } from '../../auth/auth.jwtAuthGuard';
 import { CounselingMapper } from './../counseling.mapper';
 
@@ -29,7 +32,7 @@ export class CounselingController {
   @Post()
   async registerCounseling(@Body() counselingData: CreateCounselingDto) {
     try {
-      const counselingInfo = this.mapper.mapDtoToDomain(counselingData);
+      const counselingInfo = this.mapper.mapCreateDtoToDomain(counselingData);
       return await this.counselingService.registerCounseling(counselingInfo);
     } catch (error) {
       return { message: error.message };
@@ -64,7 +67,7 @@ export class CounselingController {
     return response;
   }
 
-  //진료 상태 변경 (예약->진료)
+  //진료 완료 (예약->진료)
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async updateCounselingStatus(
@@ -72,11 +75,15 @@ export class CounselingController {
     @Body('content') content: string,
     @Body('expense') expense: number,
   ) {
-    return await this.counselingService.updateCounselingStatusDone(
-      counselingId,
-      content,
-      expense,
-    );
+    const updateCounselingDto: UpdateCounselingDto = {
+      counselingId: +counselingId,
+      content: content,
+      expense: expense,
+    };
+
+    const updateInfo = this.mapper.mapUpdateDtoToDomain(updateCounselingDto);
+
+    return await this.counselingService.updateCounselingStatusDone(updateInfo);
   }
 
   //예약 삭제

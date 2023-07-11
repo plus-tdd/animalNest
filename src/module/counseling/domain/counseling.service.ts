@@ -1,7 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import {
   Counseling,
-  CounselingInfo,
+  CounselingCreateInfo,
+  CounselingUpdateInfo,
   CounselingStatus,
 } from './counseling.model';
 import {
@@ -23,11 +24,7 @@ export class CounselingService {
   ) {}
 
   //예약 등록
-  async registerCounseling(info: CounselingInfo): Promise<Counseling> {
-    info.status = CounselingStatus.Reserved;
-    info.content = '';
-    info.expense = 0;
-
+  async registerCounseling(info: CounselingCreateInfo): Promise<Counseling> {
     //this.validateRequestInfo(info);
     // 1. 등록날짜는 현재 시각보단 작으면 안됨
     if (new Date(info.dateTime).getTime() <= Date.now()) {
@@ -59,19 +56,14 @@ export class CounselingService {
 
   //진료 상태 변경 (예약->진료)
   async updateCounselingStatusDone(
-    counselingId: string,
-    content: string,
-    expense: number,
+    updateInfo: CounselingUpdateInfo,
   ): Promise<boolean> {
     // 2. 컨텐츠는 1000자 이내여야 함.
-    if (content.length > 1000) throw new InvalidCounselingInfoError('상담내용');
+    if (updateInfo.content.length > 1000)
+      throw new InvalidCounselingInfoError('상담내용');
     // 3. 비용은 양수여야 함.
-    if (expense <= 0) throw new InvalidCounselingInfoError('비용');
-    return await this.repository.updateCounselingStatusDone(
-      counselingId,
-      content,
-      expense,
-    );
+    if (updateInfo.expense <= 0) throw new InvalidCounselingInfoError('비용');
+    return await this.repository.updateCounselingStatusDone(updateInfo);
   }
 
   //예약 삭제
@@ -79,17 +71,17 @@ export class CounselingService {
     return await this.repository.deleteOneCounseling(counselingId);
   }
 
-  private validateRequestInfo(info: CounselingInfo) {
-    const { dateTime, expense, content } = info;
-    // DB를 찔러서 검증해야하는 것 : doctor, pet 의 존재여부
-    // Repository ( DB 전문가 ) 한테 위임
-    console.log(Date.now());
-    // 1. 등록날짜는 현재 시각보단 크면 안됨
-    if (dateTime.getTime() > Date.now())
-      throw new InvalidCounselingInfoError('날짜');
-    // 2. 컨텐츠는 1000자 이내여야 함.
-    if (content.length > 1000) throw new InvalidCounselingInfoError('상담내용');
-    // 3. 비용은 양수여야 함.
-    if (expense <= 0) throw new InvalidCounselingInfoError('비용');
+  private validateRequestInfo(info: CounselingCreateInfo) {
+    // const { dateTime, expense, content } = info;
+    // // DB를 찔러서 검증해야하는 것 : doctor, pet 의 존재여부
+    // // Repository ( DB 전문가 ) 한테 위임
+    // console.log(Date.now());
+    // // 1. 등록날짜는 현재 시각보단 크면 안됨
+    // if (dateTime.getTime() > Date.now())
+    //   throw new InvalidCounselingInfoError('날짜');
+    // // 2. 컨텐츠는 1000자 이내여야 함.
+    // if (content.length > 1000) throw new InvalidCounselingInfoError('상담내용');
+    // // 3. 비용은 양수여야 함.
+    // if (expense <= 0) throw new InvalidCounselingInfoError('비용');
   }
 }
