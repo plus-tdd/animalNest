@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
 
-@Controller()
+@Controller() // prefix 엔드포인트
 export class AppController {
   constructor(private readonly appService: AppService) {}
 

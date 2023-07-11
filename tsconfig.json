@@ -5,6 +5,7 @@
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "esModuleInterop": true, // import * as React from 'react';를 안해줘도 됨
     "allowSyntheticDefaultImports": true,
     "target": "ES2021",
     "sourceMap": true,
@@ -17,7 +18,8 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
+    "moduleResolution": "node", // 새로 생김
   },
-  "include": ["./src/**/*"],
+  "include": ["./src/**/*", "webpack-hmr.config.js"],
   "exclude": ["./src/__test__"]
 }
