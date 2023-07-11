@@ -2,7 +2,8 @@ import { CounselingService } from '../../module/counseling/domain/counseling.ser
 import { CounselingRepository } from 'src/module/counseling/domain/counseling.repository';
 import {
   Counseling,
-  CounselingInfo,
+  CounselingCreateInfo,
+  CounselingUpdateInfo,
   CounselingStatus,
 } from 'src/module/counseling/domain/counseling.model';
 
@@ -12,7 +13,9 @@ import {
 // Controller ( Api Route ) 에서 서비스를 호출한다 = Backend
 // -> 그래서 서비스 UnitTest 에 대해서는 nestjs/testing 의 TestingModule 을 사용하지 않는 게 더 좋은 구조라고 생각함. - by 허재
 class TestCounselingRepository implements CounselingRepository {
-  async registerCounselingHistory(info: CounselingInfo): Promise<Counseling> {
+  async registerCounselingHistory(
+    info: CounselingCreateInfo,
+  ): Promise<Counseling> {
     return {
       id: 1,
       hospitalName: '어쩌라고',
@@ -39,9 +42,7 @@ class TestCounselingRepository implements CounselingRepository {
   }
 
   updateCounselingStatusDone(
-    counselingId: string,
-    content: string,
-    expense: number,
+    upateInfo: CounselingUpdateInfo,
   ): Promise<boolean> {
     throw new Error('Method not implemented.');
   }
@@ -98,14 +99,11 @@ describe('CounselingService', () => {
   });
 
   it('성공 했어요!', async () => {
-    const successfulInfo: CounselingInfo = {
+    const successfulInfo: CounselingCreateInfo = {
       doctorId: 0,
       userId: 0,
       petId: 0,
       dateTime: new Date('2023-06-27'),
-      status: CounselingStatus.Complete,
-      expense: 10000,
-      content: '우아 !',
     };
     const resultCounsel = await service.registerCounseling(successfulInfo);
     expect(resultCounsel).not.toBeNull();

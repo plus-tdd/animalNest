@@ -10,6 +10,12 @@ export class CreateCounselingDto {
   readonly expense: number;
 }
 
+export class UpdateCounselingDto {
+  readonly counselingId: number;
+  readonly content: string;
+  readonly expense: number;
+}
+
 export class CounselingResponseDto {
   readonly id: number;
   readonly userName: string;

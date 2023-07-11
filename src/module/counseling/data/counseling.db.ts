@@ -3,7 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Between } from 'typeorm';
 import {
   Counseling,
-  CounselingInfo,
+  CounselingCreateInfo,
+  CounselingUpdateInfo,
   CounselingStatus,
 } from '../domain/counseling.model';
 import { CounselingRepository } from '../domain/counseling.repository';
@@ -32,7 +33,9 @@ export class CounselingRepositoryImpl implements CounselingRepository {
 
   private mapper: CounselingMapper;
 
-  async registerCounselingHistory(info: CounselingInfo): Promise<Counseling> {
+  async registerCounselingHistory(
+    info: CounselingCreateInfo,
+  ): Promise<Counseling> {
     // User 정보도 가져와야 함 ( 왜 ? Counseling 도메인은 그 상담내역의 대상자 주인 이름이 들어가기 때문 id가 아니라 )
 
     // pet 이 있는지 + 그 user 가 주인이 맞는지 ?
@@ -56,7 +59,7 @@ export class CounselingRepositoryImpl implements CounselingRepository {
     //   expense: 0,
     // });
 
-    const entity = this.mapper.mapDomainToEntity(info);
+    const entity = this.mapper.mapCreateDomainToEntity(info);
 
     /*
             insert : 생성 ( id 같은거 있으면 터짐 )
@@ -134,16 +137,15 @@ export class CounselingRepositoryImpl implements CounselingRepository {
   }
 
   async updateCounselingStatusDone(
-    counselingId: string,
-    content: string,
-    expense: number,
+    updateInfo: CounselingUpdateInfo,
   ): Promise<boolean> {
+    const entity = this.mapper.mapUpdateDomainToEntity(updateInfo);
     const result = await this.CounselingDB.update(
-      { id: +counselingId },
+      { id: entity.id },
       {
-        content: content,
-        counselingStatus: CounselingStatus.Complete,
-        expense: expense,
+        content: entity.content,
+        counselingStatus: entity.counselingStatus,
+        expense: entity.expense,
       },
     );
 
