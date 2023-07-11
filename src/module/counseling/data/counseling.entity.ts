@@ -7,6 +7,8 @@ import {
 } from 'typeorm';
 import { UserEntity } from '../../user/data/user.entity';
 import { CounselingStatus } from '../domain/counseling.model';
+import { PetEntity } from '../../pet/data/pet.entity';
+import { DoctorEntity } from '../../doctor/data/doctor.entity';
 
 @Entity({
   name: 'Counseling',
@@ -16,18 +18,14 @@ export class CounselingEntity {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
-  @Column('int', { name: 'doctor_id' })
-  doctorId: number;
-
   @Column('int', { name: 'user_id' })
   userId: number;
-  
-  @ManyToOne(() => UserEntity, (User) => User.CounselingEntity)
-  @JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])
-  User: UserEntity;
 
   @Column('int', { name: 'pet_id' })
   petId: number;
+
+  @Column('int', { name: 'doctor_id' })
+  doctorId: number;
 
   @Column('datetime', { name: 'counseling_date_time' })
   counselingDateTime: Date;
@@ -40,4 +38,16 @@ export class CounselingEntity {
 
   @Column('int', { name: 'expense' })
   expense: number;
+
+  @ManyToOne(() => UserEntity, (User) => User.CounselingEntity)
+  @JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])
+  User: UserEntity;
+
+  @ManyToOne(() => PetEntity, (Pet) => Pet.CounselingEntity)
+  @JoinColumn([{ name: 'pet_id', referencedColumnName: 'id' }])
+  Pet: PetEntity;
+
+  @ManyToOne(() => DoctorEntity, (Doctor) => Doctor.CounselingEntity)
+  @JoinColumn([{ name: 'doctor_id', referencedColumnName: 'id' }])
+  Doctor: DoctorEntity;
 }

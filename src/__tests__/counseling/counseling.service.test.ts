@@ -3,6 +3,7 @@ import { CounselingRepository } from 'src/module/counseling/domain/counseling.re
 import {
   Counseling,
   CounselingInfo,
+  CounselingStatus,
 } from 'src/module/counseling/domain/counseling.model';
 
 // 서비스 : 순수한 비즈니스 로직 덩어리 ( nest.js 랑도 상관없고 db 랑도 상관없음. )
@@ -19,11 +20,12 @@ class TestCounselingRepository implements CounselingRepository {
       userName: '박세진',
       petName: '시고르잡종',
       dateTime: new Date(),
+      status: CounselingStatus.Complete,
       expense: 10000,
       content: '우아 !',
     };
   }
-  async getConselingHistories(
+  async getCounselingHistories(
     startDate: Date,
     endDate: Date,
   ): Promise<Counseling[]> {
@@ -36,7 +38,11 @@ class TestCounselingRepository implements CounselingRepository {
     throw new Error('Method not implemented.');
   }
 
-  updateCounselingStatus(counselingId: string): Promise<Counseling> {
+  updateCounselingStatusDone(
+    counselingId: string,
+    content: string,
+    expense: number,
+  ): Promise<boolean> {
     throw new Error('Method not implemented.');
   }
 
@@ -97,6 +103,7 @@ describe('CounselingService', () => {
       userId: 0,
       petId: 0,
       dateTime: new Date('2023-06-27'),
+      status: CounselingStatus.Complete,
       expense: 10000,
       content: '우아 !',
     };

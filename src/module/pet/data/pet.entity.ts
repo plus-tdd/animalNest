@@ -3,11 +3,15 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   ManyToOne,
-  JoinColumn, CreateDateColumn, UpdateDateColumn
-} from "typeorm";
+  JoinColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany,
+} from 'typeorm';
 import { UserEntity } from '../../user/data/user.entity';
-import { timestamp } from "rxjs";
-import { Factory } from "nestjs-seeder";
+import { timestamp } from 'rxjs';
+import { Factory } from 'nestjs-seeder';
+import { CounselingEntity } from './../../counseling/data/counseling.entity';
 
 @Entity({
   name: 'pet',
@@ -17,9 +21,10 @@ export class PetEntity {
   @PrimaryGeneratedColumn({ type: 'int' })
   id: number;
 
-  @Factory((faker) => faker.number.int({min: 1, max: 50}))
+  @Factory((faker) => faker.number.int({ min: 1, max: 50 }))
   @Column('int')
   userId: number;
+
   @ManyToOne(() => UserEntity, (UserEntity) => UserEntity.PetEntity)
   @JoinColumn([{ name: 'userId', referencedColumnName: 'id' }])
   UserEntity: UserEntity;
@@ -43,7 +48,7 @@ export class PetEntity {
   @Column('varchar', { name: 'name', length: 45 })
   name: string;
 
-  @Factory((faker) => faker.date.birthdate({min: 1, max: 15, mode: 'age'}))
+  @Factory((faker) => faker.date.birthdate({ min: 1, max: 15, mode: 'age' }))
   @Column('varchar', { name: 'b_day', length: 45 })
   bDay: string;
 
@@ -51,7 +56,7 @@ export class PetEntity {
   @Column('varchar', { name: 'adoption_day', length: 45 })
   adoptionDay: string;
 
-  @Factory((faker) => faker.number.int({min: 10, max: 20}))
+  @Factory((faker) => faker.number.int({ min: 10, max: 20 }))
   @Column('int', { name: 'weight' })
   weight: number;
 
@@ -59,23 +64,27 @@ export class PetEntity {
   @Column('varchar', { name: 'gender', length: 45 })
   gender: string;
 
-  @Factory((faker) => faker.date.birthdate({min: 1, max: 15, mode: 'age'}))
-  @CreateDateColumn({ type: 'timestamp', name: 'neuter',  nullable: true })
+  @Factory((faker) => faker.date.birthdate({ min: 1, max: 15, mode: 'age' }))
+  @CreateDateColumn({ type: 'timestamp', name: 'neuter', nullable: true })
   neuter: Date;
 
-  @Factory((faker) => faker.lorem.words({ min: 1, max: 3 }) )
+  @Factory((faker) => faker.lorem.words({ min: 1, max: 3 }))
   @Column('varchar', { name: 'allergy', length: 45 })
   allergy: string;
 
-  @Factory((faker) => faker.lorem.words({ min: 1, max: 3 }) )
+  @Factory((faker) => faker.lorem.words({ min: 1, max: 3 }))
   @Column('varchar', { name: 'disease', length: 45 })
   disease: string;
 
   @Factory((faker) => faker.date.soon({ days: 10 }))
-  @CreateDateColumn({ type: 'timestamp'})
+  @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
 
   @Factory((faker) => faker.date.soon({ days: 10 }))
-  @UpdateDateColumn({ type: 'timestamp'})
+  @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;
+
+  // 펫 : 진료정보 1대 다 관계 reservationId
+  @OneToMany(() => CounselingEntity, (CounselingEntity) => CounselingEntity.Pet)
+  CounselingEntity: CounselingEntity[];
 }

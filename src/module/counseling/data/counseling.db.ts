@@ -1,13 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Counseling, CounselingInfo } from '../domain/counseling.model';
+import { Repository, Between } from 'typeorm';
+import {
+  Counseling,
+  CounselingInfo,
+  CounselingStatus,
+} from '../domain/counseling.model';
 import { CounselingRepository } from '../domain/counseling.repository';
 import { CounselingEntity } from './counseling.entity';
 import { InvalidCounselingInfoError } from '../counseling.error';
 import { CounselingMapper } from '../counseling.mapper';
-import { DoctorEntity } from "../../doctor/data/doctor.entity";
-import { PetEntity } from "../../value-data/pet.db";
+import { DoctorEntity } from '../../doctor/data/doctor.entity';
+import { PetEntity } from '../../pet/data/pet.entity';
 
 //Injectable이 이걸 다른곳에 주입할수있단거 같음.
 // Repository !== TypeOrm.Repsository => 완전한 Decoupling 을 달성할 수 있음 ! = > 이게 개발적으로 제가 생각하는 최적의 구조다. by 허재
@@ -41,52 +45,122 @@ export class CounselingRepositoryImpl implements CounselingRepository {
       where: { id: info.doctorId },
     });
     if (doctor === null) throw new InvalidCounselingInfoError('의사');
-    // CounselingEntity 만들어서 저장
-    const entity = this.CounselingDB.create({
-      doctorId: doctor.id,
-      userId: info.userId,
-      petId: pet.id,
-      counselingDateTime: info.dateTime,
-      content: info.content,
-      expense: info.expense,
-    });
+
+    // // CounselingEntity 만들어서 저장
+    // const entity = this.CounselingDB.create({
+    //   userId: info.userId,
+    //   petId: info.petId,
+    //   doctorId: info.doctorId,
+    //   counselingDateTime: info.dateTime,
+    //   content: '',
+    //   expense: 0,
+    // });
+
+    const entity = this.mapper.mapDomainToEntity(info);
+
     /*
             insert : 생성 ( id 같은거 있으면 터짐 )
             update : 수정 ( id 찾아보고 없으면 터짐 )
             save : 조회해보고 생성 or 수정 ( 터지진 않음 )
         */
-    await this.CounselingDB.insert(entity);
-    return {
-      id: entity.id,
-      hospitalName: doctor.hospital,
-      doctorName: doctor.name,
-      userName: 'name',
-      petName: pet.name,
-      dateTime: entity.counselingDateTime,
-      expense: entity.expense,
-      content: entity.content,
-    };
+    const result = await this.CounselingDB.insert(entity);
+
+    return await this.getOneCounseling(result.identifiers[0].id);
   }
 
-  async getConselingHistories(
+  async getCounselingHistories(
     startDate: Date,
     endDate: Date,
   ): Promise<Counseling[]> {
-    throw new Error('Method not implemented.');
+    const result: CounselingEntity[] = await this.CounselingDB.find({
+      relations: {
+        User: true,
+        Pet: true,
+        Doctor: true,
+      },
+      select: {
+        id: true,
+        counselingDateTime: true,
+        counselingStatus: true,
+        expense: true,
+        content: true,
+        User: {
+          userName: true,
+        },
+        Pet: {
+          name: true,
+        },
+        Doctor: {
+          name: true,
+          hospital: true,
+        },
+      },
+      where: {
+        counselingDateTime: Between(new Date(startDate), new Date(endDate)),
+      },
+    });
+
+    return result.map((v) => this.mapper.mapEntityToDomain(v));
   }
 
-  getOneCounseling(counselingId: string): Promise<Counseling> {
-    throw new Error('Method not implemented.');
+  async getOneCounseling(counselingId: string): Promise<Counseling> {
+    const result = await this.CounselingDB.findOne({
+      relations: {
+        User: true,
+        Pet: true,
+        Doctor: true,
+      },
+      select: {
+        id: true,
+        counselingDateTime: true,
+        counselingStatus: true,
+        expense: true,
+        content: true,
+        User: {
+          userName: true,
+        },
+        Pet: {
+          name: true,
+        },
+        Doctor: {
+          name: true,
+          hospital: true,
+        },
+      },
+      where: { id: +counselingId },
+    });
+
+    return this.mapper.mapEntityToDomain(result);
   }
 
-  updateCounselingStatus(
+  async updateCounselingStatusDone(
     counselingId: string,
     content: string,
-  ): Promise<Counseling> {
-    throw new Error('Method not implemented.');
+    expense: number,
+  ): Promise<boolean> {
+    const result = await this.CounselingDB.update(
+      { id: +counselingId },
+      {
+        content: content,
+        counselingStatus: CounselingStatus.Complete,
+        expense: expense,
+      },
+    );
+
+    if (result.affected !== 1) {
+      throw new Error('updateCounselingStatusDone failed');
+    } else {
+      return true;
+    }
   }
 
-  deleteOneCounseling(counselingId: string): Promise<boolean> {
-    throw new Error('Method not implemented.');
+  async deleteOneCounseling(counselingId: string): Promise<boolean> {
+    const result = await this.CounselingDB.delete(counselingId);
+
+    if (result.affected !== 1) {
+      throw new Error('deleteOneCounseling failed');
+    } else {
+      return true;
+    }
   }
 }
