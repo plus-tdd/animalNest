@@ -12,12 +12,9 @@ import {
 } from '@nestjs/common';
 import { CounselingService } from '../domain/counseling.service';
 import { CreateCounselingDto, UpdateCounselingDto } from './counseling.dto';
-import {
-  CounselingCreateInfo,
-  CounselingUpdateInfo,
-} from '../domain/counseling.model';
 import { JwtAuthGuard } from '../../auth/auth.jwtAuthGuard';
 import { CounselingMapper } from './../counseling.mapper';
+import { ApiOperation } from '@nestjs/swagger';
 
 @Controller('counseling')
 export class CounselingController {
@@ -27,8 +24,8 @@ export class CounselingController {
 
   private mapper: CounselingMapper;
 
-  //진료 등록 (예약)
   @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: '진료 예약' })
   @Post()
   async registerCounseling(@Body() counselingData: CreateCounselingDto) {
     try {
@@ -39,8 +36,8 @@ export class CounselingController {
     }
   }
 
-  //진료 내역 조회
   @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: '기간 내 진료 내역 조회' })
   @Get('')
   async getCounselingHistories(
     @Query('start') startDate: Date,
@@ -56,8 +53,8 @@ export class CounselingController {
     return response;
   }
 
-  //진료 상세 조회
   @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: '진료 상세 조회' })
   @Get(':id')
   async getCounseling(@Param('id') counselingId: string) {
     const result = await this.counselingService.getCounseling(counselingId);
@@ -67,8 +64,8 @@ export class CounselingController {
     return response;
   }
 
-  //진료 완료 (예약->진료)
   @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: '진료 기록 업데이트' })
   @Patch(':id')
   async updateCounselingStatus(
     @Param('id') counselingId: string,
@@ -86,8 +83,8 @@ export class CounselingController {
     return await this.counselingService.updateCounselingStatusDone(updateInfo);
   }
 
-  //예약 삭제
   @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: '예약 취소' })
   @Delete(':id')
   async deleteCounseling(@Param('id') counselingId: string) {
     return await this.counselingService.deleteCounseling(counselingId);
