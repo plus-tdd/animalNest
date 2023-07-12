@@ -45,5 +45,5 @@ jobs:
         with:
           task-definition: ${{ steps.setting-task-definition.outputs.task-definition }}
           cluster: cluster-nestjs # 여러분의 ECS 클러스터 아이디
-          service: deploy-service-nestjs # 여러분의 ECS Fargate 서비스 아이디
+          service: service-nestjs # 여러분의 ECS Fargate 서비스 아이디
           wait-for-service-stability: false
