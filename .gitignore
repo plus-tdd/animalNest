@@ -40,3 +40,5 @@ lerna-debug.log*
 .env
 
 ./src/__tests__/reservation/*
+
+.dbdata/
