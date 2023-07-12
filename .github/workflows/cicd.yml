@@ -5,7 +5,7 @@ on:
       - main
 env:
   AWS_REGION: ap-northeast-2
-  ECR_REGISTRY: 528993883127.dkr.ecr.ap-northeast-2.amazonaws.com/repository-nestjs
+  ECR_REGISTRY: 528993883127.dkr.ecr.ap-northeast-2.amazonaws.com/
   ECR_REPOSITORY: repository-nestjs
 jobs:
   deploy:
@@ -37,7 +37,7 @@ jobs:
         id: setting-task-definition
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: task_definition.json
+          task-definition: task-definition.json
           container-name: container-nestjs
           image: ${{ steps.build-image.outputs.image }}
       - name: Deploy Amazon ECS task definition
