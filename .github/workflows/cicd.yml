@@ -7,6 +7,12 @@ env:
   AWS_REGION: ap-northeast-2
   ECR_REGISTRY: 528993883127.dkr.ecr.ap-northeast-2.amazonaws.com/
   ECR_REPOSITORY: repository-nestjs
+  DB_HOST: ${{ secret.DB_HOST }}
+  DB_PORT: ${{ secret.DB_PORT }}
+  DB_USER: ${{ secret.DB_USER }}
+  DB_PW: ${{ secret.DB_PW }}
+  DB_SCHEMA: ${{ secret.DB_SCHEMA }}
+  JWT_SECRET_KEY: ${{ secret.JWT_SECRET_KEY }}
 jobs:
   deploy:
     name: Deploy
@@ -30,7 +36,7 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --build-arg DB_HOST=$DB_HOST --build-arg DB_PORT=$DB_PORT --build-arg DB_USER=$DB_USER --build-arg DB_PW=$DB_PW --build-arg DB_SCHEMA=$DB_SCHEMA --build-arg JWT_SECRET_KEY=$JWT_SECRET_KEY .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
       - name: Fill in the new image ID in the Amazon ECS task definition
