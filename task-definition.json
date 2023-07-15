@@ -13,11 +13,30 @@
                 }
             ],
             "essential": true,
-            "environment": [],
-            "environmentFiles": [
+            "environment": [
                 {
-                    "value": "arn:aws:s3:::animal-nest-env/.env",
-                    "type": "s3"
+                    "name": "DB_HOST",
+                    "value": "animal.cpqe1vky0him.ap-northeast-2.rds.amazonaws.com"
+                },
+                {
+                    "name": "DB_PORT",
+                    "value": "3306"
+                },
+                {
+                    "name": "DB_PW",
+                    "value": "animalNest"
+                },
+                {
+                    "name": "DB_SCHEMA",
+                    "value": "anmalnest"
+                },
+                {
+                    "name": "JWT_SECRET_KEY",
+                    "value": "secreeeeeet"
+                },
+                {
+                    "name": "DB_USER",
+                    "value": "admin"
                 }
             ],
             "mountPoints": [],
