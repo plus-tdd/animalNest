@@ -7,6 +7,13 @@ env:
   AWS_REGION: ap-northeast-2
   ECR_REGISTRY: 528993883127.dkr.ecr.ap-northeast-2.amazonaws.com/
   ECR_REPOSITORY: repository-nestjs
+  IMAGE_TAG:
+  DB_HOST: ${{ secret.DB_HOST }}
+  DB_PORT: ${{ secret.DB_PORT }}
+  DB_USER: ${{ secret.DB_USER }}
+  DB_PW: ${{ secret.DB_PW }}
+  DB_SCHEMA: ${{ secret.DB_SCHEMA }}
+  JWT_SECRET_KEY: ${{ secret.JWT_SECRET_KEY }}
 jobs:
   deploy:
     name: Deploy
