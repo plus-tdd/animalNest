@@ -14,7 +14,12 @@
             ],
             "essential": true,
             "environment": [],
-            "environmentFiles": ["arn:aws:s3:::animal-nest-env/.env"],
+            "environmentFiles": [
+                {
+                    "value": "arn:aws:s3:::animal-nest-env/.env",
+                    "type": "s3"
+                }
+            ],
             "mountPoints": [],
             "volumesFrom": []
         }
