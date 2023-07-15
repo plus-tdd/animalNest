@@ -16,7 +16,6 @@ services:
     #    이 컨테이너에서 사용할 다른 컨테이너(docker compose 의 특장점?)
     depends_on:
       - mysql
-  # 운영서버에서 얘 쓰면 좆됨
   mysql:
     image: mysql:latest
     #    비밀번호 값을 해시해서 보관하는 옵션을 준대요
@@ -24,7 +23,7 @@ services:
     #    환경변수 설정
     environment:
       MYSQL_ROOT_PASSWORD: 123456
-      MYSQL_DATABASE: ${{ secret.DB_SCHEMA }}
+      MYSQL_DATABASE: animalnest
       TZ: Asia/Seoul
     ports:
-      - '3307:3306'
+      - '3306:3306'
