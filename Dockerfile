@@ -13,6 +13,8 @@ ARG DB_PW
 ARG DB_SCHEMA
 ARG JWT_SECRET_KEY
 
+CMD ["echo","$DB_HOST","$DB_PORT","$DB_USER","$DB_PW","$DB_SCHEMA","$JWT_SECRET_KEY"]
+
 ENV DB_HOST=$DB_HOST
 ENV DB_PORT=$DB_PORT
 ENV DB_USER=$DB_USER
@@ -37,4 +39,4 @@ EXPOSE 3000
 # RUN chmod +x /wait-for-it.sh
 
 # 앱 실행 명령
-CMD npm run start:seed
+CMD ["npm", "run", "start:seed"]
