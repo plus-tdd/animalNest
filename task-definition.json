@@ -1,0 +1,61 @@
+{
+    "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:528993883127:task-definition/task-nestjs:4",
+    "containerDefinitions": [
+        {
+            "name": "container-nestjs",
+            "image": "528993883127.dkr.ecr.ap-northeast-2.amazonaws.com/repository-nestjs:1fbe780d3b153767a0b6934f091f61480ab35ef5",
+            "cpu": 0,
+            "portMappings": [
+                {
+                    "containerPort": 3000,
+                    "hostPort": 3000,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": true,
+            "mountPoints": [],
+            "volumesFrom": []
+        }
+    ],
+    "family": "task-nestjs",
+    "taskRoleArn": "arn:aws:iam::528993883127:role/role-nestjs",
+    "executionRoleArn": "arn:aws:iam::528993883127:role/ecsTaskExecutionRole",
+    "networkMode": "awsvpc",
+    "revision": 4,
+    "volumes": [],
+    "status": "ACTIVE",
+    "requiresAttributes": [
+        {
+            "name": "com.amazonaws.ecs.capability.ecr-auth"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.task-iam-role"
+        },
+        {
+            "name": "ecs.capability.execution-role-ecr-pull"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+        },
+        {
+            "name": "ecs.capability.task-eni"
+        }
+    ],
+    "placementConstraints": [],
+    "compatibilities": [
+        "EC2",
+        "FARGATE"
+    ],
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "1024",
+    "memory": "3072",
+    "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
+    },
+    "registeredAt": "2023-07-12T13:16:46.122Z",
+    "registeredBy": "arn:aws:iam::528993883127:user/jaechaol",
+    "tags": []
+}

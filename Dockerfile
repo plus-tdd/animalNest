@@ -4,26 +4,8 @@ LABEL authors="kjjdsa"
 ENTRYPOINT ["top", "-b"]
 
 # 베이스 이미지 선택
-FROM node:18-alpine
+FROM node:18
 
-# ARG DB_HOST
-# ARG DB_PORT
-# ARG DB_USER
-# ARG DB_PW
-# ARG DB_SCHEMA
-# ARG JWT_SECRET_KEY
-
-# ENV DB_HOST=$DB_HOST
-# ENV DB_PORT=$DB_PORT
-# ENV DB_USER=$DB_USER
-# ENV DB_PW=$DB_PW
-# ENV DB_SCHEMA=$DB_SCHEMA
-# ENV JWT_SECRET_KEY=$JWT_SECRET_KEY
-
-ENV NODE_ENV production
-
-
-# 작업 디렉토리 설정
 WORKDIR /src
 
 # 앱 종속성 설치
@@ -43,6 +25,4 @@ EXPOSE 3000
 # RUN chmod +x /wait-for-it.sh
 
 # 앱 실행 명령
-# CMD /wait-for-it.sh mysql:3306 -- npm run start:seed
-# CMD ["npm", "run", "start:seed"] --> 앱실행이 시드파일 만드는거
-CMD ["npm", "run", "start:prod"]
+CMD /wait-for-it.sh mysql:3306 -- npm run start:seed

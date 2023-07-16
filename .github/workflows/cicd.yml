@@ -5,8 +5,14 @@ on:
       - main
 env:
   AWS_REGION: ap-northeast-2
-  ECR_REGISTRY: 528993883127.dkr.ecr.ap-northeast-2.amazonaws.com/repository-nestjs
+  ECR_REGISTRY: 528993883127.dkr.ecr.ap-northeast-2.amazonaws.com/
   ECR_REPOSITORY: repository-nestjs
+  DB_HOST: ${{ secrets.DB_HOST }}
+  DB_PORT: ${{ secrets.DB_PORT }}
+  DB_USER: ${{ secrets.DB_USER }}
+  DB_PW: ${{ secrets.DB_PW }}
+  DB_SCHEMA: ${{ secrets.DB_SCHEMA }}
+  JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
 jobs:
   deploy:
     name: Deploy
@@ -30,7 +36,7 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --build-arg DB_HOST=${{ secrets.DB_HOST }} --build-arg DB_PORT=${{ secrets.DB_PORT }} --build-arg DB_USER=${{ secrets.DB_USER }} --build-arg DB_PW=${{ secrets.DB_PW }} --build-arg DB_SCHEMA=${{ secrets.DB_SCHEMA }} --build-arg JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }} .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
       - name: Fill in the new image ID in the Amazon ECS task definition
@@ -45,5 +51,5 @@ jobs:
         with:
           task-definition: ${{ steps.setting-task-definition.outputs.task-definition }}
           cluster: cluster-nestjs # 여러분의 ECS 클러스터 아이디
-          service: ecs-nestjs-2 # 여러분의 ECS Fargate 서비스 아이디
+          service: service-nestj # 여러분의 ECS Fargate 서비스 아이디
           wait-for-service-stability: false
