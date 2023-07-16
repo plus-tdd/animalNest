@@ -37,8 +37,29 @@ describe('결제 시 필요한 카드 정보 검증 TestSuite', () => {
         jest.restoreAllMocks(); // -> 질문 사항 : rollback의 역할인가요??
       });
 
-    test('카드 번호가 16자리 넘거나, 음수일때 실패한다.', async () => {
+      // dto 변환 - 통합테스트나 애플리케이션 만드는건 할 수 있으니까 cicd
+      // 파트별로 ci 코드 테스트 과정, 코드 depoly과정, aws 세팅하는 과정
+      // aws 공부 이참에 해보는 사람 githubaction
+      // 배포할때는 aws한사람이랑 deploy 스크립트 작성한 사람이랑 협업을 잘해야한다
 
+    test('카드 번호가 16자리 넘거나, 음수일때 실패한다.', async () => {
+ 
+        //  실패케이스 - 기능별로 생각하다보니 까 범위가 작아진다
+        // 회원가입 서비스를 기준으로 하면 이메일 검증 하는 함수, 유저를 조회한ㄴ 함수,
+        // 유저 검증하는 함수 하나, 사용자의 인풋을 테이블에 넣어주는 함수
+        // 서비스에서 테스트할건 뭐냐면 레포지토리 갔는데 에러를 뱉어낼 수 있는데,
+        // 회우너가입에서는 유저를 못찾았을때 등록이 되는건데
+        // 유저를 조회하는건 레포지토리 역할이고, 서비스에서 유저가 없는 걸 테스트하는 이유는
+        // 유저가 중복되었을때 어떤 에러를 내려주는건지 (클라이언트에서 내려준다) - 
+        // 컨트롤러 테스트는 큰 기능 단위에 역할을 테스트하는거다 - 회원가입이 성공했다 안했다
+        // 서비스의 역할은 각각의 최소 함수들의 에러를 핸들링하는 거다
+        // 고거보다 더 작은 단위, 벨리데이터, 레포지토리가 동작의 단위 테스트
+        // 서비스라는거는 각각 함수를 나열해서 만드는거다
+        // 회원가입이라는걸 만들겠다. auth서비스의 레지스터유저같은 메소드를 만들겠다하고 할때
+        // 이걸 만드는건 각각의 함수들이 모여진거다, 얘네들이 에러들을던졌을때
+        // e2c는 실제 서버를 띄워서하는거라서 ~~
+        // 그래서 실패케이스 얘기하는 이유가 그래서 나온거다. 에러가 발생했으면 서비스에서 테스트 하는거다
+        // 
         const cardNumOverSixteen: PaymentInfo = {
             userId : 1,
             cardNum: 123456789123456789, // string으로 형변환했을때 길이 18자리
@@ -161,8 +182,9 @@ describe('결제 시 외부 SDK에 정상적으로 전달되는지 확인 TestSu
             cardCompany: CardCompany.Kookmin,
             price : 10000
             };
+            // 도메인 분석, 아키텍처 고민했는지, 코드 리뷰 ㄴㄴ
 
-      //  const sdkResult = await externalPaymentSDK.makePayment(requestInfo);
+       // const sdkResult = await externalPaymentSDK.makePayment(requestInfo);
         await expect(externalPaymentSDK.makePayment(requestInfo)).rejects.toThrowError('결제 요청 실패');
 
         //makePayment 함수가 특정 인수와 함께 호출되었는지 검사한다.
