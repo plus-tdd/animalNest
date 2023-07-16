@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { Factory } from 'nestjs-seeder';
+//import { Factory } from 'nestjs-seeder';
 import { CounselingEntity } from '../../counseling/data/counseling.entity';
 
 @Entity({
@@ -9,11 +9,11 @@ export class DoctorEntity {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
-  @Factory((faker) => faker.person.fullName())
+  //@Factory((faker) => faker.person.fullName())
   @Column({ type: 'varchar', length: 100 })
   name: string;
 
-  @Factory((faker) => faker.company.name())
+  //@Factory((faker) => faker.company.name())
   @Column({ type: 'varchar', length: 100 })
   hospital: string;
 

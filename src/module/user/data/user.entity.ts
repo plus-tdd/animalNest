@@ -9,7 +9,7 @@ import {
 import { PetEntity } from '../../pet/data/pet.entity';
 import { CounselingEntity } from '../../counseling/data/counseling.entity';
 import { PaymentEntity } from '../../payment/data/payment.entity';
-import now = jest.now;
+//import now = jest.now;
 //import { Factory } from "nestjs-seeder";
 
 @Entity({
