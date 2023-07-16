@@ -4,8 +4,8 @@ package-lock.json
 #dist
 dist
 
-*.test.ts
-*.seeder.ts
+**/*.test.ts
+**/*.seeder.ts
 
 #git에 올라갈 때 쯤에는 이 환경변수들을 사용할 수 없어요!
 ##env
