@@ -1,10 +1,12 @@
-FROM ubuntu:latest
-LABEL authors="kjjdsa"
+# FROM ubuntu:latest
+# LABEL authors="kjjdsa"
 
-ENTRYPOINT ["top", "-b"]
+# ENTRYPOINT ["top", "-b"]
 
 # 베이스 이미지 선택
 FROM node:18
+
+LABEL authors="kjjdsa"
 
 ENV NODE_ENV production
 
@@ -19,7 +21,7 @@ RUN npm install
 # 앱 소스 코드 복사
 COPY . .
 
-# RUN npm run build
+RUN npm run build
 
 # 포트 노출
 EXPOSE 3000
