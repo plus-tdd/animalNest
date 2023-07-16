@@ -15,7 +15,7 @@ WORKDIR /src
 
 # 앱 종속성 설치
 COPY package.json ./
-RUN npm install
+RUN npm install -g @nestjs/cli && npm install
 
 
 # 앱 소스 코드 복사
