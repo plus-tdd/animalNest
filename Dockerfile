@@ -15,13 +15,13 @@ WORKDIR /src
 
 # 앱 종속성 설치
 COPY package.json ./
-RUN npm install
+RUN npm install -g @nestjs/cli && npm install
 
 
 # 앱 소스 코드 복사
 COPY . .
 
-RUN npm run build
+# RUN npm run build
 
 # 포트 노출
 EXPOSE 3000
