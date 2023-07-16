@@ -6,11 +6,15 @@ ENTRYPOINT ["top", "-b"]
 # 베이스 이미지 선택
 FROM node:18
 
+ENV NODE_ENV production
+
 WORKDIR /src
+
 
 # 앱 종속성 설치
 COPY package.json ./
 RUN npm install
+
 
 # 앱 소스 코드 복사
 COPY . .
@@ -25,4 +29,5 @@ EXPOSE 3000
 # RUN chmod +x /wait-for-it.sh
 
 # 앱 실행 명령
-CMD /wait-for-it.sh mysql:3306 -- npm run start:seed
+# CMD /wait-for-it.sh mysql:3306 -- npm run start:seed
+CMD ["npm", "run", "start:prod"]
