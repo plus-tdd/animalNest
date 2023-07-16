@@ -6,8 +6,6 @@
 # 베이스 이미지 선택
 FROM node:18
 
-LABEL authors="kjjdsa"
-
 ENV NODE_ENV production
 
 WORKDIR /src
