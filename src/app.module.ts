@@ -32,7 +32,7 @@ import { DoctorEntity } from './module/doctor/data/doctor.entity';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true, envFilePath: './.env' }),
+    ConfigModule.forRoot({ isGlobal: true, envFilePath: './.env2' }),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.DB_HOST,
