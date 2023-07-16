@@ -1,9 +1,9 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:528993883127:task-definition/task-nestjs:4",
+    "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:528993883127:task-definition/task-nestjs:28",
     "containerDefinitions": [
         {
             "name": "container-nestjs",
-            "image": "528993883127.dkr.ecr.ap-northeast-2.amazonaws.com/repository-nestjs:1fbe780d3b153767a0b6934f091f61480ab35ef5",
+            "image": "528993883127.dkr.ecr.ap-northeast-2.amazonaws.com/repository-nestjs:ed67926e252db6e9dd99ab7d0e072777645b8085",
             "cpu": 0,
             "portMappings": [
                 {
@@ -13,6 +13,7 @@
                 }
             ],
             "essential": true,
+            "environment": [],
             "mountPoints": [],
             "volumesFrom": []
         }
@@ -21,7 +22,7 @@
     "taskRoleArn": "arn:aws:iam::528993883127:role/role-nestjs",
     "executionRoleArn": "arn:aws:iam::528993883127:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
-    "revision": 4,
+    "revision": 28,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
@@ -55,7 +56,7 @@
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
     },
-    "registeredAt": "2023-07-12T13:16:46.122Z",
-    "registeredBy": "arn:aws:iam::528993883127:user/jaechaol",
+    "registeredAt": "2023-07-16T15:51:06.233Z",
+    "registeredBy": "arn:aws:iam::528993883127:user/sejin",
     "tags": []
 }
