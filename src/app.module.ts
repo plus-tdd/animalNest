@@ -33,8 +33,9 @@ import { DoctorEntity } from './module/doctor/data/doctor.entity';
 @Module({
   imports: [
     ConfigModule.forRoot({
-       isGlobal: true,
-       envFilePath:`.env.${process.env.NODE_ENV}`}),
+      isGlobal: true,
+      envFilePath: `.env.${process.env.NODE_ENV}`,
+    }),
 
     TypeOrmModule.forRoot({
       type: 'mysql',
@@ -43,7 +44,7 @@ import { DoctorEntity } from './module/doctor/data/doctor.entity';
       username: process.env.DB_USER,
       password: process.env.DB_PW,
       database: process.env.DB_SCHEMA,
-      synchronize: false,
+      synchronize: true,
       dropSchema: false,
       entities: [
         CounselingEntity,
