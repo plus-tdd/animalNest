@@ -13,7 +13,7 @@ services:
       - '3000:3000'
     #    이 컨테이너에서 사용할 다른 컨테이너(docker compose 의 특장점?)
     env_file:
-      - .env.production
+      - .env.develop.local
     # mysql 먼저 실행하고 nest를 실행하라는 순서
     depends_on:
       - mysql

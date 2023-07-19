@@ -45,7 +45,7 @@ import { DoctorEntity } from './module/doctor/data/doctor.entity';
       password: process.env.DB_PW,
       database: process.env.DB_SCHEMA,
       synchronize: true,
-      dropSchema: false,
+      dropSchema: true,
       entities: [
         CounselingEntity,
         PetEntity,
