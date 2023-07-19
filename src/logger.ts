@@ -1,12 +1,12 @@
 import winston from 'winston'
-import { WinstonModule, utilities as nestWinstonModuleUtilities } from 'nest-winston'
 import { CloudWatchLogsClient, PutLogEventsCommand } from "@aws-sdk/client-cloudwatch-logs";
 import * as process from "process";
-
+import moment from 'moment';
 
 const { createLogger, format, transports } = winston
-const { combine, timestamp, colorize, printf, simple, } = winston.format
+const { combine, timestamp, colorize, printf, simple, json ,logstash} = winston.format
 
+const now = moment().format("YYYY-MM-DD HH:mm:ss");
 
 export default class Logger {
     private logger: winston.Logger
@@ -16,24 +16,11 @@ export default class Logger {
     private is_production = process.env.NODE_ENV === "production";
 
     constructor(private readonly category : string) {
-        const logFormat = printf(info => {
-            return `[${info.timestamp}] [${info.level}] [${this.category}] : ${info.message}`
-        })
-
-        this.is_production = true;
-
         // 실제 클라우드워치에 보내는 역할
         this.logger = createLogger({
-            level: this.is_production ? 'info' : 'silly',
-            format: combine(
-              colorize(),
-              timestamp({
-                  format: 'YYYY-MM-DD HH:mm:ss',
-              }),
-              logFormat,
-            )
+            level: this.is_production ? 'info' : 'silly'
         })
-        this.logger.add(new transports.Console())
+
         // 프로덕션일경우 추가적으로 클라우드워치 작업
         if (this.is_production) {
             this.cloudWatchClient = new CloudWatchLogsClient({
@@ -44,39 +31,85 @@ export default class Logger {
                 region: process.env.CLOUDWATCH_REGION
             })
             this.LogGroupName = process.env.CLOUDWATCH_GROUP_NAME
-            this.LogStreamName = `${process.env.CLOUDWATCH_STREAM_NAME}-${process.env.NODE_ENV}`
+            this.LogStreamName = process.env.CLOUDWATCH_STREAM_NAME
+
+            this.logger.add(new transports.Console({
+                format: combine(
+                  colorize(),
+                  timestamp({
+                      format: 'YYYY-MM-DD HH:mm:ss',
+                  }),
+                  printf(info => {
+                      return `[${info.timestamp}] [${info.level}] [${this.category}] : ${info.message}`
+                  }),
+                )}))
+        } else {
+            this.logger.add(new transports.Console({
+                format: combine(
+                  colorize(),
+                  timestamp({
+                      format: 'YYYY-MM-DD HH:mm:ss',
+                  }),
+                  printf(info => {
+                      return `[${info.timestamp}] [${info.level}] [${this.category}] : ${info.message}`
+                  }),
+                )}))
         }
     }
 
-    public info(msg: string) {
+    public info(msg: string, metadata: string = "") {
         this.logger.info(msg)
         if (this.is_production) {
-            this.sendToCloudWatch('Info', msg)
+            const info = {
+                timestamp: now,
+                level: 'info',
+                category: this.category,
+                message: msg,
+                metadata: metadata
+            }
+            this.sendToCloudWatch(info)
         }
     }
-    public error(errMsg: string) {
+    public error(errMsg: string, metadata: string = "") {
         this.logger.error(errMsg)
         if (this.is_production) {
-            this.sendToCloudWatch('Error', errMsg)
+            const info = {
+                timestamp: now,
+                level: 'error',
+                category: this.category,
+                message: errMsg,
+                metadata: metadata
+            }
+            this.sendToCloudWatch(info)
         }
     }
-    public debug(debugMsg: string) {
+    public debug(debugMsg: string, metadata: string = "") {
         this.logger.debug(debugMsg)
     }
-    public warn(warnMsg: string) {
+    public warn(warnMsg: string, metadata: string = "") {
         this.logger.warn(warnMsg)
+        if (this.is_production) {
+            const info = {
+                timestamp: now,
+                level: 'debug',
+                category: this.category,
+                message: warnMsg,
+                metadata: metadata
+            }
+            this.sendToCloudWatch(info)
+        }
     }
 
-    private sendToCloudWatch(level: string, msg: string) {
+    private sendToCloudWatch(info) {
             const logEvents= [
                 {
                     timestamp: new Date().getTime(),
-                    message: `${level}: ${msg}`,
+                    message: `[${info.timestamp}] [${info.level}] [${info.category}] ${info.metadata !== "" ? "- " + info.metadata : ''} : ${info.message}`,
                 }
             ]
         const command = new PutLogEventsCommand({
-            logGroupName: process.env.CLOUDWATCH_GROUP_NAME,
-            logStreamName: process.env.CLOUDWATCH_STREAM_NAME,
+            logGroupName: this.LogGroupName,
+            logStreamName: this.LogStreamName,
             logEvents
         })
         this.cloudWatchClient.send(command)

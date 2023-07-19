@@ -19,7 +19,7 @@ async function bootstrap() {
 
   await app.listen(port);
   console.log(`listening on port ${port}`);
-  logger.info('Hello, World!!!!! 로그 성공');
+  logger.info('Hello, World!!!!! 로그 성공', 'MAIN');
 
   if (module.hot) {
     module.hot.accept();
