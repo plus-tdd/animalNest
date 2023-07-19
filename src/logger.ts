@@ -13,15 +13,18 @@ export default class Logger {
     private cloudWatchClient: CloudWatchLogsClient
     LogGroupName: string
     LogStreamName: string
+    private is_production = process.env.NODE_ENV === "production";
 
     constructor(private readonly category : string) {
         const logFormat = printf(info => {
             return `[${info.timestamp}] [${info.level}] [${this.category}] : ${info.message}`
         })
-        // 프로덕션인 경우
+
+        this.is_production = true;
+
         // 실제 클라우드워치에 보내는 역할
         this.logger = createLogger({
-            level: process.env.NODE_ENV === 'production' ? 'info' : 'silly',
+            level: this.is_production ? 'info' : 'silly',
             format: combine(
               colorize(),
               timestamp({
@@ -32,7 +35,7 @@ export default class Logger {
         })
         this.logger.add(new transports.Console())
         // 프로덕션일경우 추가적으로 클라우드워치 작업
-        if (process.env.NODE_ENV === 'production') {
+        if (this.is_production) {
             this.cloudWatchClient = new CloudWatchLogsClient({
                 credentials: {
                     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -47,13 +50,13 @@ export default class Logger {
 
     public info(msg: string) {
         this.logger.info(msg)
-        if (process.env.NODE_ENV === "production") {
+        if (this.is_production) {
             this.sendToCloudWatch('Info', msg)
         }
     }
     public error(errMsg: string) {
         this.logger.error(errMsg)
-        if (process.env.NODE_ENV === "production") {
+        if (this.is_production) {
             this.sendToCloudWatch('Error', errMsg)
         }
     }
@@ -76,7 +79,6 @@ export default class Logger {
             logStreamName: process.env.CLOUDWATCH_STREAM_NAME,
             logEvents
         })
-
         this.cloudWatchClient.send(command)
     }
 }
