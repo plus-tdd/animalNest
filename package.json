@@ -24,6 +24,7 @@
     "seed": "ts-node src/seeder.ts"
   },
   "dependencies": {
+    "@aws-sdk/client-cloudwatch-logs": "^3.370.0",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.0.0",
     "@nestjs/core": "^10.0.0",
@@ -40,13 +41,16 @@
     "dotenv": "^16.3.1",
     "fastify-swagger": "^5.2.0",
     "mysql2": "^3.4.1",
+    "nest-winston": "^1.9.3",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
     "swagger-ui-express": "^4.6.3",
-    "typeorm": "^0.3.17"
+    "typeorm": "^0.3.17",
+    "winston": "^3.10.0",
+    "winston-cloudwatch": "^6.1.1"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.3",
