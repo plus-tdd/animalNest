@@ -36,10 +36,9 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 
-#.env.develop
-.env.develop
-.env.develop.local
-.env.production
+#.env
+.env
+.env.*
 
 ./src/__tests__/reservation/*
 

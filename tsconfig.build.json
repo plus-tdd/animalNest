@@ -5,7 +5,8 @@
     "test",
     "dist",
     "**/*spec.ts",
-    "*.seeder.ts",
-    "*.test.ts"
+    "**/*.test.ts",
+    "**/*.seeder.ts",
+    "**/seeder.ts"
   ]
 }
