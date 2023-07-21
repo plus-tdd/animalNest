@@ -18,8 +18,8 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
-    "moduleResolution": "node", // 새로 생김
+    "moduleResolution": "node" // 새로 생김
   },
   "include": ["./src/**/*", "webpack-hmr.config.js"],
-  "exclude": ["./src/__test__"]
+  "exclude": ["./src/__tests__"]
 }

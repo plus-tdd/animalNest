@@ -38,6 +38,8 @@ jobs:
           echo "DB_PW=${{ secrets.DB_PW }}" >> .env.production
           echo "DB_SCHEMA=${{ secrets.DB_SCHEMA }}" >> .env.production
           echo "JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}" >> .env.production
+          echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> .env.production
+          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env.production
           echo "CLOUDWATCH_REGION=${{ secrets.CLOUDWATCH_REGION }}" >> .env.production
           echo "CLOUDWATCH_GROUP_NAME=${{ secrets.CLOUDWATCH_GROUP_NAME }}" >> .env.production
           echo "CLOUDWATCH_STREAM_NAME=${{ secrets.CLOUDWATCH_STREAM_NAME }}" >> .env.production
@@ -50,7 +52,7 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --build-arg DB_HOST=${{ secrets.DB_HOST }} --build-arg DB_PORT=${{ secrets.DB_PORT }} --build-arg DB_USER=${{ secrets.DB_USER }} --build-arg DB_PW=${{ secrets.DB_PW }} --build-arg DB_SCHEMA=${{ secrets.DB_SCHEMA }} --build-arg JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }} --build-arg CLOUDWATCH_REGION=${{ secrets.CLOUDWATCH_REGION }} --build-arg CLOUDWATCH_GROUP_NAME=${{ secrets.CLOUDWATCH_GROUP_NAME }} --build-arg CLOUDWATCH_STREAM_NAME=${{ secrets.CLOUDWATCH_STREAM_NAME }} .
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
       - name: Fill in the new image ID in the Amazon ECS task definition

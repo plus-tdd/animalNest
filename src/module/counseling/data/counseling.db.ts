@@ -9,7 +9,10 @@ import {
 } from '../domain/counseling.model';
 import { CounselingRepository } from '../domain/counseling.repository';
 import { CounselingEntity } from './counseling.entity';
-import { InvalidCounselingInfoError } from '../counseling.error';
+import {
+  InvalidCounselingInfoError,
+  counselingDataBaseError,
+} from '../counseling.error';
 import { CounselingMapper } from '../counseling.mapper';
 import { DoctorEntity } from '../../doctor/data/doctor.entity';
 import { PetEntity } from '../../pet/data/pet.entity';
@@ -150,7 +153,7 @@ export class CounselingRepositoryImpl implements CounselingRepository {
     );
 
     if (result.affected !== 1) {
-      throw new Error('updateCounselingStatusDone failed');
+      throw new counselingDataBaseError('updateCounselingStatusDone failed');
     } else {
       return true;
     }
@@ -160,7 +163,7 @@ export class CounselingRepositoryImpl implements CounselingRepository {
     const result = await this.CounselingDB.delete(counselingId);
 
     if (result.affected !== 1) {
-      throw new Error('deleteOneCounseling failed');
+      throw new counselingDataBaseError('deleteOneCounseling failed');
     } else {
       return true;
     }

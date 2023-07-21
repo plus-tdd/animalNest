@@ -1,11 +1,12 @@
 import { CounselingService } from '../../module/counseling/domain/counseling.service';
-import { CounselingRepository } from 'src/module/counseling/domain/counseling.repository';
+import { CounselingRepository } from './../../module/counseling/domain/counseling.repository';
 import {
   Counseling,
   CounselingCreateInfo,
   CounselingUpdateInfo,
   CounselingStatus,
-} from 'src/module/counseling/domain/counseling.model';
+} from './../../module/counseling/domain/counseling.model';
+import path from 'path';
 
 // 서비스 : 순수한 비즈니스 로직 덩어리 ( nest.js 랑도 상관없고 db 랑도 상관없음. )
 // 소프트웨어 개발 => Front/ Back => 5년이 채 안됨
@@ -95,6 +96,15 @@ describe('CounselingService', () => {
   });
 
   it('should be defined', () => {
+    // const projectRootPath = process.cwd();
+    // const currentFilePath = path.relative(projectRootPath, __filename);
+    // console.log(currentFilePath);
+    try {
+      throw new Error('헉');
+    } catch (error) {
+      console.log(error.stack);
+    }
+
     expect(service).toBeDefined();
   });
 
