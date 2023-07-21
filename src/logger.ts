@@ -10,8 +10,6 @@ const { createLogger, format, transports } = winston;
 const { combine, timestamp, colorize, printf, simple, json, logstash } =
   winston.format;
 
-const now = moment().format('YYYY-MM-DD HH:mm:ss');
-
 export default class Logger {
   private logger: winston.Logger;
   private cloudWatchClient: CloudWatchLogsClient;
@@ -45,7 +43,7 @@ export default class Logger {
               format: 'YYYY-MM-DD HH:mm:ss',
             }),
             printf((info) => {
-              return `[${info.timestamp}] [${info.level}] [${this.category}] : ${info.message}`;
+              return `[${info.timestamp}] [${process.env.NODE_ENV}] [${info.level}] [${this.category}] : ${info.message}`;
             }),
           ),
         }),
@@ -68,6 +66,7 @@ export default class Logger {
   }
 
   public info(msg: string, metadata: string = '') {
+    const now = moment().format('YYYY-MM-DD HH:mm:ss');
     this.logger.info(msg);
     if (this.is_production) {
       const info = {
@@ -81,6 +80,7 @@ export default class Logger {
     }
   }
   public error(errMsg: string, metadata: string = '') {
+    const now = moment().format('YYYY-MM-DD HH:mm:ss');
     this.logger.error(errMsg);
     if (this.is_production) {
       const info = {
@@ -97,6 +97,7 @@ export default class Logger {
     this.logger.debug(debugMsg);
   }
   public warn(warnMsg: string, metadata: string = '') {
+    const now = moment().format('YYYY-MM-DD HH:mm:ss');
     this.logger.warn(warnMsg);
     if (this.is_production) {
       const info = {
