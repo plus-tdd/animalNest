@@ -10,6 +10,8 @@ import {
   CounselingRepository,
 } from './counseling.repository';
 import { InvalidCounselingInfoError } from '../counseling.error';
+import Logger from './../../../logger';
+const logger = new Logger('counseling.service');
 
 // Mapper 가 위치해야하는 곳
 // Controller 에서 Service 를 호출하기 전에 DTO -> Domain / 호출 후에 Domain -> DTO ( 필요할 수도 아닐 수도 )
@@ -31,7 +33,14 @@ export class CounselingService {
       throw new InvalidCounselingInfoError('날짜');
     }
 
-    const result = await this.repository.registerCounselingHistory(info);
+    let result: Counseling;
+    try {
+      result = await this.repository.registerCounselingHistory(info);
+    } catch (error) {
+      logger.error('registerCounseling - database error');
+      return null;
+    }
+
     // 서비스에서 nest.js 에 의존성을 물고 있는 오류가 있을까 ?
     // 유저 검증이라던가 ( Guards {} => Jwt.=> UserEntity )
     // 얘가 뭔가에 의존적으로 개발되었다면 우리가 모듈이나 모노레포란 개념으로 아키텍쳐를 나눔.
@@ -63,7 +72,15 @@ export class CounselingService {
       throw new InvalidCounselingInfoError('상담내용');
     // 3. 비용은 양수여야 함.
     if (updateInfo.expense <= 0) throw new InvalidCounselingInfoError('비용');
-    return await this.repository.updateCounselingStatusDone(updateInfo);
+    let result: boolean;
+
+    try {
+      result = await this.repository.updateCounselingStatusDone(updateInfo);
+    } catch (error) {
+      throw error;
+    }
+
+    return result;
   }
 
   //예약 삭제

@@ -15,6 +15,10 @@ import { CreateCounselingDto, UpdateCounselingDto } from './counseling.dto';
 import { JwtAuthGuard } from '../../auth/auth.jwtAuthGuard';
 import { CounselingMapper } from './../counseling.mapper';
 import { ApiOperation } from '@nestjs/swagger';
+import {
+  InvalidCounselingInfoError,
+  counselingDataBaseError,
+} from './../counseling.error';
 
 @Controller('counseling')
 export class CounselingController {
@@ -80,7 +84,20 @@ export class CounselingController {
 
     const updateInfo = this.mapper.mapUpdateDtoToDomain(updateCounselingDto);
 
-    return await this.counselingService.updateCounselingStatusDone(updateInfo);
+    let result: boolean;
+    try {
+      result = await this.counselingService.updateCounselingStatusDone(
+        updateInfo,
+      );
+    } catch (error) {
+      if (error instanceof InvalidCounselingInfoError) {
+        return error.message;
+      } else if (error instanceof counselingDataBaseError) {
+        return error.message;
+      } else {
+        return '진료 정보 수정에 실패하였습니다';
+      }
+    }
   }
 
   @UseGuards(JwtAuthGuard)
