@@ -4,11 +4,12 @@ import {
   PutLogEventsCommand,
 } from '@aws-sdk/client-cloudwatch-logs';
 import * as process from 'process';
-import moment from 'moment';
+const moment = require('moment-timezone');
 
 const { createLogger, format, transports } = winston;
 const { combine, timestamp, colorize, printf, simple, json, logstash } =
   winston.format;
+const now = moment().format('YYYY-MM-DD HH:mm:ss');
 
 export default class Logger {
   private logger: winston.Logger;
@@ -66,7 +67,6 @@ export default class Logger {
   }
 
   public info(msg: string, metadata: string = '') {
-    const now = moment().format('YYYY-MM-DD HH:mm:ss');
     this.logger.info(msg);
     if (this.is_production) {
       const info = {
@@ -80,7 +80,6 @@ export default class Logger {
     }
   }
   public error(errMsg: string, metadata: string = '') {
-    const now = moment().format('YYYY-MM-DD HH:mm:ss');
     this.logger.error(errMsg);
     if (this.is_production) {
       const info = {
@@ -97,7 +96,6 @@ export default class Logger {
     this.logger.debug(debugMsg);
   }
   public warn(warnMsg: string, metadata: string = '') {
-    const now = moment().format('YYYY-MM-DD HH:mm:ss');
     this.logger.warn(warnMsg);
     if (this.is_production) {
       const info = {
