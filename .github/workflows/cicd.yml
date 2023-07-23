@@ -48,10 +48,6 @@ jobs:
       - name: Build using AWS CodeBuild
         run: aws codebuild start-build --project-name animal-codebuild-prod
 
-      # 추가: 코드 빌드가 완료될 때까지 대기하는 단계
-      - name: Wait for CodeBuild to complete
-        run: aws codebuild wait build-complete --project-name animal-codebuild-prod
-
       # 추가: CodeBuild 빌드 아티팩트에서 생성된 이미지 정보를 가져오는 단계
       - name: Get image URI from CodeBuild build output
         run: |
