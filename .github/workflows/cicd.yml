@@ -43,6 +43,26 @@ jobs:
           echo "CLOUDWATCH_REGION=${{ secrets.CLOUDWATCH_REGION }}" >> .env.production
           echo "CLOUDWATCH_GROUP_NAME=${{ secrets.CLOUDWATCH_GROUP_NAME }}" >> .env.production
           echo "CLOUDWATCH_STREAM_NAME=${{ secrets.CLOUDWATCH_STREAM_NAME }}" >> .env.production
+          
+      # 추가: 코드 빌드를 실행하는 단계
+      - name: Build using AWS CodeBuild
+        run: aws codebuild start-build --project-name animal-codebuild-prod
+
+      # 추가: 코드 빌드가 완료될 때까지 대기하는 단계
+      - name: Wait for CodeBuild to complete
+        run: aws codebuild wait build-complete --project-name animal-codebuild-prod
+
+      # 추가: CodeBuild 빌드 아티팩트에서 생성된 이미지 정보를 가져오는 단계
+      - name: Get image URI from CodeBuild build output
+        run: |
+          ECR_REGISTRY=$ECR_REGISTRY
+          ECR_REPOSITORY=$ECR_REPOSITORY
+          IMAGE_TAG=$(aws codebuild batch-get-builds --ids ${{ env.CODEBUILD_BUILD_ID }} --query "builds[].artifacts[].files[?name=='imagedefinitions.json'].identifier" --output text)
+          IMAGE_URI=$(aws codebuild batch-get-builds --ids ${{ env.CODEBUILD_BUILD_ID }} --query "builds[].artifacts[].location" --output text | jq -r ".[] | .identifier" | grep $IMAGE_TAG)
+          echo "ECR Image URI: $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+          echo "::set-env name=IMAGE_URI::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+          echo "Image Tag: $IMAGE_TAG"    
+          
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
