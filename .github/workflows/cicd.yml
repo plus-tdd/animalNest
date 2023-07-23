@@ -51,8 +51,6 @@ jobs:
       # 추가: CodeBuild 빌드 아티팩트에서 생성된 이미지 정보를 가져오는 단계
       - name: Get image URI from CodeBuild build output
         run: |
-          ECR_REGISTRY=$ECR_REGISTRY
-          ECR_REPOSITORY=$ECR_REPOSITORY
           IMAGE_TAG=$(aws codebuild batch-get-builds --ids ${{ env.CODEBUILD_BUILD_ID }} --query "builds[].artifacts[].files[?name=='imagedefinitions.json'].identifier" --output text)
           IMAGE_URI=$(aws codebuild batch-get-builds --ids ${{ env.CODEBUILD_BUILD_ID }} --query "builds[].artifacts[].location" --output text | jq -r ".[] | .identifier" | grep $IMAGE_TAG)
           echo "ECR Image URI: $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
