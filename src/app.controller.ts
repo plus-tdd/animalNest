@@ -17,7 +17,7 @@ export class AppController {
   @Get('/health')
   getHealth(): { statusCode: number; data: string } {
     const logger = new Logger('application.app.controller')
-    logger.info('Health check', '서비스 정상 동작 확인')
+    logger.debug('Health check', '서비스 정상 동작 확인')
     return { statusCode: 200, data: 'Health check passed!' };
   }
 }
