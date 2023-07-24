@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Between } from 'typeorm';
 import {
@@ -16,6 +20,8 @@ import {
 import { CounselingMapper } from '../counseling.mapper';
 import { DoctorEntity } from '../../doctor/data/doctor.entity';
 import { PetEntity } from '../../pet/data/pet.entity';
+import Logger from './../../../logger';
+const logger = new Logger('counseling.db');
 
 //Injectable이 이걸 다른곳에 주입할수있단거 같음.
 // Repository !== TypeOrm.Repsository => 완전한 Decoupling 을 달성할 수 있음 ! = > 이게 개발적으로 제가 생각하는 최적의 구조다. by 허재
@@ -36,21 +42,19 @@ export class CounselingRepositoryImpl implements CounselingRepository {
 
   private mapper: CounselingMapper;
 
-  async registerCounselingHistory(
-    info: CounselingCreateInfo,
-  ): Promise<Counseling> {
+  async registerCounseling(info: CounselingCreateInfo): Promise<Counseling> {
     // User 정보도 가져와야 함 ( 왜 ? Counseling 도메인은 그 상담내역의 대상자 주인 이름이 들어가기 때문 id가 아니라 )
 
     // pet 이 있는지 + 그 user 가 주인이 맞는지 ?
     const pet = await this.PetDB.findOne({
       where: { id: info.petId },
     });
-    if (pet === null) throw new InvalidCounselingInfoError('애완동물');
+    if (pet === null) throw new BadRequestException('잘못된 반려동물입니다.');
     // doctor 가 있는지 ?
     const doctor = await this.DoctorDB.findOne({
       where: { id: info.doctorId },
     });
-    if (doctor === null) throw new InvalidCounselingInfoError('의사');
+    if (doctor === null) throw new BadRequestException('잘못된 의사입니다.');
 
     // // CounselingEntity 만들어서 저장
     // const entity = this.CounselingDB.create({
@@ -69,7 +73,13 @@ export class CounselingRepositoryImpl implements CounselingRepository {
             update : 수정 ( id 찾아보고 없으면 터짐 )
             save : 조회해보고 생성 or 수정 ( 터지진 않음 )
         */
-    const result = await this.CounselingDB.insert(entity);
+    let result;
+    try {
+      result = await this.CounselingDB.insert(entity);
+    } catch (error) {
+      logger.error('registerCounseling - database error');
+      throw new InternalServerErrorException();
+    }
 
     return await this.getOneCounseling(result.identifiers[0].id);
   }

@@ -17,23 +17,14 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const error = exception.getResponse() as
       | string
       | { error: string; statusCode: number; message: string | string[] };
-    console.log(
-      'exception.getResponse()',
-      exception.getResponse(),
-      'typeof error:',
-      typeof error,
-    );
     if (typeof error === 'string') {
       response.status(status).json({
-        success: false,
-        statusCode: status,
         timestamp: moment().format('YYYY-MM-DD HH:mm:ss'),
         path: request.url,
         error: error,
       });
     } else {
       response.status(status).json({
-        success: false,
         timestamp: moment().format('YYYY-MM-DD HH:mm:ss'),
         path: request.url,
         ...error,

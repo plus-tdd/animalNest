@@ -22,11 +22,14 @@ import {
   counselingDataBaseError,
 } from './../counseling.error';
 import { HttpExceptionFilter } from './../../../http-exception.filter';
+import { Response } from './../../../response';
 
 @Controller('counseling')
 export class CounselingController {
+  private response: Response;
   constructor(private readonly counselingService: CounselingService) {
     this.mapper = new CounselingMapper();
+    this.response = new Response();
   }
 
   private mapper: CounselingMapper;
@@ -37,10 +40,12 @@ export class CounselingController {
   async registerCounseling(@Body() counselingData: CreateCounselingDto) {
     try {
       const counselingInfo = this.mapper.mapCreateDtoToDomain(counselingData);
-      return await this.counselingService.registerCounseling(counselingInfo);
+      const result = await this.counselingService.registerCounseling(
+        counselingInfo,
+      );
+      return this.response.success(result);
     } catch (error) {
-      throw new HttpException(error, 401);
-      //return { message: error.message };
+      throw error;
     }
   }
 
