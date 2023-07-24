@@ -14,7 +14,7 @@ export const COUNSELING_REPOSITORY = 'Counseling Repository';
 
 export interface CounselingRepository {
   // 진료내역을 저장하고, 성공했는지 반환함
-  registerCounselingHistory(info: CounselingCreateInfo): Promise<Counseling>;
+  registerCounseling(info: CounselingCreateInfo): Promise<Counseling>;
   // start ~ end 사이의 히스토리를 반환함
   getCounselingHistories(startDate: Date, endDate: Date): Promise<Counseling[]>;
   //예약이나 진료 하나를 반환함

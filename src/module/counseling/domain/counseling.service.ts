@@ -1,4 +1,9 @@
-import { Inject, Injectable } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  BadRequestException,
+  HttpException,
+} from '@nestjs/common';
 import {
   Counseling,
   CounselingCreateInfo,
@@ -30,15 +35,14 @@ export class CounselingService {
     //this.validateRequestInfo(info);
     // 1. 등록날짜는 현재 시각보단 작으면 안됨
     if (new Date(info.dateTime).getTime() <= Date.now()) {
-      throw new InvalidCounselingInfoError('날짜');
+      throw new BadRequestException('잘못된 날짜입니다.');
     }
 
     let result: Counseling;
     try {
-      result = await this.repository.registerCounselingHistory(info);
+      result = await this.repository.registerCounseling(info);
     } catch (error) {
-      logger.error('registerCounseling - database error');
-      return null;
+      throw error;
     }
 
     // 서비스에서 nest.js 에 의존성을 물고 있는 오류가 있을까 ?
