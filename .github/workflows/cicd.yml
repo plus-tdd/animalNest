@@ -43,6 +43,8 @@ jobs:
           echo "CLOUDWATCH_REGION=${{ secrets.CLOUDWATCH_REGION }}" >> .env.production
           echo "CLOUDWATCH_GROUP_NAME=${{ secrets.CLOUDWATCH_GROUP_NAME }}" >> .env.production
           echo "CLOUDWATCH_STREAM_NAME=${{ secrets.CLOUDWATCH_STREAM_NAME }}" >> .env.production
+  
+          
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
