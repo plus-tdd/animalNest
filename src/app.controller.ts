@@ -7,9 +7,18 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  getHello(): string {
+  getHello():  { statusCode: number; data: string } {
     const logger = new Logger('application.app.controller')
     logger.info('안녕하세요', '대문입니다.')
-    return this.appService.getHello();
+    const data = this.appService.getHello();
+    return { statusCode: 200, data };
+  }
+
+  @Get('/health')
+  getHealth(): { statusCode: number; data: string } {
+    const logger = new Logger('application.app.controller')
+    logger.info('Health check', '서비스 정상 동작 확인')
+    return { statusCode: 200, data: 'Health check passed!' };
   }
 }
+
