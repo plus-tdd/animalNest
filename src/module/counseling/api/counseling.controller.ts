@@ -9,6 +9,8 @@ import {
   Body,
   Query,
   UseGuards,
+  UseFilters,
+  HttpException,
 } from '@nestjs/common';
 import { CounselingService } from '../domain/counseling.service';
 import { CreateCounselingDto, UpdateCounselingDto } from './counseling.dto';
@@ -19,6 +21,7 @@ import {
   InvalidCounselingInfoError,
   counselingDataBaseError,
 } from './../counseling.error';
+import { HttpExceptionFilter } from './../../../http-exception.filter';
 
 @Controller('counseling')
 export class CounselingController {
@@ -36,7 +39,8 @@ export class CounselingController {
       const counselingInfo = this.mapper.mapCreateDtoToDomain(counselingData);
       return await this.counselingService.registerCounseling(counselingInfo);
     } catch (error) {
-      return { message: error.message };
+      throw new HttpException(error, 401);
+      //return { message: error.message };
     }
   }
 
