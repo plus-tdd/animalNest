@@ -9,8 +9,6 @@ import {
   Body,
   Query,
   UseGuards,
-  UseFilters,
-  HttpException,
 } from '@nestjs/common';
 import { CounselingService } from '../domain/counseling.service';
 import { CreateCounselingDto, UpdateCounselingDto } from './counseling.dto';
@@ -21,7 +19,6 @@ import {
   InvalidCounselingInfoError,
   counselingDataBaseError,
 } from './../counseling.error';
-import { HttpExceptionFilter } from './../../../http-exception.filter';
 import { Response } from './../../../response';
 
 @Controller('counseling')
