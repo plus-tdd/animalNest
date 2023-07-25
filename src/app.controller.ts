@@ -20,4 +20,17 @@ export class AppController {
     logger.warn('Health check', '서비스 정상 동작 확인');
     return { statusCode: 200, data: 'Health check passed!' };
   }
+
+  @Get('/error')
+  getError(): { statusCode: number; data: string } {
+    const logger = new Logger('application.app.controller');
+    try {
+      const my_little_err = 'dont change this!!!';
+      throw new Error(my_little_err);
+      return { statusCode: 200, data: 'this is not error' };
+    } catch (e) {
+      logger.error(e, '끄앙');
+      return { statusCode: 400, data: 'this is not error' };
+    }
+  }
 }

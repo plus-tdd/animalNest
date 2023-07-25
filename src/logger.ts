@@ -4,11 +4,10 @@ import {
   PutLogEventsCommand,
 } from '@aws-sdk/client-cloudwatch-logs';
 import * as process from 'process';
-const moment = require('moment-timezone');
+import moment from 'moment-timezone';
 
-const { createLogger, format, transports } = winston;
-const { combine, timestamp, colorize, printf, simple, json, logstash } =
-  winston.format;
+const { createLogger, transports } = winston;
+const { combine, timestamp, colorize, printf, errors } = winston.format;
 const now = moment().format('YYYY-MM-DD HH:mm:ss');
 
 export default class Logger {
@@ -79,8 +78,13 @@ export default class Logger {
       this.sendToCloudWatch(info);
     }
   }
-  public error(errMsg: string, metadata = '') {
-    this.logger.error(errMsg);
+  public error(errMsg: Error | string, metadata = '') {
+    if (errMsg instanceof Error) {
+      const err = errMsg.stack ? errMsg.stack : errMsg.message;
+      this.logger.error(err + '\n    --metadata->' + metadata); // this will now log the error stack trace
+    } else {
+      this.logger.error(errMsg + '\n    --metadata->' + metadata);
+    }
     if (this.is_production) {
       const info = {
         timestamp: now,
