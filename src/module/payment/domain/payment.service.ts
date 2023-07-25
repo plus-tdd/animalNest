@@ -32,7 +32,7 @@ export class PaymentService {
     const userPhoneNumber = await this.repository.findUserPhoneNumber(
       paymentInfo.userId,
     );
-    let message = '결제가 완료되었습니다';
+    const message = '결제가 완료되었습니다';
 
     const alarmData: AlarmData = {
       recipient: userPhoneNumber,
@@ -58,7 +58,7 @@ export class PaymentService {
       refundInfo.userId,
     );
 
-    let message = '결제가 취소되었습니다';
+    const message = '결제가 취소되었습니다';
 
     const alarmData: AlarmData = {
       recipient: userPhoneNumber,

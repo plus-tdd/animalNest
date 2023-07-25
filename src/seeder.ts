@@ -12,13 +12,14 @@ import { PaymentEntity } from './module/payment/data/payment.entity';
 import { PetEntity } from './module/pet/data/pet.entity';
 import { PetSeeder } from './module/pet/pet.seeder';
 import { PetModule } from './module/pet/pet.module';
-import Logger from "./logger";
+import Logger from './logger';
 
 seeder({
   imports: [
     Logger,
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: `.env.develop`,
     }),
     PetModule,
     UserModule,

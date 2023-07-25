@@ -1,10 +1,8 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { DuplicateAccountError, InvalidUserInfoError } from "../user.error";
-import {
-  SignUpDto,
-} from '../api/user.dto';
+import { DuplicateAccountError, InvalidUserInfoError } from '../user.error';
+import { SignUpDto } from '../api/user.dto';
 import { LoginOutputDto, UserOutPutDto } from './user.output.dto';
 import { USER_REPOSITORY, UserRepository } from './user.repository';
 // 예제에서는 하드 코딩 되었지만
@@ -14,8 +12,7 @@ import { USER_REPOSITORY, UserRepository } from './user.repository';
 export class UserService {
   constructor(
     @Inject(USER_REPOSITORY)
-    private readonly userRepository: UserRepository,
-    // private readonly jwtService: JwtService,
+    private readonly userRepository: UserRepository, // private readonly jwtService: JwtService,
   ) {}
 
   async findOneByUserId(userId: number): Promise<UserOutPutDto> {
@@ -23,7 +20,7 @@ export class UserService {
     return this.userRepository.findOneByUserId(userId);
   }
 
-  async findOneByUserAccount(account : string): Promise<UserOutPutDto> {
+  async findOneByUserAccount(account: string): Promise<UserOutPutDto> {
     // userId 에 대한 검증은 끝났다고 가정함
     return this.userRepository.findUserByAccount(account);
   }
@@ -53,8 +50,10 @@ export class UserService {
     if (phoneNumber === '') throw new InvalidUserInfoError('휴대폰 번호');
 
     // 2. 이미 있는 아이디면 안됨
-    const check_duplicate_account = await this.userRepository.findUserByAccount(account);
-    if (check_duplicate_account) throw new DuplicateAccountError(account)
+    const check_duplicate_account = await this.userRepository.findUserByAccount(
+      account,
+    );
+    if (check_duplicate_account) throw new DuplicateAccountError(account);
   }
 
   //authservice쪽에 이함수없어서 에러나서 임의로 구현.

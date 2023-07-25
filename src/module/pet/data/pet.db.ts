@@ -27,7 +27,9 @@ export class PetRepositoryImpl implements PetRepository {
   }
 
   async findAllPetByUserId(userId: number): Promise<PetOutPutDto[]> {
-    const result: PetEntity[] = await this.PetDB.find({ where: { userId: userId } });
+    const result: PetEntity[] = await this.PetDB.find({
+      where: { userId: userId },
+    });
     return result.map((x) => this.mapper.mapToDto(x));
   }
 

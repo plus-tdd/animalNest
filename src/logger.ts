@@ -66,7 +66,7 @@ export default class Logger {
     }
   }
 
-  public info(msg: string, metadata: string = '') {
+  public info(msg: string, metadata = '') {
     this.logger.info(msg);
     if (this.is_production) {
       const info = {
@@ -79,7 +79,7 @@ export default class Logger {
       this.sendToCloudWatch(info);
     }
   }
-  public error(errMsg: string, metadata: string = '') {
+  public error(errMsg: string, metadata = '') {
     this.logger.error(errMsg);
     if (this.is_production) {
       const info = {
@@ -92,10 +92,10 @@ export default class Logger {
       this.sendToCloudWatch(info);
     }
   }
-  public debug(debugMsg: string, metadata: string = '') {
+  public debug(debugMsg: string, metadata = '') {
     this.logger.debug(debugMsg);
   }
-  public warn(warnMsg: string, metadata: string = '') {
+  public warn(warnMsg: string, metadata = '') {
     this.logger.warn(warnMsg);
     if (this.is_production) {
       const info = {

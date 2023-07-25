@@ -21,7 +21,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "seed": "ts-node src/seeder.ts"
+    "seed:develop": "cross-env NODE_ENV=develop ts-node src/seeder.ts",
+    "seed:production": "cross-env NODE_ENV=production ts-node src/seeder.ts"
   },
   "dependencies": {
     "@aws-sdk/client-cloudwatch-logs": "^3.370.0",

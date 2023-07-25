@@ -1,14 +1,19 @@
-import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from "typeorm";
-import { UserEntity } from "../../user/data/user.entity";
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
+import { UserEntity } from '../../user/data/user.entity';
 
-@Entity("payment", { schema: "animalnest" })
+@Entity('payment', { schema: 'animalnest' })
 export class PaymentEntity {
-  @PrimaryGeneratedColumn({ type: "int", name: "id" })
+  @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
-  @ManyToOne( () => UserEntity, (User) => User.PaymentEntity )
-  @JoinColumn([{name: 'userId', referencedColumnName: 'id'}])
-
+  @ManyToOne(() => UserEntity, (User) => User.PaymentEntity)
+  @JoinColumn([{ name: 'userId', referencedColumnName: 'id' }])
   User: UserEntity;
   //@JoinColumn([{ name: 'userId', referencedColumnName: 'id' }])
 
@@ -46,7 +51,7 @@ export class PaymentEntity {
 
   @Column('int', { name: 'price' })
   price: number;
-  
-  @Column("boolean", { name: "is_refund" })
+
+  @Column('boolean', { name: 'is_refund' })
   isRefund: boolean;
 }

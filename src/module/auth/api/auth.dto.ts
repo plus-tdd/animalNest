@@ -1,23 +1,22 @@
 export class validateAccessTokenOutputDto {
-    userId : number
+  userId: number;
 }
 
 export type RequestAccessToken = {
-    accessToken : string
-}
+  accessToken: string;
+};
 
 export type RequestAuthInfo = {
-    userId : number
-    accessToken : string
-}
+  userId: number;
+  accessToken: string;
+};
 
 export type ResponseServiceValue = {
-    returnStatus : number
-    returnMessage : string
-}
+  returnStatus: number;
+  returnMessage: string;
+};
 
 export class LoginDto {
-    readonly account : string
-    readonly password : string
+  readonly account: string;
+  readonly password: string;
 }
-
