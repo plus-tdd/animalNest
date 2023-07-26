@@ -5,7 +5,7 @@ import { PaymentInfo, Payment } from "../domain/payment.model";
 import { PaymentEntity } from "./payment.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { InvalidPaymentInfoError } from "../payment.error";
+import { InvalidPaymentInfoException } from '../payment.error';
 import { UserEntity } from 'src/module/user/data/user.entity';
 import Logger from 'src/logger';
 
@@ -33,7 +33,7 @@ export class PaymentRepositoryImpl implements PaymentRepository {
           });
           if (user === null) {
             this.logger.error('savePayment', `유저를 찾을 수 없습니다. savePayment request's userId: ${paymentInfo.userId}`);
-            throw new InvalidPaymentInfoError('유저');
+            throw new InvalidPaymentInfoException('유저');
           }
     
           // model -> entitiy
@@ -81,13 +81,13 @@ export class PaymentRepositoryImpl implements PaymentRepository {
         const payment = await this.PaymentDB.findOne({
             where: { id: refundInfo.paymentId}
         });
-        if (payment === null) throw new InvalidPaymentInfoError('결제 PK');
+        if (payment === null) throw new InvalidPaymentInfoException('결제 PK');
 
         // user가 db에 존재하는지??
         const user = await this.UserDB.findOne({
             where: { id: refundInfo.userId },
         });
-        if (user === null) throw new InvalidPaymentInfoError('유저');
+        if (user === null) throw new InvalidPaymentInfoException('유저');
 
         // 소프트 딜리트 - 환불 처리됨
         payment.isRefund = true; // 원하는 칼럼을 true로 변경
@@ -113,7 +113,7 @@ export class PaymentRepositoryImpl implements PaymentRepository {
             where: { id: userId },
         });
 
-        if (user === null) throw new InvalidPaymentInfoError('유저');
+        if (user === null) throw new InvalidPaymentInfoException('유저');
 
         return user.phoneNumber;
     }
