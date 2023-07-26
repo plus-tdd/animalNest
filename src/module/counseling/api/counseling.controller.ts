@@ -20,6 +20,7 @@ import {
   counselingDataBaseError,
 } from './../counseling.error';
 import { Response } from './../../../response';
+import { Counseling } from '../domain/counseling.model';
 
 @Controller('counseling')
 export class CounselingController {
@@ -41,8 +42,8 @@ export class CounselingController {
         counselingInfo,
       );
       return this.response.success(result);
-    } catch (error) {
-      throw error;
+    } catch (e) {
+      throw e;
     }
   }
 
@@ -59,7 +60,6 @@ export class CounselingController {
     );
 
     const response = result.map((v) => this.mapper.mapDomainToDto(v));
-    console.log(response);
     return response;
   }
 
@@ -67,10 +67,14 @@ export class CounselingController {
   @ApiOperation({ summary: '진료 상세 조회' })
   @Get(':id')
   async getCounseling(@Param('id') counselingId: string) {
-    const result = await this.counselingService.getCounseling(counselingId);
+    let result: Counseling;
+    try {
+      result = await this.counselingService.getCounseling(counselingId);
+    } catch (e) {
+      throw e;
+    }
 
     const response = this.mapper.mapDomainToDto(result);
-    console.log(response);
     return response;
   }
 
