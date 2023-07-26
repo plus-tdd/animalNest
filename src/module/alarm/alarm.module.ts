@@ -4,23 +4,19 @@ import { AlarmServiceImpl } from './alarm.service';
 
 @Module({})
 export class AlarmModule {
-    imports: []
-    controllers: []
-    providers: [
-      AlarmService,
-      {
-        provide: 'AlarmService',
-        useClass: AlarmServiceImpl,
-      },
-    ]
-    exports: [
+  imports: [];
+  controllers: [];
+  providers: [
+    AlarmService,
     {
-        provide: 'AlarmService',
-        useClass: AlarmServiceImpl,
+      provide: 'AlarmService';
+      useClass: AlarmServiceImpl;
     },
-    ]
-  }
-
-
-
-
+  ];
+  exports: [
+    {
+      provide: 'AlarmService';
+      useClass: AlarmServiceImpl;
+    },
+  ];
+}

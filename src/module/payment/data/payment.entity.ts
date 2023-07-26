@@ -1,9 +1,15 @@
-import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from "typeorm";
-import { UserEntity } from "../../user/data/user.entity";
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
+import { UserEntity } from '../../user/data/user.entity';
 
-@Entity("payment", { schema: "animalnest" })
+@Entity('payment', { schema: 'animalnest' })
 export class PaymentEntity {
-  @PrimaryGeneratedColumn({ type: "int", name: "id" })
+  @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
   @ManyToOne( () => UserEntity, (User) => User.PaymentEntity )
@@ -33,7 +39,7 @@ export class PaymentEntity {
       'hyundai',
       'nonghyup',
     ],
-    nullable: true 
+    nullable: true
   })
   cardCompany:
     | 'kookmin'

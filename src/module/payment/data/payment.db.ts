@@ -85,13 +85,53 @@ export class PaymentRepositoryImpl implements PaymentRepository {
 
         // user가 db에 존재하는지??
         const user = await this.UserDB.findOne({
-            where: { id: refundInfo.userId },
+            where: { id: paymentInfo.userId },
         });
         if (user === null) throw new InvalidPaymentInfoException('유저');
 
-        // 소프트 딜리트 - 환불 처리됨
-        payment.isRefund = true; // 원하는 칼럼을 true로 변경
-        await this.PaymentDB.save(payment); // 변경 내용을 저장
+    // model -> entitiy
+    const entity = this.PaymentDB.create({
+      User: user,
+      cardNum: paymentInfo.cardNum,
+      endDate: paymentInfo.endDate,
+      cvc: paymentInfo.cvc,
+      cardCompany: paymentInfo.cardCompany,
+      price: paymentInfo.price,
+    });
+
+    await this.PaymentDB.save(entity);
+
+    // entity -> model 로는 안바뀌도 되나오..?mapper를 못쓴다던 이유가 있었는데..
+
+    return {
+      paymentId: entity.id,
+      userId: entity.User.id,
+      cardNum: entity.cardNum,
+      endDate: entity.endDate,
+      cvc: entity.cvc,
+      cardCompany: paymentInfo.cardCompany,
+      price: entity.price,
+    };
+  }
+
+  async refundPayment(
+    refundInfo: RefundPaymentInfo,
+  ): Promise<PaymentInfoForRefund> {
+    // 요청에 들어온 paymentId가 db에 존재하는지?
+    const payment = await this.PaymentDB.findOne({
+      where: { id: refundInfo.paymentId },
+    });
+    if (payment === null) throw new InvalidPaymentInfoError('결제 PK');
+
+    // user가 db에 존재하는지??
+    const user = await this.UserDB.findOne({
+      where: { id: refundInfo.userId },
+    });
+    if (user === null) throw new InvalidPaymentInfoError('유저');
+
+    // 소프트 딜리트 - 환불 처리됨
+    payment.isRefund = true; // 원하는 칼럼을 true로 변경
+    await this.PaymentDB.save(payment); // 변경 내용을 저장
 
         // entitiy -> domain
         const refundPaymentDomain: PaymentInfoForRefund = {
@@ -103,9 +143,14 @@ export class PaymentRepositoryImpl implements PaymentRepository {
             price: payment.price,
           };
 
-        return refundPaymentDomain;
+    return refundPaymentDomain;
+  }
 
-    }
+  async findUserPhoneNumber(userId: number): Promise<string> {
+    // user가 db에 존재하는지??
+    const user = await this.UserDB.findOne({
+      where: { id: userId },
+    });
 
     async findUserPhoneNumber(userId: number): Promise<string> {
         // user가 db에 존재하는지??
@@ -115,6 +160,6 @@ export class PaymentRepositoryImpl implements PaymentRepository {
 
         if (user === null) throw new InvalidPaymentInfoException('유저');
 
-        return user.phoneNumber;
-    }
+    return user.phoneNumber;
+  }
 }

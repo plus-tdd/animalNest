@@ -21,7 +21,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "seed": "ts-node src/seeder.ts"
+    "seed:develop": "cross-env NODE_ENV=develop ts-node src/seeder.ts",
+    "seed:production": "cross-env NODE_ENV=production ts-node src/seeder.ts"
   },
   "dependencies": {
     "@aws-sdk/client-cloudwatch-logs": "^3.370.0",
@@ -44,6 +45,7 @@
     "moment-timezone": "^0.5.43",
     "mysql2": "^3.5.2",
     "nest-winston": "^1.9.3",
+    "nestjs-seeder": "^0.3.2",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
@@ -69,7 +71,6 @@
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
     "jest": "^29.5.0",
-    "nestjs-seeder": "^0.3.2",
     "prettier": "^2.8.8",
     "run-script-webpack-plugin": "^0.2.0",
     "source-map-support": "^0.5.21",

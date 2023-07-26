@@ -4,12 +4,10 @@ import {
   PutLogEventsCommand,
 } from '@aws-sdk/client-cloudwatch-logs';
 import * as process from 'process';
-const moment = require('moment-timezone');
+import moment from 'moment-timezone';
 
-const { createLogger, format, transports } = winston;
-const { combine, timestamp, colorize, printf, simple, json, logstash } =
-  winston.format;
-const now = moment().format('YYYY-MM-DD HH:mm:ss');
+const { createLogger, transports } = winston;
+const { combine, timestamp, colorize, printf, errors } = winston.format;
 
 export default class Logger {
   private logger: winston.Logger;
@@ -17,6 +15,7 @@ export default class Logger {
   LogGroupName: string;
   LogStreamName: string;
   private is_production = process.env.NODE_ENV === 'production';
+  protected now : string;
 
   constructor(private readonly category: string) {
     // 실제 클라우드워치에 보내는 역할
@@ -66,11 +65,12 @@ export default class Logger {
     }
   }
 
-  public info(msg: string, metadata: string = '') {
+  public info(msg: string, metadata = '') {
+    this.now = moment().format('YYYY-MM-DD HH:mm:ss');
     this.logger.info(msg + ' - ' + metadata);
     if (this.is_production) {
       const info = {
-        timestamp: now,
+        timestamp: this.now,
         level: 'info',
         category: this.category,
         message: msg,
@@ -79,11 +79,18 @@ export default class Logger {
       this.sendToCloudWatch(info);
     }
   }
-  public error(errMsg: string, metadata: string = '') {
-    this.logger.error(errMsg + ' - ' + metadata);
+
+  public error(errMsg: Error | string, metadata = '') {
+    this.now = moment().format('YYYY-MM-DD HH:mm:ss');
+    if (errMsg instanceof Error) {
+      const err = errMsg.stack ? errMsg.stack : errMsg.message;
+      this.logger.error(err + '\n======================================\nmetadata: ' + metadata); // this will now log the error stack trace
+    } else {
+      this.logger.error(errMsg + '\n======================================\nmetadata: ' + metadata);
+    }
     if (this.is_production) {
       const info = {
-        timestamp: now,
+        timestamp: this.now,
         level: 'error',
         category: this.category,
         message: errMsg,
@@ -92,14 +99,15 @@ export default class Logger {
       this.sendToCloudWatch(info);
     }
   }
-  public debug(debugMsg: string, metadata: string = '') {
+  public debug(debugMsg: string, metadata = '') {
     this.logger.debug(debugMsg);
   }
-  public warn(warnMsg: string, metadata: string = '') {
+  public warn(warnMsg: string, metadata = '') {
+    this.now = moment().format('YYYY-MM-DD HH:mm:ss');
     this.logger.warn(warnMsg);
     if (this.is_production) {
       const info = {
-        timestamp: now,
+        timestamp: this.now,
         level: 'debug',
         category: this.category,
         message: warnMsg,

@@ -10,7 +10,7 @@ import { PetEntity } from '../../pet/data/pet.entity';
 import { CounselingEntity } from '../../counseling/data/counseling.entity';
 import { PaymentEntity } from '../../payment/data/payment.entity';
 //import now = jest.now;
-//import { Factory } from "nestjs-seeder";
+import { Factory } from 'nestjs-seeder';
 
 @Entity({
   name: 'user',
@@ -20,27 +20,27 @@ export class UserEntity {
   @PrimaryGeneratedColumn({ type: 'int' })
   id: number;
 
-  //@Factory((faker) => faker.person.fullName())
+  @Factory((faker) => faker.person.fullName())
   @Column('varchar', { length: 45 })
   userName: string;
 
-  //@Factory((faker) => faker.internet.userName())
+  @Factory((faker) => faker.internet.userName())
   @Column('varchar', { length: 45 })
   account: string;
 
-  //@Factory((faker) => faker.internet.password())
+  @Factory((faker) => faker.internet.password())
   @Column('varchar', { length: 100 })
   password: string;
 
-  //@Factory((faker) => faker.phone.number())
+  @Factory((faker) => faker.phone.number())
   @Column('varchar', { length: 45 })
   phoneNumber: string;
 
-  //@Factory((faker) => faker.date.anytime())
+  @Factory((faker) => faker.date.anytime())
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
 
-  //@Factory((faker) => faker.date.anytime())
+  @Factory((faker) => faker.date.anytime())
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;
 

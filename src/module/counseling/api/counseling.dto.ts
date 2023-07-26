@@ -98,7 +98,7 @@ export class CounselingResponseDto {
     description: '진료 날짜',
     required: true,
   })
-  readonly dateTime: String;
+  readonly dateTime: string;
   @ApiProperty({
     example: CounselingStatus.Complete,
     description: '진료 데이터 상태',

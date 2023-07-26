@@ -21,19 +21,17 @@ export class UserRepositoryImpl implements UserRepository {
 
   private mapper: UserMapper;
 
-  async findOneByUserId(userId : number): Promise<UserOutPutDto> {
+  async findOneByUserId(userId: number): Promise<UserOutPutDto> {
     const result = await this.UserDB.findOne({ where: { id: userId } });
     return this.mapper.mapToDto(result);
   }
 
-  async findUserByAccount(
-    account
-  ): Promise<UserOutPutDto> {
+  async findUserByAccount(account): Promise<UserOutPutDto> {
     const result = await this.UserDB.findOne({ where: { account: account } });
     return this.mapper.mapToDto(result);
   }
 
-  async signUp(signUpDto: SignUpDto): Promise<boolean> {
+  async signUp(signUpDto: SignUpDto) {
     const { account, userName, password, phoneNumber } = signUpDto;
     const entity = await this.UserDB.create({
       account,
@@ -42,13 +40,7 @@ export class UserRepositoryImpl implements UserRepository {
       phoneNumber,
     });
 
-    const result = await this.UserDB.insert(entity);
-
-    if (result) {
-      return true;
-    } else {
-      return false;
-    }
+    return await this.UserDB.insert(entity);
   }
 
   async createMany(user) {

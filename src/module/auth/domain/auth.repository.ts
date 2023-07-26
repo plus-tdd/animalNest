@@ -1,6 +1,6 @@
-export const AUTH_REPOSITORY = "Auth Repository"
+export const AUTH_REPOSITORY = 'Auth Repository';
 
 export interface AuthRepository {
-    findOneByUserAccount(account);
-    findOneByUserId(userId)
+  findOneByUserAccount(account);
+  findOneByUserId(userId);
 }
