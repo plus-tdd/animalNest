@@ -121,6 +121,10 @@ export class PaymentRepositoryImpl implements PaymentRepository {
 
     if (payment === null) throw new InvalidPaymentInfoException('결제PK와 유저PK');
 
+    // 이미 환불 처리된 결제인지 확인
+    if (payment.isRefund) {
+      throw new InvalidPaymentInfoException('요청이며, 이미 환불 처리된 결제');
+    }
 
     // 소프트 딜리트 - 환불 처리됨
     payment.isRefund = true; // 원하는 칼럼을 true로 변경
