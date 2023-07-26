@@ -12,6 +12,7 @@ import { AlarmData } from 'src/module/alarm/alarm.service';
 
 @Injectable() // 비즈니스 로직으로 분리
 export class PaymentService {
+  
   constructor(
     @Inject('PaymentRepository')
     private readonly repository: PaymentRepository,

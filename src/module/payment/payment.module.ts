@@ -14,7 +14,7 @@ import { UserEntity } from '../user/data/user.entity';
 @Module({
   imports: [
     AuthModule,
-    TypeOrmModule.forFeature([PaymentEntity, UserEntity]), // PaymentEntityRepository 등록
+    TypeOrmModule.forFeature([PaymentEntity,UserEntity]),
     AlarmModule
   ],
   controllers: [PaymentController],
