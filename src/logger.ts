@@ -67,7 +67,7 @@ export default class Logger {
 
   public info(msg: string, metadata = '') {
     this.now = moment().format('YYYY-MM-DD HH:mm:ss');
-    this.logger.info(msg + '-' + metadata);
+    this.logger.info(msg + ' - ' + metadata);
     if (this.is_production) {
       const info = {
         timestamp: this.now,
@@ -79,6 +79,7 @@ export default class Logger {
       this.sendToCloudWatch(info);
     }
   }
+
   public error(errMsg: Error | string, metadata = '') {
     this.now = moment().format('YYYY-MM-DD HH:mm:ss');
     if (errMsg instanceof Error) {
