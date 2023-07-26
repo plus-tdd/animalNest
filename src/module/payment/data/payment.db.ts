@@ -8,7 +8,7 @@ import {
 import { PaymentInfo, Payment } from '../domain/payment.model';
 import { PaymentEntity } from './payment.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, FindOperator } from 'typeorm';
 import { InvalidPaymentInfoException } from '../payment.error';
 import { UserEntity } from 'src/module/user/data/user.entity';
 import { AlarmService } from 'src/module/alarm/alarm.service';
@@ -28,6 +28,9 @@ export class PaymentRepositoryImpl implements PaymentRepository {
   ) {
     this.logger = new Logger('PaymentRepositoryImpl');
   }
+
+
+  // 결제 저장하기
   async savePayment(paymentInfo: PaymentInfo): Promise<Payment> {
     try {
       // user가 db에 존재하는지??
@@ -83,19 +86,46 @@ export class PaymentRepositoryImpl implements PaymentRepository {
       throw error; // 예외를 다시 던져서 호출한 쪽에서 처리할 수 있도록 함
     }
   }
-  async refundPayment(
-    refundInfo: RefundPaymentInfo,
-  ): Promise<PaymentInfoForRefund> {
+
+  // 유저pk로 결제 목록 조회
+  async findPaymentsByUserId(userId: number): Promise<Payment[]> {
+    const payments = await this.PaymentDB
+      .createQueryBuilder('payment')
+      .innerJoinAndSelect('payment.User', 'user')
+      .where('user.id = :userId', { userId })
+      .andWhere('payment.is_refund <> :isRefund', { isRefund: true }) // is_refund가 1이 아닌 조건 추가
+      .getMany();
+
+    // PaymentEntity와 매핑된 Payment 객체를 생성하여 배열로 변환
+    const paymentList: Payment[] = payments.map((paymentEntity) => ({
+      paymentId: paymentEntity.id,
+      userId: paymentEntity.User.id,
+      cardNum: paymentEntity.cardNum,
+      endDate: paymentEntity.endDate,
+      cvc: paymentEntity.cvc,
+      cardCompany: paymentEntity.cardCompany,
+      price: paymentEntity.price,
+    }));
+
+    return paymentList;
+  }
+
+  // 환불하기
+  async refundPayment(refundInfo: RefundPaymentInfo): Promise<PaymentInfoForRefund> {
+
     // 요청에 들어온 paymentId가 db에 존재하는지?
     const payment = await this.PaymentDB.findOne({
-      where: { id: refundInfo.paymentId },
+      where: { id: refundInfo.paymentId, User: { id: refundInfo.userId } },
+      relations: ['User'],
     });
-    if (payment === null) throw new InvalidPaymentInfoException('결제 PK');
-    // user가 db에 존재하는지??
-    const user = await this.UserDB.findOne({
-      where: { id: refundInfo.userId },
-    });
-    if (user === null) throw new InvalidPaymentInfoException('유저');
+
+    if (payment === null) throw new InvalidPaymentInfoException('결제PK와 유저PK');
+
+    // 이미 환불 처리된 결제인지 확인
+    if (payment.isRefund) {
+      throw new InvalidPaymentInfoException('요청이며, 이미 환불 처리된 결제');
+    }
+
     // 소프트 딜리트 - 환불 처리됨
     payment.isRefund = true; // 원하는 칼럼을 true로 변경
     await this.PaymentDB.save(payment); // 변경 내용을 저장
@@ -110,11 +140,13 @@ export class PaymentRepositoryImpl implements PaymentRepository {
     };
     return refundPaymentDomain;
   }
+
   async findUserPhoneNumber(userId: number): Promise<string> {
     // user가 db에 존재하는지??
     const user = await this.UserDB.findOne({
       where: { id: userId },
     });
+
     if (user === null) throw new InvalidPaymentInfoException('유저');
     return user.phoneNumber;
   }

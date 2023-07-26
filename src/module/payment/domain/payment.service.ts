@@ -27,7 +27,7 @@ export class PaymentService {
   }
 
   public async makePayment(paymentInfo: PaymentInfo): Promise<Payment> {
-    this.validatePaymentInfo(paymentInfo);
+    await this.validatePaymentInfo(paymentInfo);
     // DB작업 - 결제 정보 저장
     const savePaymentInfo = await this.repository.savePayment(paymentInfo);
 
@@ -39,7 +39,7 @@ export class PaymentService {
     const userPhoneNumber = await this.repository.findUserPhoneNumber(
       paymentInfo.userId,
     );
-    const message = '결제가 완료되었습니다';
+    let message = '결제가 완료되었습니다';
 
     const alarmData: AlarmData = {
       recipient: userPhoneNumber,
@@ -49,6 +49,12 @@ export class PaymentService {
     this.alarmService.sendAlarm(alarmData);
 
     return savePaymentInfo;
+  }
+
+  public async getPaymenList(userId: number): Promise<Payment[]> {
+
+   const paymentList: Payment[]  = await this.repository.findPaymentsByUserId(userId);
+   return paymentList;
   }
 
   public async refundPayment(
@@ -65,7 +71,7 @@ export class PaymentService {
       refundInfo.userId,
     );
 
-    const message = '결제가 취소되었습니다';
+    let message = '결제가 취소되었습니다';
 
     const alarmData: AlarmData = {
       recipient: userPhoneNumber,
