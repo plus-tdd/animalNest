@@ -9,7 +9,6 @@ export class AppController {
   @Get()
   getHello(): { statusCode: number; data: string } {
     const logger = new Logger('application.app.controller');
-    console.log('???');
     logger.info('안녕하세요', '대문입니다.');
     const data = this.appService.getHello();
     return { statusCode: 200, data };
@@ -17,8 +16,6 @@ export class AppController {
 
   @Get('/health')
   getHealth(): { statusCode: number; data: string } {
-    const logger = new Logger('application.app.controller');
-    logger.warn('Health check', '서비스 정상 동작 확인');
     return { statusCode: 200, data: 'Health check passed!' };
   }
 
