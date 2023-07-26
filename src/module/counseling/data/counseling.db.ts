@@ -145,7 +145,8 @@ export class CounselingRepositoryImpl implements CounselingRepository {
       },
       where: { id: +counselingId },
     });
-
+    if (result === null)
+      throw new BadRequestException('해당 진료는 존재하지 않습니다.');
     return this.mapper.mapEntityToDomain(result);
   }
 
