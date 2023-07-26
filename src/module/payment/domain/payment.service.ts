@@ -9,24 +9,30 @@ import {
 } from './payment.model';
 import { PaymentRepository } from './payment.repository';
 import { AlarmData } from 'src/module/alarm/alarm.service';
+import Logger from 'src/logger';
+import { InvalidPaymentInfoException } from '../payment.error';
 
 @Injectable() // 비즈니스 로직으로 분리
 export class PaymentService {
+
+  private logger;
   
   constructor(
     @Inject('PaymentRepository')
     private readonly repository: PaymentRepository,
     @Inject('AlarmService')
     private readonly alarmService: AlarmService,
-  ) {}
+  ) {
+    this.logger = new Logger('PaymentService')
+  }
 
   public async makePayment(paymentInfo: PaymentInfo): Promise<Payment> {
     this.validatePaymentInfo(paymentInfo);
     // DB작업 - 결제 정보 저장
-    const savePaymentInfo = this.repository.savePayment(paymentInfo);
+    const savePaymentInfo = await this.repository.savePayment(paymentInfo);
 
     // 결제 SDK 기능
-    this.paymentToSdk(paymentInfo);
+    await this.paymentToSdk(paymentInfo);
 
     // 결제 완료 알람 붙여야함
 
@@ -74,14 +80,21 @@ export class PaymentService {
   public async validatePaymentInfo(requestInfo: PaymentInfo): Promise<boolean> {
     const { userId, cardNum, endDate, cvc, cardCompany, price } = requestInfo;
 
+    try {
     if (cardNum !== undefined) {
       if (!this.validateCardNum(cardNum)) {
-        return false;
+        this.logger.error('validateCardNum', `cardNum을 확인하세요 ${cardNum}`)
+        throw new InvalidPaymentInfoException('카드번호');
       }
     }
+  } catch (error) {
+    this.logger.error('validateCardNum', `카드번호 검증 중 오류가 발생하였습니다: ${error.message}`);
+    throw error; // 예외를 다시 던져서 호출한 쪽에서 처리할 수 있도록 함
+  }
 
     if (!this.validateInfoIsEmpty(requestInfo)) {
-      return false;
+      this.logger.error('validateInfoIsEmpty', `requestInfo를 확인하세요 ${requestInfo}`)
+      throw new InvalidPaymentInfoException('요청겂');
     }
 
     return true;
@@ -116,7 +129,8 @@ export class PaymentService {
     const cardNumString = cardNum.toString();
 
     // 카드가 음수이거나, 길이가 16자를 초과하는 경우 실패로 처리 (정책 상 16자리까지만 있음)
-    if (cardNum < 0 || cardNumString.length > 16) {
+    if (cardNum < 0 || cardNumString.length > 16 ||cardNumString.length < 16 ) {
+      this.logger.error('validateCardNum', `cardNum이 0보다 작거나 16보다 길고, 짧으면 안됩니다 ${cardNum}`)
       return false;
     }
     return true;
@@ -126,6 +140,7 @@ export class PaymentService {
   private validateInfoIsEmpty(requestInfo: PaymentInfo): boolean {
     const { cardNum, endDate, cvc, cardCompany } = requestInfo;
     if (cardNum === undefined || endDate === undefined || cvc === undefined) {
+      this.logger.error('validateInfoIsEmpty', `requestInfo 중 빈 값이 존재하면 안됩니다. ${requestInfo}`)
       return false;
     }
     return true;
