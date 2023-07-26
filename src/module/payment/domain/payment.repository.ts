@@ -16,6 +16,7 @@ export class TestPaymentRepository implements PaymentRepository {
   async savePayment(paymentInfo: PaymentInfo): Promise<Payment> {
     this.paymentInfos.push(paymentInfo);
 
+
     return {
       paymentId: 1,
       userId : 1,
@@ -38,6 +39,7 @@ export class TestPaymentRepository implements PaymentRepository {
       price : 10000
     }
   }
+
   async findUserPhoneNumber(userId: number): Promise<string> {
     return '12341234';
   }

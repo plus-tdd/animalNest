@@ -16,6 +16,7 @@ export class PaymentRepositoryImpl implements PaymentRepository {
         // DB 주입
         @InjectRepository(PaymentEntity)
         private PaymentDB: Repository<PaymentEntity>,
+        @InjectRepository(UserEntity)
         private UserDB: Repository<UserEntity>
     ){}
 
