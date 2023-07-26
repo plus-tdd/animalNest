@@ -24,7 +24,7 @@ export class LoggerMiddleware implements NestMiddleware {
           body,
         )}Headers: ${JSON.stringify(
           headers,
-        )}[RESPONSE]\nStatus:${statusCode}\nBody: ${responseBody}`,
+        )}\n[RESPONSE]\nStatus:${statusCode}\nBody: ${responseBody}`,
       );
     }.bind(this);
 
