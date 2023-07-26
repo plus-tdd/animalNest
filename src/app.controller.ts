@@ -9,7 +9,8 @@ export class AppController {
   @Get()
   getHello(): { statusCode: number; data: string } {
     const logger = new Logger('application.app.controller');
-    logger.info('안녕하세요', '대문입니다.');
+    console.log('???');
+    logger.info('안녕하세요', '재철대문입니다.');
     const data = this.appService.getHello();
     return { statusCode: 200, data };
   }
