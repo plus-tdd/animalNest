@@ -3,7 +3,7 @@ export class UserOutPutDto {
   readonly account: string;
   readonly userName: string;
   readonly phoneNumber: string;
-  readonly password: string;
+  password: string;
 }
 export class LoginOutputDto {
   readonly accessToken: string;

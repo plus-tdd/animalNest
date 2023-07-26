@@ -15,6 +15,7 @@ export default class Logger {
   LogGroupName: string;
   LogStreamName: string;
   private is_production = process.env.NODE_ENV === 'production';
+  protected now : string;
 
   constructor(private readonly category: string) {
     // 실제 클라우드워치에 보내는 역할
@@ -65,11 +66,11 @@ export default class Logger {
   }
 
   public info(msg: string, metadata = '') {
-    const now = moment().format('YYYY-MM-DD HH:mm:ss');
-    this.logger.info(msg);
+    this.now = moment().format('YYYY-MM-DD HH:mm:ss');
+    this.logger.info(msg + '-' + metadata);
     if (this.is_production) {
       const info = {
-        timestamp: now,
+        timestamp: this.now,
         level: 'info',
         category: this.category,
         message: msg,
@@ -79,16 +80,16 @@ export default class Logger {
     }
   }
   public error(errMsg: Error | string, metadata = '') {
-    const now = moment().format('YYYY-MM-DD HH:mm:ss');
+    this.now = moment().format('YYYY-MM-DD HH:mm:ss');
     if (errMsg instanceof Error) {
       const err = errMsg.stack ? errMsg.stack : errMsg.message;
-      this.logger.error(err + '\n    --metadata->' + metadata); // this will now log the error stack trace
+      this.logger.error(err + '\n======================================\nmetadata: ' + metadata); // this will now log the error stack trace
     } else {
-      this.logger.error(errMsg + '\n    --metadata->' + metadata);
+      this.logger.error(errMsg + '\n======================================\nmetadata: ' + metadata);
     }
     if (this.is_production) {
       const info = {
-        timestamp: now,
+        timestamp: this.now,
         level: 'error',
         category: this.category,
         message: errMsg,
@@ -101,11 +102,11 @@ export default class Logger {
     this.logger.debug(debugMsg);
   }
   public warn(warnMsg: string, metadata = '') {
-    const now = moment().format('YYYY-MM-DD HH:mm:ss');
+    this.now = moment().format('YYYY-MM-DD HH:mm:ss');
     this.logger.warn(warnMsg);
     if (this.is_production) {
       const info = {
-        timestamp: now,
+        timestamp: this.now,
         level: 'debug',
         category: this.category,
         message: warnMsg,
