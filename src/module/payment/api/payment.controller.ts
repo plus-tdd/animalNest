@@ -7,13 +7,16 @@ import { RefundPaymentRequestDto } from './payment.refund.request.dto';
 import { Payment } from '../domain/payment.model';
 import { RefundPaymentInfo } from '../domain/payment.model';
 import { JwtAuthGuard } from "../../auth/auth.jwtAuthGuard";
-
+import Logger from 'src/logger';
 //@UseGuards(AuthGuard)
 @Controller('/payment')
 export class PaymentController {
 
+    private logger;
+
     constructor(private readonly paymentService: PaymentService) {
 
+             this.logger = new Logger('PaymentController')
     }
 
     @UseGuards(JwtAuthGuard)
@@ -31,7 +34,14 @@ export class PaymentController {
             cardCompany: cardCompany,
             price: price
         }
-        
+
+        this.logger.info(paymentData.userId)
+        this.logger.info(paymentData.cardCompany)
+        this.logger.info(paymentData.cardNum)
+        this.logger.info(paymentData.endDate)
+        this.logger.info(paymentData.cvc)
+        this.logger.info(paymentData.price)
+
         return this.paymentService.makePayment(paymentInfo)
     }
 
