@@ -23,7 +23,7 @@ export class PaymentService {
   public async makePayment(paymentInfo: PaymentInfo): Promise<Payment> {
     this.validatePaymentInfo(paymentInfo);
     // DB작업 - 결제 정보 저장
-    const savePaymentInfo = this.repository.savePayment(paymentInfo);
+    const savePaymentInfo = await this.repository.savePayment(paymentInfo);
 
     // 결제 SDK 기능
     this.paymentToSdk(paymentInfo);

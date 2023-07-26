@@ -15,14 +15,13 @@ export class PaymentController {
     private logger;
 
     constructor(private readonly paymentService: PaymentService) {
-
              this.logger = new Logger('PaymentController')
     }
 
     @UseGuards(JwtAuthGuard)
     @ApiOperation({summary : '결제하기'})
     @Post()
-    makePayment(@Body() paymentData: PaymentRequestDto): Promise<Payment> {
+    async makePayment(@Body() paymentData: PaymentRequestDto): Promise<Payment> {
         const { userId, cardNum, endDate, cvc, cardCompany, price } = paymentData;
 
         // dto - > model
@@ -35,14 +34,14 @@ export class PaymentController {
             price: price
         }
 
-        this.logger.info(paymentData.userId)
-        this.logger.info(paymentData.cardCompany)
-        this.logger.info(paymentData.cardNum)
-        this.logger.info(paymentData.endDate)
-        this.logger.info(paymentData.cvc)
-        this.logger.info(paymentData.price)
+        this.logger.info('request userId', paymentData.userId)
+        this.logger.info('request cardCompany',paymentData.cardCompany)
+        this.logger.info('request cardNum',paymentData.cardNum)
+        this.logger.info('request endDate',paymentData.endDate)
+        this.logger.info('request cvc',paymentData.cvc)
+        this.logger.info('request price',paymentData.price)
 
-        return this.paymentService.makePayment(paymentInfo)
+        return await this.paymentService.makePayment(paymentInfo)
     }
 
     @UseGuards(JwtAuthGuard)

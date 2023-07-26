@@ -67,7 +67,7 @@ export default class Logger {
   }
 
   public info(msg: string, metadata: string = '') {
-    this.logger.info(msg);
+    this.logger.info(msg + ' - ' + metadata);
     if (this.is_production) {
       const info = {
         timestamp: now,
@@ -80,7 +80,7 @@ export default class Logger {
     }
   }
   public error(errMsg: string, metadata: string = '') {
-    this.logger.error(errMsg);
+    this.logger.error(errMsg + ' - ' + metadata);
     if (this.is_production) {
       const info = {
         timestamp: now,
