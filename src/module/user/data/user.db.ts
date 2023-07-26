@@ -31,7 +31,7 @@ export class UserRepositoryImpl implements UserRepository {
     return this.mapper.mapToDto(result);
   }
 
-  async signUp(signUpDto: SignUpDto): Promise<boolean> {
+  async signUp(signUpDto: SignUpDto) {
     const { account, userName, password, phoneNumber } = signUpDto;
     const entity = await this.UserDB.create({
       account,
@@ -40,13 +40,7 @@ export class UserRepositoryImpl implements UserRepository {
       phoneNumber,
     });
 
-    const result = await this.UserDB.insert(entity);
-
-    if (result) {
-      return true;
-    } else {
-      return false;
-    }
+    return await this.UserDB.insert(entity);
   }
 
   async createMany(user) {

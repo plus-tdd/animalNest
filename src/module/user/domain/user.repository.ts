@@ -12,38 +12,33 @@ export interface UserRepository {
 }
 
 export class TestUserRepositoryImpl implements UserRepository {
-  private readonly users = [
+  private readonly users : UserOutPutDto =
     {
       id: 1,
       userName: 'john',
       account: 'changeme',
       phoneNumber: '01022223333',
       password: 'password',
-    },
-    {
-      id: 2,
-      userName: 'maria',
-      account: 'guess',
-      phoneNumber: '01033332222',
-      password: 'password',
-    },
-  ];
+    };
 
   async findOneByUserId(userId: number): Promise<UserOutPutDto> {
-    return this.users.find((user) => user.id === userId);
+    if (this.users.id === userId) {
+      return this.users
+    }
   }
 
   async findUserByAccount(account): Promise<UserOutPutDto> {
-    return this.users.find((user) => user.account === account);
+    if (this.users.account === account) {
+      return this.users
+    }
   }
 
-  async signUp(signUpDto: SignUpDto): Promise<boolean> {
-    const { account, userName, password, phoneNumber } = signUpDto;
-    return true;
+  async signUp(signUpDto: SignUpDto) : Promise<UserOutPutDto> {
+    return this.users;
   }
 
   async createMany(doctor) {
-    return true;
+    return this.users;
   }
   async deleteAll() {
     return true;
