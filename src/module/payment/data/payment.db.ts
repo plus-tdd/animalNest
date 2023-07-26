@@ -35,7 +35,7 @@ export class PaymentRepositoryImpl implements PaymentRepository {
             this.logger.error('savePayment', `유저를 찾을 수 없습니다. savePayment request's userId: ${paymentInfo.userId}`);
             throw new InvalidPaymentInfoError('유저');
           }
-      
+    
           // model -> entitiy
           const entity = this.PaymentDB.create({
             User: user,
@@ -45,23 +45,24 @@ export class PaymentRepositoryImpl implements PaymentRepository {
             cardCompany: paymentInfo.cardCompany,
             price: paymentInfo.price,
           });
-      
+    
           try {
-            await this.PaymentDB.save(entity);
-            // 로그 추가
-            this.logger.info('savePayment', `새로운 결제 정보가 저장되었습니다. PAYMENT_ID: ${entity.id}, ACCOUNT: ${entity.User.account}`);
-      
-            // 반환값 
-            return {
-              paymentId: entity.id,
-              userId: entity.User.id,
-              cardNum: entity.cardNum,
-              endDate: entity.endDate,
-              cvc: entity.cvc,
-              cardCompany: paymentInfo.cardCompany,
-              price: entity.price,
-            };
-          } catch (error) {
+          await this.PaymentDB.save(entity);
+    
+          // 로그 추가
+          this.logger.info('savePayment', `새로운 결제 정보가 저장되었습니다. PAYMENT_ID: ${entity.id}, ACCOUNT: ${entity.User.account}`);
+    
+          // 반환값
+          return {
+            paymentId: entity.id,
+            userId: entity.User.id,
+            cardNum: entity.cardNum,
+            endDate: entity.endDate,
+            cvc: entity.cvc,
+            cardCompany: paymentInfo.cardCompany,
+            price: entity.price,
+          };
+        } catch (error) {
             this.logger.error('savePayment', `결제 정보 저장 중 오류가 발생하였습니다: ${error.message}`);
             throw error; // 예외를 다시 던져서 호출한 쪽에서 처리할 수 있도록 함
           }
