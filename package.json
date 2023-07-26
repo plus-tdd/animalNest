@@ -43,7 +43,7 @@
     "fastify-swagger": "^5.2.0",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.43",
-    "mysql2": "^3.4.1",
+    "mysql2": "^3.5.2",
     "nest-winston": "^1.9.3",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",

@@ -9,28 +9,33 @@ import { PaymentRepositoryImpl } from './data/payment.db';
 import { AlarmService, AlarmServiceImpl } from '../alarm/alarm.service';
 import { AlarmModule } from '../alarm/alarm.module';
 import { AuthModule } from '../auth/auth.module';
+import { UserEntity } from '../user/data/user.entity';
 
 @Module({
-  imports: [AuthModule, TypeOrmModule.forFeature([PaymentEntity]), AlarmModule],
+  imports: [
+    AuthModule,
+    TypeOrmModule.forFeature([PaymentEntity,UserEntity]),
+    AlarmModule
+  ],
   controllers: [PaymentController],
   providers: [
     PaymentService,
     {
-      provide: 'PaymentService',
+      provide: 'PaymentRepository',
       useClass: PaymentRepositoryImpl,
     },
     {
-      provide: 'PaymentService',
+      provide: 'AlarmService',
       useClass: AlarmServiceImpl,
     },
   ],
   exports: [
     {
-      provide: 'PaymentService',
+      provide: 'PaymentRepository',
       useClass: PaymentRepositoryImpl,
     },
     {
-      provide: 'PaymentService',
+      provide: 'AlarmService',
       useClass: AlarmServiceImpl,
     },
   ],

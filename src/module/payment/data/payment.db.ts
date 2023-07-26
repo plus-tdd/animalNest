@@ -15,19 +15,24 @@ import { UserEntity } from 'src/module/user/data/user.entity';
 // 실제 DB
 @Injectable()
 export class PaymentRepositoryImpl implements PaymentRepository {
-  constructor(
-    // DB 주입
-    @InjectRepository(PaymentEntity)
-    private PaymentDB: Repository<PaymentEntity>,
-    private UserDB: Repository<UserEntity>,
-  ) {}
 
-  async savePayment(paymentInfo: PaymentInfo): Promise<Payment> {
-    // user가 db에 존재하는지??
-    const user = await this.UserDB.findOne({
-      where: { id: paymentInfo.userId },
-    });
-    if (user === null) throw new InvalidPaymentInfoError('유저');
+    constructor(
+        // DB 주입
+        @InjectRepository(PaymentEntity)
+        private PaymentDB: Repository<PaymentEntity>,
+        @InjectRepository(UserEntity)
+        private UserDB: Repository<UserEntity>
+    ){}
+
+    async savePayment(paymentInfo: PaymentInfo): Promise<Payment> {
+
+        console.log("paymentInfo : " + paymentInfo);
+
+        // user가 db에 존재하는지??
+        const user = await this.UserDB.findOne({
+            where: { id: paymentInfo.userId },
+        });
+        if (user === null) throw new InvalidPaymentInfoError('유저');
 
     // model -> entitiy
     const entity = this.PaymentDB.create({
@@ -73,15 +78,15 @@ export class PaymentRepositoryImpl implements PaymentRepository {
     payment.isRefund = true; // 원하는 칼럼을 true로 변경
     await this.PaymentDB.save(payment); // 변경 내용을 저장
 
-    // entitiy -> domain
-    const refundPaymentDomain: PaymentInfoForRefund = {
-      userId: payment.User.id,
-      cardNum: payment.cardNum,
-      endDate: payment.endDate,
-      cvc: payment.cvc,
-      cardCompany: payment.cardCompany,
-      price: payment.price,
-    };
+        // entitiy -> domain
+        const refundPaymentDomain: PaymentInfoForRefund = {
+            userId: user.id,
+            cardNum: payment.cardNum,
+            endDate: payment.endDate,
+            cvc: payment.cvc,
+            cardCompany: payment.cardCompany,
+            price: payment.price,
+          };
 
     return refundPaymentDomain;
   }

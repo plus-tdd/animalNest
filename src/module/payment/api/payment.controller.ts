@@ -9,7 +9,7 @@ import { RefundPaymentInfo } from '../domain/payment.model';
 import { JwtAuthGuard } from '../../auth/auth.jwtAuthGuard';
 
 //@UseGuards(AuthGuard)
-@Controller('api/payment')
+@Controller('/payment')
 export class PaymentController {
   constructor(private readonly paymentService: PaymentService) {}
 
