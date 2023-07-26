@@ -18,7 +18,7 @@ export class PaymentEntity {
   User: UserEntity | null; // nullable로 변경
   //@JoinColumn([{ name: 'userId', referencedColumnName: 'id' }])
 
-  @Column('int', { name: 'card_num', nullable: true  })
+  @Column('bigint', { name: 'card_num', nullable: true  })
   cardNum: number;
 
   @Column('varchar', { name: 'end_date', length: 45, nullable: true  })

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Param, UseGuards } from '@nestjs/common';
 import { PaymentService } from '../domain/payment.service';
 import { PaymentInfo, PaymentInfoForRefund } from '../domain/payment.model';
 import { ApiOperation } from '@nestjs/swagger';
@@ -8,7 +8,7 @@ import { Payment } from '../domain/payment.model';
 import { RefundPaymentInfo } from '../domain/payment.model';
 import { JwtAuthGuard } from "../../auth/auth.jwtAuthGuard";
 import Logger from 'src/logger';
-//@UseGuards(AuthGuard)
+@UseGuards(JwtAuthGuard)
 @Controller('/payment')
 export class PaymentController {
 
@@ -18,7 +18,6 @@ export class PaymentController {
              this.logger = new Logger('PaymentController')
     }
 
-    @UseGuards(JwtAuthGuard)
     @ApiOperation({summary : '결제하기'})
     @Post()
     async makePayment(@Body() paymentData: PaymentRequestDto): Promise<Payment> {
@@ -44,12 +43,22 @@ export class PaymentController {
         return await this.paymentService.makePayment(paymentInfo)
     }
 
-    @UseGuards(JwtAuthGuard)
+    @ApiOperation({summary : '유저별 결제 목록 조회하기(환불된 것 제외)'})
+    @Get(':userId')
+    async getPaymenList(@Param('userId') userId: number): Promise<Payment[]> {
+
+        this.logger.info('request userId', userId)
+        return await this.paymentService.getPaymenList(userId)
+    }
+
+
     @ApiOperation({summary : '결제 취소하기'})
     @Post('/refund')
     refundPayment(@Body() refundData: RefundPaymentRequestDto): Promise<PaymentInfoForRefund> {
         const { paymentId, userId} = refundData;
 
+        this.logger.info('request userId', refundData.userId)
+        this.logger.info('request paymentId',refundData.paymentId)
         // dto - > model
         const refundInfo: RefundPaymentInfo = {
             paymentId: paymentId,

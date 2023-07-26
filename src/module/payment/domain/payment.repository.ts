@@ -6,6 +6,7 @@ export interface PaymentRepository {
   savePayment(paymentInfo: PaymentInfo): Promise<Payment>;
   refundPayment(paymentInfo: RefundPaymentInfo): Promise<PaymentInfoForRefund>;
   findUserPhoneNumber(userId: number): Promise<string>;
+  findPaymentsByUserId(userId: number): Promise<Payment[]>;
 }
 
 // 테스트용
@@ -25,6 +26,32 @@ export class TestPaymentRepository implements PaymentRepository {
       cardCompany: CardCompany.Hyundai,
       price: 10000,
     };
+  }
+
+  async findPaymentsByUserId(userId: number): Promise<Payment[]> {
+    // 테스트용 가짜 데이터 생성
+    const fakeData: Payment[] = [
+      {
+        paymentId: 1,
+        userId: userId,
+        cardNum: 1234,
+        endDate: '2307',
+        cvc: 567,
+        cardCompany: 'hyundai',
+        price: 1000,
+      },
+      {
+        paymentId: 2,
+        userId: userId,
+        cardNum: 5678,
+        endDate: '2308',
+        cvc: 789,
+        cardCompany: 'shinhan',
+        price: 2000,
+      }
+    ];
+
+    return fakeData;
   }
 
   async refundPayment(
