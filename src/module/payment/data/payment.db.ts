@@ -21,6 +21,8 @@ export class PaymentRepositoryImpl implements PaymentRepository {
     ){}
 
     async savePayment(paymentInfo: PaymentInfo): Promise<Payment> {
+
+        console.log("paymentInfo : " + paymentInfo);
            
         // user가 db에 존재하는지??
         const user = await this.UserDB.findOne({
@@ -74,7 +76,7 @@ export class PaymentRepositoryImpl implements PaymentRepository {
 
         // entitiy -> domain
         const refundPaymentDomain: PaymentInfoForRefund = {
-            userId: payment.User.id,
+            userId: user.id,
             cardNum: payment.cardNum,
             endDate: payment.endDate,
             cvc: payment.cvc,

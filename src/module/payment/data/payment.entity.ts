@@ -9,16 +9,16 @@ export class PaymentEntity {
   @ManyToOne( () => UserEntity, (User) => User.PaymentEntity )
   @JoinColumn([{name: 'userId', referencedColumnName: 'id'}])
 
-  User: UserEntity;
+  User: UserEntity | null; // nullable로 변경
   //@JoinColumn([{ name: 'userId', referencedColumnName: 'id' }])
 
-  @Column('int', { name: 'card_num' })
+  @Column('int', { name: 'card_num', nullable: true  })
   cardNum: number;
 
-  @Column('varchar', { name: 'end_date', length: 45 })
+  @Column('varchar', { name: 'end_date', length: 45, nullable: true  })
   endDate: string;
 
-  @Column('int', { name: 'cvc' })
+  @Column('int', { name: 'cvc', nullable: true  })
   cvc: number;
 
   @Column('enum', {
@@ -33,6 +33,7 @@ export class PaymentEntity {
       'hyundai',
       'nonghyup',
     ],
+    nullable: true 
   })
   cardCompany:
     | 'kookmin'
@@ -44,9 +45,9 @@ export class PaymentEntity {
     | 'hyundai'
     | 'nonghyup';
 
-  @Column('int', { name: 'price' })
+  @Column('int', { name: 'price', nullable: true  })
   price: number;
   
-  @Column("boolean", { name: "is_refund" })
+  @Column("boolean", { name: "is_refund", nullable: false, default: 0  })
   isRefund: boolean;
 }
