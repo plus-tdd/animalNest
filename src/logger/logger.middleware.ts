@@ -9,24 +9,22 @@ export class LoggerMiddleware implements NestMiddleware {
     const { method, originalUrl: url, params, query, body, headers } = req;
 
     const originalSend = res.send;
-    res.send = function (body) {
-      const responseBody = body instanceof Object ? JSON.stringify(body) : body;
-      const { method, originalUrl: url } = req;
+    res.send = function (responseBody) {
       const statusCode = res.statusCode;
 
       // 응답 전송
       res.send = originalSend;
-      res.send(body);
+      res.send(responseBody);
 
       // 로그 남기기
       this.logger.info(
-        `${method} ${url} StatusCode: ${statusCode}\n[REQUEST] \nParams: ${JSON.stringify(
+        `${method} ${url} ${statusCode}\n[REQUEST] \nParams: ${JSON.stringify(
           params,
-        )} \nQuery: ${JSON.stringify(query)} \nBody: ${JSON.stringify(
+        )}Query: ${JSON.stringify(query)}Body: ${JSON.stringify(
           body,
-        )} \nHeaders: ${JSON.stringify(
+        )}Headers: ${JSON.stringify(
           headers,
-        )} \n[RESPONSE] \n \nBody: ${responseBody}`,
+        )}[RESPONSE]\nStatus:${statusCode}\nBody: ${responseBody}`,
       );
     }.bind(this);
 
