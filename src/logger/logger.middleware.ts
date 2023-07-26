@@ -28,21 +28,6 @@ export class LoggerMiddleware implements NestMiddleware {
       );
     }.bind(this);
 
-    // res.on('finish', () => {
-    //   console.log(
-    //     'ip:',
-    //     req.ip,
-    //     'method:',
-    //     req.method,
-    //     'statusCode:',
-    //     res.statusCode,
-    //   );
-    //   this.logger.info(
-    //     `${req.ip} ${req.method} ${res.statusCode} ${res.ResBody}`,
-    //     req.originalUrl,
-    //   );
-    // });
-
     next();
   }
 }
