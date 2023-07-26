@@ -1,4 +1,9 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CounselingModule } from './module/counseling/counseling.module';
@@ -77,6 +82,9 @@ import { LoggerMiddleware } from './logger/logger.middleware';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes('*');
+    consumer
+      .apply(LoggerMiddleware)
+      .exclude('/health') // 헬스체커만 제외
+      .forRoutes({ path: '*', method: RequestMethod.ALL }); // 모든 경로
   }
 }
