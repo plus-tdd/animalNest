@@ -4,7 +4,9 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import Logger from './logger';
 import { HttpExceptionFilter } from './http-exception.filter';
 import * as moment from 'moment-timezone';
-
+import express from 'express';
+import { join } from 'path';
+import { NestExpressApplication } from '@nestjs/platform-express';
 declare const module: any;
 
 async function bootstrap() {
@@ -18,6 +20,7 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter());
 
   const port = process.env.PORT || 3000;
+
   const config = new DocumentBuilder()
     .setTitle('animalNest Api')
     .setDescription('동물병원 예약 시나리오 개발을 위한 API문서')
@@ -28,7 +31,7 @@ async function bootstrap() {
 
   await app.listen(port);
   console.log(`listening on port ${port}`);
-  logger.info('Hello, World!!!!! 로그 성공', 'MAIN');
+
 
   if (module.hot) {
     module.hot.accept();
