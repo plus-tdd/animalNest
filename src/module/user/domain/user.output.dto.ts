@@ -6,5 +6,6 @@ export class UserOutPutDto {
   password: string;
 }
 export class LoginOutputDto {
+  readonly userId: number;
   readonly accessToken: string;
 }
