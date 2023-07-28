@@ -3,8 +3,7 @@ import { PaymentService } from "../../module/payment/domain/payment.service";
 import { PaymentInfo } from "../../module/payment/domain/payment.model";
 import { PaymentRepository, TestPaymentRepository } from "../../module/payment/domain/payment.repository";
 import { TestExternalPaymentSDK } from "../../module/payment/domain/payment.external.sdk";
-import { PaymentRequestDto } from "src/module/payment/api/payment.save.request.dto";
-import { AlarmService } from "src/module/alarm/alarm.service";
+import { AlarmService, TestAlarmService } from '../../module/alarm/alarm.service';
 
 // Completed request Info
 // const validatedRequest: PaymentCardRequestInfo = {
@@ -99,7 +98,7 @@ describe('결제 시 필요한 카드 정보 검증 TestSuite', () => {
         const endDateIsEmpty: PaymentInfo = {
             userId : 1,
             cardNum: 1234567812345678,
-            endDate: undefined, // string이 undefined 일 경우
+            endDate: '', // string이 undefined 일 경우
             cvc: 345,
             cardCompany: CardCompany.Kookmin,
             price: 10000

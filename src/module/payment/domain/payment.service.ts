@@ -11,12 +11,15 @@ import { PaymentRepository } from './payment.repository';
 import { AlarmData } from 'src/module/alarm/alarm.service';
 import Logger from 'src/logger';
 import { InvalidPaymentInfoException } from '../payment.error';
+import axios from 'axios'; // http request를 만들기 우한 라이브러리
 
 @Injectable() // 비즈니스 로직으로 분리
 export class PaymentService {
 
   private logger;
-  
+  private readonly tossUrl = 'https://api.tosspayments.com/v1/payments/';
+  private readonly secretKey = process.env.TOSS_TEST_KEY;
+
   constructor(
     @Inject('PaymentRepository')
     private readonly repository: PaymentRepository,
@@ -50,6 +53,9 @@ export class PaymentService {
 
     return savePaymentInfo;
   }
+
+
+
 
   public async getPaymenList(userId: number): Promise<Payment[]> {
 

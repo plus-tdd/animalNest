@@ -30,6 +30,7 @@ export class AuthService {
       { secret: process.env.JWT_SECRET_KEY, expiresIn: '600s' },
     );
     return {
+      userId: user.id,
       accessToken,
     };
   }

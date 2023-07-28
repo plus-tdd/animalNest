@@ -18,13 +18,22 @@ export class LoggerMiddleware implements NestMiddleware {
 
       // 로그 남기기
       this.logger.info(
-        `${method} ${url} ${statusCode}\n[REQUEST] \nParams: ${JSON.stringify(
-          params,
-        )}Query: ${JSON.stringify(query)}Body: ${JSON.stringify(
-          body,
-        )}Headers: ${JSON.stringify(
-          headers,
-        )}\n[RESPONSE]\nStatus:${statusCode}\nBody: ${responseBody}`,
+        `${method} ${url} ${statusCode}\n ========================[REQUEST]========================\n` +
+        `Params: ${JSON.stringify(params, null, 2)}\n` +
+        `Query: ${JSON.stringify(query, null, 2).replace(/,/g, ',\n')}\n` +
+        `Body: { \n` +
+        Object.keys(body)
+        .map((key) => `  "${key}": "${body[key]}"`)
+        .join(",\n") +
+         `\n}\n` +
+        `Headers: {\n` +
+        Object.keys(headers)
+          .map((key) => `  "${key}": "${headers[key]}"`)
+          .join(",\n") +
+        `\n}\n` +
+        `========================[RESPONSE]========================\n` +
+        `Status:${statusCode}\n` +
+        `Body: ${JSON.stringify(JSON.parse(responseBody), null, '').replace(/,/g, ',\n')}`
       );
     }.bind(this);
 
