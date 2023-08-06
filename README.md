@@ -148,5 +148,4 @@ src
 
 # 📃 swagger
 
-<img width="1422" alt="image" src="https://github.com/plus-tdd/animalNest/assets/101460733/bdbe0b74-aac9-489e-8fd1-4c5d1db2d7e4">
-
+<img width="700" alt="image" src="https://github.com/plus-tdd/animalNest/assets/101460733/a614e3fe-1f55-44e8-a9d0-a5c1d0e88108">
