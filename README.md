@@ -10,7 +10,7 @@
 
 <br>
 
-## 아키텍처
+## 🏗️ 아키텍처
 
 <p align="center">
   <img width="700" alt="image" src="https://github.com/plus-tdd/animalNest/assets/101460733/2d814a85-9f6c-4578-a9f4-3a958efc62ab">
@@ -107,7 +107,7 @@ npm run start:dev
 
 <br>
 
-## 🏗️ 디렉토리 구조
+## 🚛 디렉토리 구조
 
 ```
 src                                        
