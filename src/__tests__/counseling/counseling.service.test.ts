@@ -14,9 +14,7 @@ import path from 'path';
 // Controller ( Api Route ) 에서 서비스를 호출한다 = Backend
 // -> 그래서 서비스 UnitTest 에 대해서는 nestjs/testing 의 TestingModule 을 사용하지 않는 게 더 좋은 구조라고 생각함. - by 허재
 class TestCounselingRepository implements CounselingRepository {
-  async registerCounselingHistory(
-    info: CounselingCreateInfo,
-  ): Promise<Counseling> {
+  async registerCounseling(info: CounselingCreateInfo): Promise<Counseling> {
     return {
       id: 1,
       hospitalName: '어쩌라고',

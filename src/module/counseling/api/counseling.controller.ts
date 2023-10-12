@@ -24,13 +24,13 @@ import { Counseling } from '../domain/counseling.model';
 
 @Controller('counseling')
 export class CounselingController {
+  private mapper: CounselingMapper;
   private response: Response;
+
   constructor(private readonly counselingService: CounselingService) {
     this.mapper = new CounselingMapper();
     this.response = new Response();
   }
-
-  private mapper: CounselingMapper;
 
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: '진료 예약' })

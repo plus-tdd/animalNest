@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import Logger from './logger';
-import { HttpExceptionFilter } from './http-exception.filter';
+import { HttpExceptionFilter } from './common/exceptions/http-exception.filter';
 import * as moment from 'moment-timezone';
 import express from 'express';
 import { join } from 'path';
@@ -31,7 +31,6 @@ async function bootstrap() {
 
   await app.listen(port);
   console.log(`listening on port ${port}`);
-
 
   if (module.hot) {
     module.hot.accept();
